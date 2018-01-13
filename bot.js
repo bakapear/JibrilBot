@@ -10,7 +10,10 @@ client.on('message', message => {
     	message.reply('Pong!');
   	}
 	else if (message.content === '.sex') {
-		message.reply('b-be gentle ok');
+		message.reply(Math.random());
+	}
+	else if (message.conent === '.rnd') {
+		
 	}
 });
 
