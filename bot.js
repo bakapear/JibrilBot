@@ -14,7 +14,7 @@ client.on("message", (message) => {
 		message.channel.send(message.author.avatarURL);
 	}
 	else if (message.content === ".nani") {
-		message.channel.send("${user}??????!!! DID YOU REALLY SAY THAT=!!?!!");
+		message.channel.send(user.username);
 	}
 });
 
