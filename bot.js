@@ -8,7 +8,7 @@ client.on("ready", () => {
 
 client.on("message", (message) => {
 	if (message.content === ".ping") {
-		message.channel.send("pong");
+		message.channel.send("testing");
 	}
 	else if (message.content === ".avatar") {
 		message.channel.send(message.author.avatarURL);
