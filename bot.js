@@ -9,11 +9,8 @@ client.on('message', message => {
     if (message.content === '.ping') {
     	message.reply('Pong!');
   	}
-	else if (message.content === '.sex') {
-		message.reply(Math.random());
-	}
-	else if (message.conent === '.rnd') {
-		
+	else if (message.content === '.rnd') {
+		message.reply(Math.random() * (100 - 1) + 1);
 	}
 });
 
