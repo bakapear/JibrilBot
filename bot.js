@@ -7,14 +7,13 @@ bot.on('ready', () => {
 
 bot.on('message', message => {
     if (message.content === '.ping') {
-    	const m = await message.channel.send("Ping?");
-		m.edit("Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms");
+    	message.reply('Pong!');
   	}
 	else if (message.content === '.rnd') {
 		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
 	else if (message.content === '.test') {
-		setPresence({ status: 'online', game: { name: 'GAME' } })
+		message.reply('Test message!');
 	}
 });
 
