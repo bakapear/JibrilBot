@@ -1,33 +1,13 @@
 {
-  "name": "jibrilbot",
+  "name": "Jibril",
+  "description": "Exceptional unit",
   "version": "1.0.0",
-  "description": "Discord bot full of knowledge",
-  "main": "index.js",
-  "engines": {
-    "node": "8.9.4",
-    "npm": "5.6.0"
-  },
+  "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node bot.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bakapear/JibrilBot.git"
-  },
-  "keywords": [
-    "heroku",
-    "discord.js"
-  ],
-  "author": "bakapear",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bakapear/JibrilBot/issues"
-  },
-  "homepage": "https://github.com/bakapear/JibrilBot#readme",
   "dependencies": {
-    "discord.js": "^11.2.1",
-    "ejs": "^2.5.7",
-    "express": "^4.16.2"
+    "discord.js": "11.1.0",
+    "request": "2.81.0"
   }
 }
