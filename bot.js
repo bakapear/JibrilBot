@@ -1,12 +1,13 @@
 const Discord = require("discord.js");
-const bot = new Discord.Client();
+const client = new Discord.Client();
 
-bot.on("ready", () => {
+client.on("ready", () => {
     console.log("I am ready!");
+	client.user.setGame(`on ${client.guilds.size} servers`);
 });
 
-bot.on("message", function(message) {
-        bot.sendMessage(message, "Hello!");
+client.on("message", function(message) {
+        client.sendMessage(message, "Hello!");
 });
 
-bot.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);
