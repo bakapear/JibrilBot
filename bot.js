@@ -6,9 +6,12 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    if (message.content === '.ping') {
-    	message.reply('ponging back!');
+    if (message.content === '.yes') {
+    	message.reply('I agree!');
   	}
+	else if (message.content === '.no') {
+		message.reply('I disagree!');
+	}
 });
 
 client.login(process.env.BOT_TOKEN);
