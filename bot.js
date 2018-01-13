@@ -6,11 +6,11 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    if (message.content === '.yes') {
-    	message.reply('I agree!');
+    if (message.content === '.ping') {
+    	message.reply('Pong!');
   	}
-	else if (message.content === '.no') {
-		message.reply('I disagree!');
+	else if (message.content === '.sex') {
+		message.reply('b-be gentle ok');
 	}
 });
 
