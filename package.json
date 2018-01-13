@@ -1,7 +1,7 @@
 {
   "name": "jibrilbot",
   "version": "1.0.0",
-  "description": "A Discord bot I made just for fun.",
+  "description": "Expandable Unit",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"

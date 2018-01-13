@@ -1,2 +1,2 @@
-## JibrilBot - "Exceptional unit"
-A Discord bot I made just for fun.
+## JibrilBot
+Filled with knowledge and wisedom :3
