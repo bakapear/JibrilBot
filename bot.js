@@ -4,6 +4,10 @@ const client = new Discord.Client();
 client.on('ready', () => {
     console.log('I am ready!');
 });
+bot.on("disconnected", function () {
+    console.log("I left!");
+    process.exit(1);
+});
 
 client.on('message', message => {
     if (message.content === '.ping') {
@@ -13,8 +17,7 @@ client.on('message', message => {
 		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
 	else if (message.content === '.test') {
-		var info = "Quackendecks.";
-		bot.sendMessage(message.channel, info);
+		client.user.setGame('with Ahmad');
 	}
 });
 
