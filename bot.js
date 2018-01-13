@@ -13,7 +13,7 @@ client.on('message', message => {
 		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
 	else if (message.content === '.test') {
-		client.user.setGame('with Ahmad');
+		bot.user.setGame('with Ahmad');
 	}
 });
 
