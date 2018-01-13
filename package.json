@@ -1,13 +1,22 @@
 {
-  "name": "Jibril",
-  "description": "Exceptional unit",
+  "name": "jibrilbot",
   "version": "1.0.0",
+  "description": "A Discord bot I made just for fun.",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bakapear/JibrilBot.git"
+  },
+  "author": "",
+  "license": "MTI",
+  "bugs": {
+    "url": "https://github.com/bakapear/JibrilBot/issues"
+  },
+  "homepage": "https://github.com/bakapear/JibrilBot#readme",
   "dependencies": {
-    "discord.js": "11.1.0",
-    "request": "2.81.0"
+    "discord.js": "^11.2.1"
   }
 }
