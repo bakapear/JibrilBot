@@ -13,8 +13,8 @@ client.on("message", (message) => {
 	else if (message.content === ".avatar") {
 		message.channel.send(message.author.avatarURL);
 	}
-	else if (message.content === ".channel") {
-		message.channel.send(message.channel);
+	else if (message.content === ".nani") {
+		message.channel.send("${user}??????!!! DID YOU REALLY SAY THAT=!!?!!");
 	}
 });
 
