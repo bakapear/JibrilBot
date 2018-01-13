@@ -12,6 +12,10 @@ client.on('message', message => {
 	else if (message.content === '.rnd') {
 		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
+	else if (message.content === '.test') {
+		var info = "Quackendecks.";
+		bot.sendMessage(message.channel, info);
+	}
 });
 
 client.login(process.env.BOT_TOKEN);
