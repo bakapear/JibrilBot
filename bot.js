@@ -13,7 +13,7 @@ bot.on('message', message => {
 		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
 	else if (message.content === '.test') {
-		bot.user.setGame('with Ahmad');
+		bot.user.setPresence({ status: 'online', game: { name: 'with ahmad' } });
 	}
 });
 
