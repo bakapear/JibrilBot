@@ -3,7 +3,7 @@ const client = new Discord.Client();
 
 client.on("ready", () => {
     console.log("I am ready!");
-	client.user.setGame("with master");
+	client.user.setPresence({game:{name:"with master",type:0}});
 });
 
 client.login(process.env.BOT_TOKEN);
