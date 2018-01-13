@@ -11,7 +11,10 @@ client.on("message", (message) => {
 		message.channel.send("pong");
 	}
 	else if (message.content === ".avatar") {
-		message.reply(message.author.avatarURL);
+		message.channel.send(message.author.avatarURL);
+	}
+	else if (message.content === ".channel") {
+		message.channel.send(message.channel);
 	}
 });
 
