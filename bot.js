@@ -3,6 +3,7 @@ const bot = new Discord.Client();
 
 bot.on('ready', () => {
     console.log('I am ready!');
+	bot.user.setGame('with ahmad');
 });
 
 bot.on('message', message => {
@@ -13,7 +14,7 @@ bot.on('message', message => {
 		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
 	else if (message.content === '.test') {
-		bot.user.setGame('with Ahmad');
+		bot.user.setPresence({ status: 'online', game: { name: 'with ahmad' } });
 	}
 });
 
