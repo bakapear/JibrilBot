@@ -16,6 +16,9 @@ client.on("message", (message) => {
 	else if (message.content === ".nani") {
 		message.channel.send(user.username);
 	}
+	else {
+		message.channel.send("please stop messaging!");
+	}
 });
 
 client.login(process.env.BOT_TOKEN);
