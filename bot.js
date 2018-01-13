@@ -10,7 +10,7 @@ client.on('message', message => {
     	message.reply('Pong!');
   	}
 	else if (message.content === '.rnd') {
-		message.reply(Math.random() * (100 - 1) + 1);
+		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
 });
 
