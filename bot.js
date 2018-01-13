@@ -13,7 +13,7 @@ bot.on('message', message => {
 		message.reply(Math.round(Math.random() * (100 - 1) + 1));
 	}
 	else if (message.content === '.test') {
-		message.reply('Test message!');
+		message.reply('Here, I brought you lunch. I-its not like I made it especially for you or anything, I just had some left over, okay!? Idiot!');
 	}
 });
 
