@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
+const cfg = require("./config.json");
 
 client.on("ready", () => {
     console.log("I am ready!");
@@ -16,9 +17,6 @@ client.on("message", (message) => {
 	else if (message.content === ".nani") {
 		message.channel.send(user.username);
 	}
-	else {
-		message.channel.send("please stop messaging!");
-	}
 });
 
-client.login(process.env.BOT_TOKEN);
+client.login(cfg.token);
