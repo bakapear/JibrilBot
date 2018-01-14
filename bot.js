@@ -1,7 +1,8 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
 if(process.env.BOT_TOKEN != undefined) {
-	bot.login(process.env.BOT_TOKEN);
+	//bot.login(process.env.BOT_TOKEN);
+	//enable for heroku support
 }
 else { //for local testing
 	bot.login(require("./config.json").token);
@@ -90,7 +91,9 @@ bot.on("message", (msg) => {
 		
 		case "choose": {
 			if(args.length < 2) {msg.channel.send("Please enter atleast 2 things to choose from!"); return;}
-			msg.channel.send(`I chose ${args[Math.floor(Math.random() * (args.length - 1 + 1)) + 1]}, because why not!`);
+			const rnd = Math.floor(Math.random() * (args.length - 1 + 1)) + 1;
+			msg.channel.send(`I chose ${args[rnd]}, because why not!`);
+			msg.channel.send(`Option Nr. ${rnd}, that's ${args[rnd]}`);
 		}
 	}
 
