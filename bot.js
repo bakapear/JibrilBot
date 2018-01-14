@@ -3,7 +3,7 @@ const bot = new Discord.Client();
 var request = require ("request");
 
 if(process.env.BOT_TOKEN != undefined) {
-	bot.login(process.env.BOT_TOKEN);
+	//bot.login(process.env.BOT_TOKEN);
 	//enable for heroku support
 }
 else { //for local testing
