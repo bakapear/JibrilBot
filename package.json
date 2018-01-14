@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bakapear/JibrilBot#readme",
   "dependencies": {
-    "discord.js": "^11.2.1"
+    "discord.js": "^11.2.1",
+    "request": "^2.83.0"
   }
 }

@@ -1,7 +1,9 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
+var request = require ("request");
+
 if(process.env.BOT_TOKEN != undefined) {
-	//bot.login(process.env.BOT_TOKEN);
+	bot.login(process.env.BOT_TOKEN);
 	//enable for heroku support
 }
 else { //for local testing
@@ -18,22 +20,22 @@ bot.on("message", (msg) => {
 	const args = msg.content.slice(1).split(" ");
 	const cmd = args.shift().toLowerCase();
 	switch(cmd) {
-		case "ping": 
+		case "ping":{
 			const date = Date.now();
 			msg.channel.send("Pinging...").then(m => {
 				const newdate = Date.now() - date;
 				if(newdate <= 500) {
-					m.edit(`Pong! It took ${newdate}ms, desu!`);
+					m.edit(`Pong! It took **${newdate}ms**, desu!`);
 				}
 				else {
-					m.edit(`Pong! It took ${newdate}ms!? Fix it b-baka!`);
+					m.edit(`Pong! It took **${newdate}ms**!? Fix it b-baka!`);
 				}
 			}); 
-			break;
-		case "pong":
+			break; }
+		case "pong":{
 			msg.channel.send("So you wanna play that game? oWo");
-			break;
-		case "roll":
+			break; }
+		case "roll":{
 			var max = 6;
 			var min = 1;
 			if(args.length == 1) {
@@ -44,9 +46,9 @@ bot.on("message", (msg) => {
 				max = parseInt(args[1]);
 			}
 			const rnd = Math.floor(Math.random() * (max - min + 1)) + min;
-			msg.channel.send(`:game_die: ${msg.author.username} rolled a ${rnd}!`);
-			break;
-		case "status":
+			msg.channel.send(`:game_die: ${msg.author.username} rolled a **${rnd}**!`);
+			break; }
+		case "status":{
 			if(!msg.member.permissions.has("ADMINISTRATOR")) return;
 			if(args.length >= 1) {
 				bot.user.setPresence({game:{name:msg.content.slice(7),type:0}});
@@ -55,12 +57,12 @@ bot.on("message", (msg) => {
 			else {
 				msg.channel.send(`My current status is: ${bot.status}!`);
 			}
-			break;
-		case "say":
+			break; }
+		case "say":{
 			msg.delete();
 			msg.channel.send(msg.content.slice(4));
-			break;
-		case "8ball":
+			break; }
+		case "8ball":{
 			switch(Math.floor(Math.random() * (20 - 1 + 1)) + 1) {
 				case 1: msg.channel.send(":8ball: It is certain"); break;
 				case 2: msg.channel.send(":8ball: It is decidedly so"); break;
@@ -83,18 +85,21 @@ bot.on("message", (msg) => {
 				case 19: msg.channel.send(":8ball: Outlook not so good"); break;
 				case 20: msg.channel.send(":8ball: Very doubtful"); break;
 			}
-			break;
-	
-		
-		
-		
-		
-		case "choose": {
-			if(args.length < 2) {msg.channel.send("Please enter atleast 2 things to choose from!"); return;}
-			const rnd = Math.floor(Math.random() * (args.length - 1 + 1)) + 1;
-			msg.channel.send(`I chose ${args[rnd]}, because why not!`);
-			msg.channel.send(`Option Nr. ${rnd}, that's ${args[rnd]}`);
-		}
+			break; }
+		case "choose":{
+			const parts = msg.content.slice(7).split(",");
+			if(parts.length < 2) {msg.channel.send("Please enter atleast 2 things to choose from!\n(seperated by \",\")"); return;}
+			const rnd = Math.floor(Math.random() * parts.length);
+			msg.channel.send(`I chose **${parts[rnd]}**, because why not!`);
+			break; }
+		case "cat":{
+			request({
+				url: "http://random.cat/meow.php",
+				json: true
+			}, function (error, response, body) {
+				msg.channel.send(body);
+			})
+			break; }
 	}
 
 });
