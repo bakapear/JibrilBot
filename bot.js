@@ -9,6 +9,7 @@ var api_search = process.env.API_SEARCH;
 var api_osu = process.env.API_OSU;
 var api_steam = process.env.API_STEAM;
 var api_github = process.env.API_GITHUB;
+var api_img = undefined;
 
 var bot_prefix = ".";
 
