@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
 const request = require("request");
-const cfg = require("./config.json");
+var cfg = "";
 
 var api_google = process.env.API_GOOGLE;
 var api_giphy = process.env.API_GIPHY;
@@ -16,6 +16,7 @@ if (process.env.BOT_TOKEN != undefined) {
 	bot.login(process.env.BOT_TOKEN);
 }
 else {
+	cfg = require("./config.json");
 	bot.login(cfg.token);
 	api_google = cfg.api.google;
 	api_giphy = cfg.api.giphy;
