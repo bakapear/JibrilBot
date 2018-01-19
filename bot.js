@@ -770,7 +770,7 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 	}
 	if (parseInt(progression) == 100) {
 		request({
-			url: `http://api-en1.akinator.com/ws/list?session=${session}&signature=${signature}&step=${step}&size=2&max_pic_width=246&max_pic_height=294&pref_photos=OK-FR&mode_question=0`,
+			url: `http://api-en1.akinator.com/ws/list?session=${session}&signature=${signature}&step=${step}&size=2&max_pic_width=360&max_pic_height=640&mode_question=0`,
 			json: true
 		}, function (error, response, body) {
 			akimsg.edit("Found someone!");
