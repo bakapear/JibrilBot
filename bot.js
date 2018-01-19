@@ -36,6 +36,16 @@ bot.on("message", (msg) => {
 	const args = msg.content.slice(1).split(" ");
 	const cmd = args.shift().toLowerCase();
 	switch (cmd) {
+		case "note": {
+			msg.channel.send("fix imgkeys for heroku");
+			msg.channel.send("add .help");
+			msg.channel.send("baka, add more api commands oWO");
+			msg.channel.send("make radio check if playing (right way)");
+			msg.channel.send("dont allow sounds to play while sound is actually playing, desu");
+			msg.channel.send(".play error: TypeError: Cannot read property 'send' of null /^ above might fix it");
+			msg.channel.send("WORKING AKI, ARIGATO CONASTIEMAS");
+			break;
+		}
 		case "ping": {
 			if (args == "help") {
 				msg.channel.send("Usage: `.ping`").then(m => {
@@ -181,13 +191,18 @@ bot.on("message", (msg) => {
 		}
 		case "rate": {
 			if (args == "help") {
-				msg.channel.send("Usage: `.rate (user)`").then(m => {
+				msg.channel.send("Usage: `.rate (thing)`").then(m => {
 					m.delete(5000);
 				});
 				return;
 			}
 			const rnd = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-			msg.channel.send(`Imma give you a **${rnd}/10**!`);
+			if(args == "") {
+				msg.channel.send(`Imma give you a **${rnd}/10**!`);
+			}
+			else {
+				msg.channel.send(`${msg.content.slice(cmd.length + 1)} get a **${rnd}/10**!`);
+			}
 			break;
 		}
 		case "gif": {
@@ -582,7 +597,48 @@ bot.on("message", (msg) => {
 			}
 			if (msg.member.voiceChannel) {
 				msg.member.voiceChannel.join().then(connection => {
-					const dispatcher = connection.playArbitraryInput(args[0]);
+					if(args[0].startsWith("http")) {
+						const dispatcher = connection.playArbitraryInput(args[0]);
+							dispatcher.on('start', () => {
+								msg.channel.send(`Playing: \`${args[0]}\``);
+							});
+							dispatcher.on('end', () => {
+								msg.member.voiceChannel.leave()
+							});
+							dispatcher.on('error', e => {
+								console.log(e);
+							});
+					}
+					else {
+					request({
+						url: `https://api.github.com/search/code?q=${args.join("+")}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds`,
+						qs: {
+							access_token: api_github
+						},
+						headers: {
+							"User-Agent": "Jibril"
+						},
+						json: true
+					}, function (error, response, body) {
+						if (body.total_count == 0) {
+							msg.channel.send("Nothing found!");
+						}
+						else {
+							const rnd = Math.floor(Math.random() * body.items.length);
+							var link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
+							const dispatcher = connection.playArbitraryInput(link);
+							dispatcher.on('start', () => {
+								msg.channel.send(`Playing: \`${body.items[rnd].name}\``);
+							});
+							dispatcher.on('end', () => {
+								msg.member.voiceChannel.leave()
+							});
+							dispatcher.on('error', e => {
+								console.log(e);
+							});
+						}
+					})
+					}
 				})
 			}
 			else {
@@ -674,7 +730,7 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 						case "✖": aki(msg, args, false, session, signature, step, "4", progression, m); break;
 						case "❎": aki(msg, args, false, session, signature, step, "1", progression, m); break;
 					}
-					console.log(collector.client);
+					r.remove(msg.author);
 					collector.stop();
 				});
 			});
@@ -703,6 +759,7 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 						case "✖": aki(msg, args, false, session, signature, step, "4", progression, m); break;
 						case "❎": aki(msg, args, false, session, signature, step, "1", progression, m); break;
 					}
+					r.remove(msg.author);
 					collector.stop();
 				});
 			})
