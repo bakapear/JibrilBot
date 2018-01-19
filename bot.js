@@ -256,6 +256,10 @@ bot.on("message", (msg) => {
 			break;
 		}
 		case "img": {
+			if (api_img == undefined) {
+				msg.channel.send(`Command disabled when using heroku!`);
+				return;
+			}
 			if (args == "" || args == "help") {
 				msg.channel.send("Usage: `.img <query>`").then(m => {
 					m.delete(5000);
@@ -669,10 +673,7 @@ function img(msg, args, key_num, retried, info) {
 		},
 		json: true
 	}, function (error, response, body) {
-		if (api_img == undefined) {
-			msg.channel.send(`Command disabled when using heroku!`);
-		}
-		else if (body.error != undefined) {
+		if (body.error != undefined) {
 			key_num++;
 			if (key_num >= cfg.imgkeys.length) {
 				if (retried == true) {
