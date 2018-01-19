@@ -11,13 +11,15 @@
     "url": "git+https://github.com/bakapear/JibrilBot.git"
   },
   "author": "bakapear",
-  "license": "MTI",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/bakapear/JibrilBot/issues"
   },
   "homepage": "https://github.com/bakapear/JibrilBot#readme",
   "dependencies": {
-    "discord.js": "^11.2.1",
+    "discord.js": "^11.3.0",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "opusscript": "0.0.6",
     "request": "^2.83.0"
   }
 }
