@@ -595,6 +595,9 @@ bot.on("message", (msg) => {
 			break;
 		}
 		case "play": {
+			if(msg.member.voiceChannel.speaking) {
+				msg.channel.send("speaking!");
+			}
 			if (args == "" || args == "help") {
 				msg.channel.send("Usage: `.play <query>`").then(m => {
 					m.delete(5000);
@@ -628,6 +631,7 @@ bot.on("message", (msg) => {
 					}, function (error, response, body) {
 						if (body.total_count == 0) {
 							msg.channel.send("Nothing found!");
+							msg.member.voiceChannel.leave();
 						}
 						else {
 							const rnd = Math.floor(Math.random() * body.items.length);
@@ -637,7 +641,7 @@ bot.on("message", (msg) => {
 								msg.channel.send(`Playing: \`${body.items[rnd].name}\``);
 							});
 							dispatcher.on('end', () => {
-								msg.member.voiceChannel.leave()
+								msg.member.voiceChannel.leave();
 							});
 							dispatcher.on('error', e => {
 								console.log(e);
@@ -702,6 +706,31 @@ function img(msg, args, key_num, retried, info) {
 }
 
 function aki(msg, args, start, session, signature, step, answer, progression, akimsg) {
+	if (progression >= 92 || parseInt(step) >= 80) {
+		request({
+			url: `http://api-en1.akinator.com/ws/list?session=${session}&signature=${signature}&step=${step}&size=2&max_pic_width=360&max_pic_height=640&mode_question=1`,
+			json: true
+		}, function (error, response, body) {
+			akimsg.clearReactions();
+			akimsg.edit({
+					embed: {
+						color: 10008404,
+						author: {
+							name: `Result`,
+							icon_url: `https://i.imgur.com/PvoQdrt.png`
+						},
+						image: {
+							url: body.parameters.elements[0].element.absolute_picture_path
+						},
+						fields: [{
+							name: body.parameters.elements[0].element.name,
+							value: `${body.parameters.elements[0].element.description}\n\n**Rank** #${body.parameters.elements[0].element.ranking}\n**Probability** ${parseInt(body.parameters.elements[0].element.proba*100)}%`,
+						}],
+					}
+				});
+		});
+		return;
+	}
 	if (start === true) {
 		request({
 			url: `http://api-en1.akinator.com/ws/new_session?partner=1&player=Jibril`,
@@ -767,21 +796,5 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 				});
 			})
 		});
-	}
-	if (parseInt(progression) == 100) {
-		request({
-			url: `http://api-en1.akinator.com/ws/list?session=${session}&signature=${signature}&step=${step}&size=2&max_pic_width=360&max_pic_height=640&mode_question=0`,
-			json: true
-		}, function (error, response, body) {
-			akimsg.edit("Found someone!");
-			akimsg.clearReactions();
-			console.log(body);
-			return;
-		});
-	}
-	if (parseInt(step) > 80) {
-		akimsg.edit("Out of questions!");
-		akimsg.clearReactions();
-		return;
 	}
 }
