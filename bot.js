@@ -9,9 +9,8 @@ var api_search = process.env.API_SEARCH;
 var api_osu = process.env.API_OSU;
 var api_steam = process.env.API_STEAM;
 var api_github = process.env.API_GITHUB;
+var api_musix = process.env.API_MUSIX;
 var api_img = undefined;
-
-var bot_prefix = ".";
 
 if (process.env.BOT_TOKEN != undefined) {
 	bot.login(process.env.BOT_TOKEN);
@@ -26,6 +25,7 @@ else {
 	api_steam = cfg.api.steam;
 	api_img = cfg.imgkeys[0].key;
 	api_github = cfg.api.github;
+	api_musix = cfg.api.musix;
 }
 
 bot.on("ready", () => {
@@ -34,7 +34,10 @@ bot.on("ready", () => {
 });
 
 bot.on("message", (msg) => {
-	if (msg.author.bot || !msg.content.startsWith(bot_prefix)) return;
+	if (msg.author.bot || !(msg.content.startsWith(".") || msg.content.startsWith(","))) return;
+	if (msg.content.startsWith(",")) {
+		msg.delete();
+	}
 	const args = msg.content.slice(1).split(" ");
 	const cmd = args.shift().toLowerCase();
 	switch (cmd) {
@@ -104,9 +107,24 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			msg.delete();
 			msg.channel.send(msg.content.slice(cmd.length + 1));
 			break;
+		}
+		case "box": {
+			if (args == "") {
+				msg.channel.send("Usage: `.box <message>`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			msg.channel.send({
+				embed: {
+					description: msg.content.slice(cmd.length + 1)
+				}
+			});
+
+			break;
+
 		}
 		case "8ball": {
 			switch (Math.floor(Math.random() * (20 - 1 + 1)) + 1) {
@@ -158,7 +176,13 @@ bot.on("message", (msg) => {
 				url: "http://random.cat/meow.php",
 				json: true
 			}, function (error, response, body) {
-				msg.channel.send(body.file);
+				msg.channel.send({
+					embed: {
+						image: {
+							url: body.file
+						}
+					},
+				});
 			})
 			break;
 		}
@@ -173,7 +197,13 @@ bot.on("message", (msg) => {
 				url: `https://dog.ceo/api/breeds/image/random`,
 				json: true
 			}, function (error, response, body) {
-				msg.channel.send(body.message);
+				msg.channel.send({
+					embed: {
+						image: {
+							url: body.message
+						}
+					},
+				});
 			})
 			break;
 		}
@@ -199,7 +229,7 @@ bot.on("message", (msg) => {
 				return;
 			}
 			const rnd = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-			if(args == "") {
+			if (args == "") {
 				msg.channel.send(`Imma give you a **${rnd}/10**!`);
 			}
 			else {
@@ -228,7 +258,13 @@ bot.on("message", (msg) => {
 					msg.channel.send("Nothing found!");
 				}
 				else {
-					msg.channel.send(body.data.image_url);
+					msg.channel.send({
+						embed: {
+							image: {
+								url: body.data.image_url
+							}
+						},
+					});
 				}
 			})
 			break;
@@ -595,7 +631,7 @@ bot.on("message", (msg) => {
 			break;
 		}
 		case "play": {
-			if(msg.member.voiceChannel.speaking) {
+			if (msg.member.voiceChannel.speaking) {
 				msg.channel.send("speaking!");
 			}
 			if (args == "" || args == "help") {
@@ -606,48 +642,48 @@ bot.on("message", (msg) => {
 			}
 			if (msg.member.voiceChannel) {
 				msg.member.voiceChannel.join().then(connection => {
-					if(args[0].startsWith("http")) {
+					if (args[0].startsWith("http")) {
 						const dispatcher = connection.playArbitraryInput(args[0]);
-							dispatcher.on('start', () => {
-								msg.channel.send(`Playing: \`${args[0]}\``);
-							});
-							dispatcher.on('end', () => {
-								msg.member.voiceChannel.leave()
-							});
-							dispatcher.on('error', e => {
-								console.log(e);
-							});
+						dispatcher.on('start', () => {
+							msg.channel.send(`Playing: \`${args[0]}\``);
+						});
+						dispatcher.on('end', () => {
+							msg.member.voiceChannel.leave()
+						});
+						dispatcher.on('error', e => {
+							console.log(e);
+						});
 					}
 					else {
-					request({
-						url: `https://api.github.com/search/code?q=${args.join("+")}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds`,
-						qs: {
-							access_token: api_github
-						},
-						headers: {
-							"User-Agent": "Jibril"
-						},
-						json: true
-					}, function (error, response, body) {
-						if (body.total_count == 0) {
-							msg.channel.send("Nothing found!");
-							msg.member.voiceChannel.leave();
-						}
-						else {
-							const rnd = Math.floor(Math.random() * body.items.length);
-							var link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
-							const dispatcher = connection.playArbitraryInput(link);
-							dispatcher.on('start', () => {
-								msg.channel.send(`Playing: \`${body.items[rnd].name}\``);
-							});
-							dispatcher.on('end', () => {
+						request({
+							url: `https://api.github.com/search/code?q=${args.join("+")}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds`,
+							qs: {
+								access_token: api_github
+							},
+							headers: {
+								"User-Agent": "Jibril"
+							},
+							json: true
+						}, function (error, response, body) {
+							if (body.total_count == 0) {
+								msg.channel.send("Nothing found!");
 								msg.member.voiceChannel.leave();
-							});
-							dispatcher.on('error', e => {
-								console.log(e);
-							});
-						}
-					})
+							}
+							else {
+								const rnd = Math.floor(Math.random() * body.items.length);
+								var link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
+								const dispatcher = connection.playArbitraryInput(link);
+								dispatcher.on('start', () => {
+									msg.channel.send(`Playing: \`${body.items[rnd].name}\``);
+								});
+								dispatcher.on('end', () => {
+									msg.member.voiceChannel.leave();
+								});
+								dispatcher.on('error', e => {
+									console.log(e);
+								});
+							}
+						})
 					}
 				})
 			}
@@ -665,6 +701,159 @@ bot.on("message", (msg) => {
 			}
 			aki(msg, args, true);
 			break;
+		}
+		case "yes": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.yes`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://yesno.wtf/api?force=yes`,
+				json: true
+			}, function (error, response, body) {
+				msg.channel.send({
+					embed: {
+						image: {
+							url: body.image
+						}
+					},
+				});
+			})
+			break;
+		}
+		case "no": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.no`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://yesno.wtf/api?force=no`,
+				json: true
+			}, function (error, response, body) {
+				msg.channel.send({
+					embed: {
+						image: {
+							url: body.image
+						}
+					},
+				});
+			})
+			break;
+		}
+		case "maybe": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.maybe`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://yesno.wtf/api?force=maybe`,
+				json: true
+			}, function (error, response, body) {
+				msg.channel.send({
+					embed: {
+						image: {
+							url: body.image
+						}
+					},
+				});
+			})
+			break;
+		}
+		case "math": {
+			if (args == "" || args == "help") {
+				msg.channel.send("Usage: `.math`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://newton.now.sh/simplify/${args.join("")}`,
+				json: true
+			}, function (error, response, body) {
+				msg.channel.send(`${body.expression} = ${body.result}`)
+			})
+			break;
+		}
+		case "color": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.color <query>`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			var link = `http://www.colourlovers.com/api/colors?format=json&keywords=${args.join("+")}`;
+			if (args == "") {
+				link = `http://www.colourlovers.com/api/colors/random?format=json`
+			}
+			request({
+				url: link,
+				json: true
+			}, function (error, response, body) {
+				if (body.length < 1) {
+					msg.channel.send("Nothing found!");
+					return;
+				}
+				const rnd = Math.floor(Math.random() * body.length);
+				var colorint = (body[rnd].rgb.red << 16) + (body[rnd].rgb.green << 8) + (body[rnd].rgb.blue);
+				msg.channel.send({
+					embed: {
+						color: colorint,
+						title: body[rnd].title,
+						description: `**Hex** #${body[rnd].hex}\n**R** ${body[rnd].rgb.red} **G** ${body[rnd].rgb.green} **B** ${body[rnd].rgb.blue}\n**H** ${body[rnd].hsv.hue} **S** ${body[rnd].hsv.saturation} **V** ${body[rnd].hsv.value}`,
+						image: {
+							url: body[rnd].imageUrl
+						}
+					}
+				});
+			})
+			break;
+		}
+		case "lyrics": {
+			if (args == "" || args == "help") {
+				msg.channel.send("Usage: `.lyrics <song>`").then(m => {
+					m.delete(5000);
+				});
+			}
+			request({
+				url: `http://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${args.join("+")}&page_size=3&page=1&s_track_rating=desc`,
+				qs: {
+					apikey: api_musix
+				},
+				json: true
+			}, function (error, response, body) {
+				if (body.message.header.available < 1) {
+					msg.channel.send("Nothing found!");
+					return;
+				}
+				var tracktitle = `${body.message.body.track_list[0].track.artist_name} - ${body.message.body.track_list[0].track.track_name}`;
+				request({
+					url: `http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${body.message.body.track_list[0].track.track_id}`,
+					qs: {
+						apikey: api_musix
+					},
+					json: true
+				}, function (error, response, body) {
+					if (body.message.header.status_code == 404) {
+						msg.channel.send("Nothing found!");
+						return;
+					}
+					msg.channel.send({
+						embed: {
+							color: 14024703,
+							title: tracktitle,
+							description: body.message.body.lyrics.lyrics_body.slice(0, -55)
+						},
+					});
+				})
+			})
+			break;
+
 		}
 	}
 });
@@ -696,10 +885,22 @@ function img(msg, args, key_num, retried, info) {
 		}
 		else {
 			if (info >= 0 && info < body.items.length) {
-				msg.channel.send(body.items[info].link);
+				msg.channel.send({
+					embed: {
+						image: {
+							url: body.items[info].link
+						}
+					},
+				});
 			}
 			else {
-				msg.channel.send(body.items[Math.floor(Math.random() * body.items.length)].link);
+				msg.channel.send({
+					embed: {
+						image: {
+							url: body.items[Math.floor(Math.random() * body.items.length)].link
+						}
+					},
+				});
 			}
 		}
 	})
@@ -713,21 +914,21 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 		}, function (error, response, body) {
 			akimsg.clearReactions();
 			akimsg.edit({
-					embed: {
-						color: 10008404,
-						author: {
-							name: `Result`,
-							icon_url: `https://i.imgur.com/PvoQdrt.png`
-						},
-						image: {
-							url: body.parameters.elements[0].element.absolute_picture_path
-						},
-						fields: [{
-							name: body.parameters.elements[0].element.name,
-							value: `${body.parameters.elements[0].element.description}\n\n**Rank** #${body.parameters.elements[0].element.ranking}\n**Probability** ${parseInt(body.parameters.elements[0].element.proba*100)}%`,
-						}],
-					}
-				});
+				embed: {
+					color: 10008404,
+					author: {
+						name: `Result`,
+						icon_url: `https://i.imgur.com/PvoQdrt.png`
+					},
+					image: {
+						url: body.parameters.elements[0].element.absolute_picture_path
+					},
+					fields: [{
+						name: body.parameters.elements[0].element.name,
+						value: `${body.parameters.elements[0].element.description}\n\n**Rank** #${body.parameters.elements[0].element.ranking}\n**Probability** ${parseInt(body.parameters.elements[0].element.proba * 100)}%`,
+					}],
+				}
+			});
 		});
 		return;
 	}
