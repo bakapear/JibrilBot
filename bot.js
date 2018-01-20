@@ -47,8 +47,8 @@ bot.on("message", (msg) => {
 			msg.channel.send("baka, add more api commands oWO");
 			msg.channel.send("make radio check if playing (right way)");
 			msg.channel.send("dont allow sounds to play while sound is actually playing, desu");
-			msg.channel.send(".play error: TypeError: Cannot read property 'send' of null /^ above might fix it");
 			msg.channel.send("WORKING AKI, ARIGATO CONASTIEMAS");
+			msg.channel.send("mayb change all msgs to embed?");
 			break;
 		}
 		case "ping": {
@@ -245,7 +245,7 @@ bot.on("message", (msg) => {
 				return;
 			}
 			request({
-				url: `http://api.giphy.com/v1/gifs/random?tag=${args.join("+")}`,
+				url: `http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				qs: {
 					api_key: api_giphy,
 					rating: 'r',
@@ -277,7 +277,7 @@ bot.on("message", (msg) => {
 				return;
 			}
 			request({
-				url: `https://www.googleapis.com/youtube/v3/search?part=id&q=${args.join("+")}`,
+				url: `https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				qs: {
 					key: api_google
 				},
@@ -368,7 +368,7 @@ bot.on("message", (msg) => {
 				return;
 			}
 			request({
-				url: `http://api.urbandictionary.com/v0/define?term=${args.join("+")}`,
+				url: `http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				json: true
 			}, function (error, response, body) {
 				if (body.list.length < 1) {
@@ -573,7 +573,7 @@ bot.on("message", (msg) => {
 				return;
 			}
 			request({
-				url: `https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=${args.join("+")}`,
+				url: `https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				json: true
 			}, function (error, response, body) {
 				if (body.query.searchinfo.totalhits < 1) {
@@ -656,7 +656,7 @@ bot.on("message", (msg) => {
 					}
 					else {
 						request({
-							url: `https://api.github.com/search/code?q=${args.join("+")}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds`,
+							url: `https://api.github.com/search/code?q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds`,
 							qs: {
 								access_token: api_github
 							},
@@ -767,16 +767,16 @@ bot.on("message", (msg) => {
 		}
 		case "math": {
 			if (args == "" || args == "help") {
-				msg.channel.send("Usage: `.math`").then(m => {
+				msg.channel.send("Usage: `.math <expression>`").then(m => {
 					m.delete(5000);
 				});
 				return;
 			}
 			request({
-				url: `https://newton.now.sh/simplify/${args.join("")}`,
+				url: `http://api.mathjs.org/v1/?expr=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				json: true
 			}, function (error, response, body) {
-				msg.channel.send(`${body.expression} = ${body.result}`)
+				msg.channel.send(body);
 			})
 			break;
 		}
@@ -787,7 +787,7 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			var link = `http://www.colourlovers.com/api/colors?format=json&keywords=${args.join("+")}`;
+			var link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
 			if (args == "") {
 				link = `http://www.colourlovers.com/api/colors/random?format=json`
 			}
@@ -821,7 +821,7 @@ bot.on("message", (msg) => {
 				});
 			}
 			request({
-				url: `http://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${args.join("+")}&page_size=3&page=1&s_track_rating=desc`,
+				url: `http://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&page_size=3&page=1&s_track_rating=desc`,
 				qs: {
 					apikey: api_musix
 				},
@@ -860,7 +860,7 @@ bot.on("message", (msg) => {
 
 function img(msg, args, key_num, retried, info) {
 	request({
-		url: `https://www.googleapis.com/customsearch/v1?searchType=image&fileType=png+jpg+gif&q=${args.join("+")}`,
+		url: `https://www.googleapis.com/customsearch/v1?searchType=image&fileType=png+jpg+gif&q=${encodeURIComponent(msg.content.slice(3 + 1).trim())}`,
 		qs: {
 			key: api_img,
 			cx: api_search
