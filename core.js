@@ -1036,7 +1036,7 @@ bot.on("message", msg => {
 				embed: {
 					color: 14506163,
 					title: `Invite ${bot.user.username} to your server!`,
-					description: `The youngest and strongest discord bot of the Flügel race.\n**Guilds** ${bot.guilds.size} **Users** ${bot.users.size} **Channels** ${bot.channels.size}\n**Uptime** ${uptime.getMonth()} Months ${uptime.getDate()-1} Days ${uptime.getHours()-1} Hours ${uptime.getMinutes()} Minutes ${uptime.getSeconds()} Seconds`,
+					description: `The youngest and strongest discord bot of the Flügel race.\n\n**Guilds** ${bot.guilds.size} **Users** ${bot.users.size} **Channels** ${bot.channels.size}\n**Uptime** ${uptime.getMonth()} Months ${uptime.getDate()-1} Days ${uptime.getHours()-1} Hours ${uptime.getMinutes()} Minutes ${uptime.getSeconds()} Seconds`,
 					url: invitelink,
 					thumbnail: {
 						url: bot.user.avatarURL
