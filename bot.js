@@ -619,14 +619,26 @@ bot.on("message", (msg) => {
 			let radio;
 			if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
 				msg.member.voiceChannel.join().then(connection => {
-					msg.channel.send(`Joined ${connection.channel} streaming *listen.moe*!`);
+					msg.channel.send({
+						embed: {
+							color: 14506163,
+							title: "Radio",
+							description: `Joined ${connection.channel} streaming *listen.moe*!`
+						}
+					})
 					radio = connection.playArbitraryInput(`https://listen.moe/stream`);
 					radio.setBitrate(96000);
 				})
 			}
 			else {
+				msg.channel.send({
+					embed: {
+						color: 14506163,
+						title: "Radio",
+						description: `Stopped streaming radio.`
+					}
+				})
 				msg.member.voiceChannel.leave();
-				msg.channel.send(`Stopped streaming.`);
 			}
 			break;
 		}
@@ -644,48 +656,82 @@ bot.on("message", (msg) => {
 			let player;
 			if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
 				msg.member.voiceChannel.join().then(connection => {
-					if (args[0].startsWith("http")) {
+					if (args[0].startsWith("http") && (args[0].endsWith(".ogg") || args[0].endsWith(".mp3") || args[0].endsWith(".wav"))) {
 						player = connection.playArbitraryInput(args[0]);
-						player.on('start', () => {
-							msg.channel.send(`Playing: \`${args[0]}\``);
-						});
-						player.on('end', () => {
-							msg.member.voiceChannel.leave()
+						player.setBitrate(96000);
+						msg.channel.send({
+							embed: {
+								color: 14506163,
+								title: "Playing Soundfile",
+								description: `\`${args[0]}\``
+							}
+						}).then(m => {
+							player.on('end', () => {
+								m.edit({
+									embed: {
+										color: 14506163,
+										title: "Done!"
+									}
+								});
+								msg.member.voiceChannel.leave()
+							});
 						});
 						player.on('error', e => {
 							console.log(e);
 						});
 					}
 					else {
-						request({
-							url: `https://api.github.com/search/code?q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds`,
-							qs: {
-								access_token: api_github
-							},
-							headers: {
-								"User-Agent": "Jibril"
-							},
-							json: true
-						}, function (error, response, body) {
-							if (body.total_count < 1) {
-								msg.channel.send("Nothing found!");
-								msg.member.voiceChannel.leave();
+						msg.channel.send({
+							embed: {
+								color: 14506163,
+								title: "Searching Sound..."
 							}
-							else {
-								const rnd = Math.floor(Math.random() * body.items.length);
-								var link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
-								player = connection.playArbitraryInput(link);
-								player.setBitrate(96000);
-								player.on('start', () => {
-									msg.channel.send(`Playing: \`${body.items[rnd].name}\``);
-								});
-								player.on('end', () => {
+						}).then(m => {
+							request({
+								url: `https://api.github.com/search/code?q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds`,
+								qs: {
+									access_token: api_github
+								},
+								headers: {
+									"User-Agent": "Jibril"
+								},
+								json: true
+							}, function (error, response, body) {
+								if (body.total_count < 1) {
+									m.edit({
+										embed: {
+											color: 14506163,
+											title: "Nothing found!"
+										}
+									});
 									msg.member.voiceChannel.leave();
-								});
-								player.on('error', e => {
-									console.log(e);
-								});
-							}
+								}
+								else {
+									const rnd = Math.floor(Math.random() * body.items.length);
+									var link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
+									player = connection.playArbitraryInput(link);
+									player.setBitrate(96000);
+									m.edit({
+										embed: {
+											color: 14506163,
+											title: "Playing Sound",
+											description: `\`${body.items[rnd].name}\``
+										}
+									});
+									player.on('end', () => {
+										m.edit({
+											embed: {
+												color: 14506163,
+												title: "Done!"
+											}
+										});
+										msg.member.voiceChannel.leave();
+									});
+									player.on('error', e => {
+										console.log(e);
+									});
+								}
+							})
 						})
 					}
 				})
