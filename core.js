@@ -34,7 +34,7 @@ bot.on("ready", () => {
 	bot.user.setPresence({ game: { name: "with master", type: 0 } });
 });
 
-bot.on("message", (msg) => {
+bot.on("message", msg => {
 	if (msg.author.bot || !(msg.content.startsWith(".") || msg.content.startsWith(","))) return;
 	if (msg.content.startsWith(",")) {
 		msg.delete();
