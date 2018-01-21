@@ -12,6 +12,7 @@ let api_steam = process.env.API_STEAM;
 let api_github = process.env.API_GITHUB;
 let api_musix = process.env.API_MUSIX;
 let api_img = undefined;
+const startdate = new Date();
 
 if (process.env.BOT_TOKEN != undefined) {
 	bot.login(process.env.BOT_TOKEN);
@@ -62,12 +63,7 @@ bot.on("message", msg => {
 			const date = Date.now();
 			msg.channel.send("Pinging...").then(m => {
 				const newdate = Date.now() - date;
-				if (newdate <= 500) {
-					m.edit(`Pong! It took **${newdate}ms**, desu!`);
-				}
-				else {
-					m.edit(`Pong! It took **${newdate}ms**!? Fix it b-baka!`);
-				}
+				m.edit(`Pong! It took me **${newdate}ms**!`);
 			});
 			break;
 		}
@@ -383,7 +379,6 @@ bot.on("message", msg => {
 								value: body.list[rnd].example
 							}],
 							footer: {
-								value: "",
 								text: `by ${body.list[rnd].author}`
 							},
 						}
@@ -1032,6 +1027,25 @@ bot.on("message", msg => {
 					}
 				});
 			})
+			break;
+		}
+		case "invite": {
+			let invitelink = `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8`;
+			const uptime = new Date(Date.now()-startdate);
+			msg.channel.send({
+				embed: {
+					color: 14506163,
+					title: `Invite ${bot.user.username} to your server!`,
+					description: `The youngest and strongest discord bot of the Flügel race.\n**Guilds** ${bot.guilds.size} **Users** ${bot.users.size} **Channels** ${bot.channels.size}\n**Uptime** ${uptime.getMonth()} Months ${uptime.getDate()-1} Days ${uptime.getHours()-1} Hours ${uptime.getMinutes()} Minutes ${uptime.getSeconds()} Seconds`,
+					url: invitelink,
+					thumbnail: {
+						url: bot.user.avatarURL
+					},
+					footer: {
+						text: "created and managed by bakapear"
+					}
+				}
+			});
 			break;
 		}
 	}
