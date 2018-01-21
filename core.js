@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
 const request = require("request");
+const yt = require('ytdl-core');
 let cfg = "";
 
 let api_google = process.env.API_GOOGLE;
@@ -642,9 +643,9 @@ bot.on("message", (msg) => {
 			}
 			break;
 		}
-		case "play": {
+		case "snd": {
 			if (args == "") {
-				msg.channel.send("Usage: `.play <query>`").then(m => {
+				msg.channel.send("Usage: `.snd <query>`").then(m => {
 					m.delete(5000);
 				});
 				return;
@@ -983,6 +984,72 @@ bot.on("message", (msg) => {
 					}
 				});
 			})
+			break;
+		}
+		case "play": {
+			if (args == "") {
+				msg.channel.send("Usage: `.q <query>`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			if (!msg.member.voiceChannel) {
+				msg.channel.send("You're not in a voice channel!");
+				return
+			}
+			if(bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
+				request({
+				url: `https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+				qs: {
+					key: api_google
+				},
+				json: true
+			}, function (error, response, body) {
+				if (body.items.length < 1) {
+					msg.channel.send("Nothing found!");
+				}
+				else {
+					let videoid = body.items[0].id.videoId;
+					request({
+						url: `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}`,
+						qs: {
+							key: api_google
+						},
+						json: true
+					}, function (error, response, body) {
+						let player;
+					msg.member.voiceChannel.join().then(connection => {
+						msg.channel.send({
+							embed: {
+								color: 14506163,
+								title: "Now Playing",
+								description: `\`${body.items[0].snippet.title}\``,
+								image: {
+									url: body.items[0].snippet.thumbnails.medium.url
+								}
+							}
+						}).then(m => {
+							player = connection.playStream(yt(videoid, { audioonly: true }));
+							player.setBitrate(96000);
+							player.on('end', () => {
+								m.edit({
+									embed: {
+										color: 14506163,
+										title: "Done!"
+									}
+								});
+								msg.member.voiceChannel.leave();
+							});
+						})
+					})
+					})
+					
+				}
+			})
+			}
+			else {
+				msg.channel.send(`A video is already playing!`);
+			}
 			break;
 		}
 	}
