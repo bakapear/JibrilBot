@@ -46,10 +46,10 @@ bot.on("message", msg => {
 			msg.channel.send("fix imgkeys for heroku");
 			msg.channel.send("add .help");
 			msg.channel.send("baka, add more api commands oWO");
-			msg.channel.send("make radio check if playing (right way)");
-			msg.channel.send("dont allow sounds to play while sound is actually playing, desu");
 			msg.channel.send("WORKING AKI, ARIGATO CONASTIEMAS");
+			msg.channel.send("play queue mayb");
 			msg.channel.send("mayb change all msgs to embed?");
+			msg.channel.send("except this one");
 			break;
 		}
 		case "ping": {
@@ -83,19 +83,18 @@ bot.on("message", msg => {
 		}
 		case "roll": {
 			if (args == "help") {
-				msg.channel.send("Usage: `.roll (min value) (max value)`").then(m => {
+				msg.channel.send("Usage: `.roll (min) (max)`").then(m => {
 					m.delete(5000);
 				});
 				return;
 			}
-			let max = 6;
-			let min = 1;
+			let max = 6, min = 1;
 			if (args.length == 1) {
 				max = parseInt(args[0]);
 			}
 			else if (args.length > 1) {
-				min = parseInt(args[0]);
-				max = parseInt(args[1]);
+				min = parseInt(args[1]);
+				max = parseInt(args[0]);
 			}
 			const rnd = Math.floor(Math.random() * (max - min + 1)) + min;
 			msg.channel.send(`:game_die: ${msg.author.username} rolled a **${rnd}**!`);
@@ -111,56 +110,39 @@ bot.on("message", msg => {
 			msg.channel.send(msg.content.slice(cmd.length + 1));
 			break;
 		}
-		case "box": {
-			if (args == "") {
-				msg.channel.send("Usage: `.box <message>`").then(m => {
-					m.delete(5000);
-				});
-				return;
-			}
-			msg.channel.send({
-				embed: {
-					description: msg.content.slice(cmd.length + 1)
-				}
-			});
-
-			break;
-
-		}
 		case "8ball": {
-			switch (Math.floor(Math.random() * (20 - 1 + 1)) + 1) {
-				case 1: msg.channel.send(":8ball: It is certain"); break;
-				case 2: msg.channel.send(":8ball: It is decidedly so"); break;
-				case 3: msg.channel.send(":8ball: Without a doubt"); break;
-				case 4: msg.channel.send(":8ball: Yes definitely"); break;
-				case 5: msg.channel.send(":8ball: You may rely on it"); break;
-				case 6: msg.channel.send(":8ball: As I see it, yes"); break;
-				case 7: msg.channel.send(":8ball: Most likely"); break;
-				case 8: msg.channel.send(":8ball: Outlook good"); break;
-				case 9: msg.channel.send(":8ball: Yes"); break;
-				case 10: msg.channel.send(":8ball: Signs point to yes"); break;
-				case 11: msg.channel.send(":8ball: Reply hazy try again"); break;
-				case 12: msg.channel.send(":8ball: Ask again later"); break;
-				case 13: msg.channel.send(":8ball: Better not tell you now"); break;
-				case 14: msg.channel.send(":8ball: Cannot predict now"); break;
-				case 15: msg.channel.send(":8ball: Concentrate and ask again"); break;
-				case 16: msg.channel.send(":8ball: Don't count on it"); break;
-				case 17: msg.channel.send(":8ball: My reply is no"); break;
-				case 18: msg.channel.send(":8ball: My sources say no"); break;
-				case 19: msg.channel.send(":8ball: Outlook not so good"); break;
-				case 20: msg.channel.send(":8ball: Very doubtful"); break;
-			}
+			let answers = [
+				":8ball: It is certain",
+				":8ball: It is decidedly so",
+				":8ball: Without a doubt",
+				":8ball: Yes definitely",
+				":8ball: You may rely on it",
+				":8ball: As I see it, yes",
+				":8ball: Most likely",
+				":8ball: Outlook good",
+				":8ball: Yes",
+				":8ball: Signs point to yes",
+				":8ball: Reply hazy try again",
+				":8ball: Ask again later",
+				":8ball: Better not tell you now",
+				":8ball: Cannot predict now",
+				":8ball: Concentrate and ask again",
+				":8ball: Don't count on it",
+				":8ball: My reply is no",
+				":8ball: Outlook not so good",
+				":8ball: Very doubtful"
+			];
+			msg.channel.send(answers[Math.floor(Math.random() * answers.length)]);
 			break;
 		}
 		case "pick": {
 			if (args == "" || args == "help") {
-				msg.channel.send("Usage: `.pick <choice1,choice2,choice3...>`").then(m => {
+				msg.channel.send("Usage: `.pick <choice1,choice2,choice3...>`\nseperator: \`;\`").then(m => {
 					m.delete(5000);
 				});
 				return;
 			}
-			const parts = msg.content.slice(cmd.length + 1).split(",");
-			msg.channel.send(parts);
+			const parts = msg.content.slice(cmd.length + 1).split(";");
 			if (parts.length < 2) { msg.channel.send("Please enter atleast 2 things to choose from!"); return; }
 			const rnd = Math.floor(Math.random() * parts.length);
 			msg.channel.send(`I chose **${parts[rnd].trim()}**, because why not!`);
@@ -606,6 +588,72 @@ bot.on("message", msg => {
 			})
 			break;
 		}
+		case "play": {
+			if (args == "") {
+				msg.channel.send("Usage: `.q <query>`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			if (!msg.member.voiceChannel) {
+				msg.channel.send("You're not in a voice channel!");
+				return
+			}
+			if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
+				request({
+					url: `https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+					qs: {
+						key: api_google
+					},
+					json: true
+				}, function (error, response, body) {
+					if (body.items.length < 1) {
+						msg.channel.send("Nothing found!");
+					}
+					else {
+						let videoid = body.items[0].id.videoId;
+						request({
+							url: `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}`,
+							qs: {
+								key: api_google
+							},
+							json: true
+						}, function (error, response, body) {
+							let player;
+							msg.member.voiceChannel.join().then(connection => {
+								msg.channel.send({
+									embed: {
+										color: 14506163,
+										title: "Now Playing",
+										description: `\`${body.items[0].snippet.title}\``,
+										image: {
+											url: body.items[0].snippet.thumbnails.medium.url
+										}
+									}
+								}).then(m => {
+									player = connection.playStream(yt(videoid, { audioonly: true }));
+									player.setBitrate(96000);
+									player.on('end', () => {
+										m.edit({
+											embed: {
+												color: 14506163,
+												title: "Done!"
+											}
+										});
+										msg.member.voiceChannel.leave();
+									});
+								})
+							})
+						})
+
+					}
+				})
+			}
+			else {
+				msg.channel.send(`Something is already playing!`);
+			}
+			break;
+		}
 		case "radio": {
 			if (args == "help") {
 				msg.channel.send("Usage: `.radio`").then(m => {
@@ -738,7 +786,7 @@ bot.on("message", msg => {
 				})
 			}
 			else {
-				msg.channel.send(`A sound is already playing!`);
+				msg.channel.send(`Something is already playing!`);
 			}
 			break;
 		}
@@ -984,72 +1032,6 @@ bot.on("message", msg => {
 					}
 				});
 			})
-			break;
-		}
-		case "play": {
-			if (args == "") {
-				msg.channel.send("Usage: `.q <query>`").then(m => {
-					m.delete(5000);
-				});
-				return;
-			}
-			if (!msg.member.voiceChannel) {
-				msg.channel.send("You're not in a voice channel!");
-				return
-			}
-			if(bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
-				request({
-				url: `https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
-				qs: {
-					key: api_google
-				},
-				json: true
-			}, function (error, response, body) {
-				if (body.items.length < 1) {
-					msg.channel.send("Nothing found!");
-				}
-				else {
-					let videoid = body.items[0].id.videoId;
-					request({
-						url: `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}`,
-						qs: {
-							key: api_google
-						},
-						json: true
-					}, function (error, response, body) {
-						let player;
-					msg.member.voiceChannel.join().then(connection => {
-						msg.channel.send({
-							embed: {
-								color: 14506163,
-								title: "Now Playing",
-								description: `\`${body.items[0].snippet.title}\``,
-								image: {
-									url: body.items[0].snippet.thumbnails.medium.url
-								}
-							}
-						}).then(m => {
-							player = connection.playStream(yt(videoid, { audioonly: true }));
-							player.setBitrate(96000);
-							player.on('end', () => {
-								m.edit({
-									embed: {
-										color: 14506163,
-										title: "Done!"
-									}
-								});
-								msg.member.voiceChannel.leave();
-							});
-						})
-					})
-					})
-					
-				}
-			})
-			}
-			else {
-				msg.channel.send(`A video is already playing!`);
-			}
 			break;
 		}
 	}
