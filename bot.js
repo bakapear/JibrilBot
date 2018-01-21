@@ -297,7 +297,7 @@ bot.on("message", (msg) => {
 				msg.channel.send(`Command disabled when using heroku!`);
 				return;
 			}
-			if (args == "" || args == "help") {
+			if (args == "") {
 				msg.channel.send("Usage: `.img <query>`").then(m => {
 					m.delete(5000);
 				});
@@ -612,45 +612,47 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			if (msg.member.voiceChannel) {
+			if (!msg.member.voiceChannel) {
+				msg.channel.send("You're not in a voice channel!");
+				return
+			}
+			let radio;
+			if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
 				msg.member.voiceChannel.join().then(connection => {
-					if (connection.speaking) {
-						msg.channel.send(`Stopped streaming.`);
-						dispatcher.end();
-						msg.member.voiceChannel.leave();
-					}
-					else {
-						msg.channel.send(`Joined ${connection.channel} streaming listen.moe!`);
-						dispatcher = connection.playArbitraryInput(`https://listen.moe/stream`);
-					}
+					msg.channel.send(`Joined ${connection.channel} streaming *listen.moe*!`);
+					radio = connection.playArbitraryInput(`https://listen.moe/stream`);
+					radio.setBitrate(96000);
 				})
 			}
 			else {
-				msg.channel.send("You're not in a voice channel!");
+				msg.member.voiceChannel.leave();
+				msg.channel.send(`Stopped streaming.`);
 			}
 			break;
 		}
 		case "play": {
-			if (msg.member.voiceChannel.speaking) {
-				msg.channel.send("speaking!");
-			}
-			if (args == "" || args == "help") {
+			if (args == "") {
 				msg.channel.send("Usage: `.play <query>`").then(m => {
 					m.delete(5000);
 				});
 				return;
 			}
-			if (msg.member.voiceChannel) {
+			if (!msg.member.voiceChannel) {
+				msg.channel.send("You're not in a voice channel!");
+				return
+			}
+			let player;
+			if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
 				msg.member.voiceChannel.join().then(connection => {
 					if (args[0].startsWith("http")) {
-						const dispatcher = connection.playArbitraryInput(args[0]);
-						dispatcher.on('start', () => {
+						player = connection.playArbitraryInput(args[0]);
+						player.on('start', () => {
 							msg.channel.send(`Playing: \`${args[0]}\``);
 						});
-						dispatcher.on('end', () => {
+						player.on('end', () => {
 							msg.member.voiceChannel.leave()
 						});
-						dispatcher.on('error', e => {
+						player.on('error', e => {
 							console.log(e);
 						});
 					}
@@ -665,21 +667,22 @@ bot.on("message", (msg) => {
 							},
 							json: true
 						}, function (error, response, body) {
-							if (body.total_count == 0) {
+							if (body.total_count < 1) {
 								msg.channel.send("Nothing found!");
 								msg.member.voiceChannel.leave();
 							}
 							else {
 								const rnd = Math.floor(Math.random() * body.items.length);
 								var link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
-								const dispatcher = connection.playArbitraryInput(link);
-								dispatcher.on('start', () => {
+								player = connection.playArbitraryInput(link);
+								player.setBitrate(96000);
+								player.on('start', () => {
 									msg.channel.send(`Playing: \`${body.items[rnd].name}\``);
 								});
-								dispatcher.on('end', () => {
+								player.on('end', () => {
 									msg.member.voiceChannel.leave();
 								});
-								dispatcher.on('error', e => {
+								player.on('error', e => {
 									console.log(e);
 								});
 							}
@@ -688,8 +691,20 @@ bot.on("message", (msg) => {
 				})
 			}
 			else {
-				msg.channel.send("You're not in a voice channel!");
+				msg.channel.send(`A sound is already playing!`);
 			}
+			break;
+		}
+		case "stop": {
+			if (!msg.member.voiceChannel) {
+				msg.channel.send("You're not in a voice channel!");
+				return
+			}
+			if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
+				msg.channel.send("I'm not in a voice channel!");
+				return
+			}
+			msg.member.voiceChannel.leave();
 			break;
 		}
 		case "aki": {
@@ -781,12 +796,6 @@ bot.on("message", (msg) => {
 			break;
 		}
 		case "color": {
-			if (args == "help") {
-				msg.channel.send("Usage: `.color <query>`").then(m => {
-					m.delete(5000);
-				});
-				return;
-			}
 			var link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
 			if (args == "") {
 				link = `http://www.colourlovers.com/api/colors/random?format=json`
@@ -854,6 +863,82 @@ bot.on("message", (msg) => {
 			})
 			break;
 
+		}
+		case "osumap": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.osumap (s:stars) (t:length)`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			var date = new Date();
+			date.setDate(1);
+			date.setMonth(date.getMonth() - 2);
+			date = date.getUTCFullYear() + '-' + ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' + ('00' + date.getUTCDate()).slice(-2) + ' ' + '00:00:00';
+			request({
+				url: `https://osu.ppy.sh/api/get_beatmaps?m=0&since=${date}`,
+				qs: {
+					k: api_osu
+				},
+				json: true
+			}, function (error, response, body) {
+				var mapindex = [];
+				var stars;
+				var length;
+				for (a = 0; a < args.length; a++) {
+					if (args[a].startsWith("s:")) {
+						stars = parseFloat(args[a].slice(2));
+					}
+					if (args[a].startsWith("l:")) {
+						length = parseInt(args[a].slice(2));
+					}
+				}
+				for (i = 0; i < body.length; i++) {
+					if (body[i].approved == 1) {
+						if (args == "" || (stars == undefined && length == undefined)) {
+							mapindex.push(i);
+						}
+						else {
+							var check = 0;
+							if (stars != undefined) {
+								if (!(body[i].difficultyrating >= stars - 0.3 && body[i].difficultyrating <= stars + 0.3)) {
+									continue;
+								}
+							}
+							if (length != undefined) {
+								if (!(body[i].hit_length <= length)) {
+									continue;
+								}
+							}
+							mapindex.push(i);
+						}
+					}
+				}
+				if (mapindex.length < 1) {
+					msg.channel.send("Nothing found!");
+					return;
+				}
+				const rnd = Math.floor(Math.random() * mapindex.length)
+				var mins = Math.floor(body[mapindex[rnd]].hit_length % 3600 / 60);
+				var secs = Math.floor(body[mapindex[rnd]].hit_length % 3600 % 60);
+				if (secs.toString().length < 2) {
+					secs = "0" + secs;
+				}
+				var duration = `${mins}:${secs}`;
+				msg.channel.send({
+					embed: {
+						color: 15033501,
+						author: {
+							name: `osu! Beatmap`,
+							icon_url: `https://i.imgur.com/oEbzSZU.png`
+						},
+						title: `${body[mapindex[rnd]].artist} - ${body[mapindex[rnd]].title}`,
+						description: `**Stars** ${parseFloat(body[mapindex[rnd]].difficultyrating).toFixed(2)} **Length** ${duration} **BPM** ${parseInt(body[mapindex[rnd]].bpm)}`,
+						url: `https://osu.ppy.sh/b/${body[mapindex[rnd]].beatmap_id}`,
+					}
+				});
+			})
+			break;
 		}
 	}
 });
