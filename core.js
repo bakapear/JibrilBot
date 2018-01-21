@@ -1,16 +1,16 @@
 const Discord = require("discord.js");
 const bot = new Discord.Client();
 const request = require("request");
-var cfg = "";
+let cfg = "";
 
-var api_google = process.env.API_GOOGLE;
-var api_giphy = process.env.API_GIPHY;
-var api_search = process.env.API_SEARCH;
-var api_osu = process.env.API_OSU;
-var api_steam = process.env.API_STEAM;
-var api_github = process.env.API_GITHUB;
-var api_musix = process.env.API_MUSIX;
-var api_img = undefined;
+let api_google = process.env.API_GOOGLE;
+let api_giphy = process.env.API_GIPHY;
+let api_search = process.env.API_SEARCH;
+let api_osu = process.env.API_OSU;
+let api_steam = process.env.API_STEAM;
+let api_github = process.env.API_GITHUB;
+let api_musix = process.env.API_MUSIX;
+let api_img = undefined;
 
 if (process.env.BOT_TOKEN != undefined) {
 	bot.login(process.env.BOT_TOKEN);
@@ -87,8 +87,8 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			var max = 6;
-			var min = 1;
+			let max = 6;
+			let min = 1;
 			if (args.length == 1) {
 				max = parseInt(args[0]);
 			}
@@ -303,13 +303,13 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			var info = 0;
+			let info = 0;
 			if (args[0].startsWith("*")) {
 				info = args.splice(0, 1);
 			}
 			info = parseInt(info.toString().substr(1));
-			var key_num = 0;
-			var retried = false;
+			let key_num = 0;
+			let retried = false;
 			img(msg, args, key_num, retried, info);
 			break;
 		}
@@ -416,7 +416,7 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			var steamid;
+			let steamid;
 			request({
 				url: `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?vanityurl=${args[0]}`,
 				qs: {
@@ -435,10 +435,10 @@ bot.on("message", (msg) => {
 						},
 						json: true
 					}, function (error, response, body) {
-						var date = new Date(body.response.players[0].timecreated * 1000);
-						var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-						var time = `${date.getDate()}th ${months[date.getMonth()]} ${date.getFullYear()}`;
-						var flag = "";
+						let date = new Date(body.response.players[0].timecreated * 1000);
+						let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+						let time = `${date.getDate()}th ${months[date.getMonth()]} ${date.getFullYear()}`;
+						let flag = "";
 						if (body.response.players[0].loccountrycode != undefined) { flag = `:flag_${body.response.players[0].loccountrycode.toLowerCase()}:` }
 						msg.channel.send({
 							embed: {
@@ -539,8 +539,8 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			var link;
-			var search = "random";
+			let link;
+			let search = "random";
 			if (args[1] != undefined) {
 				search = args[1];
 			}
@@ -708,7 +708,7 @@ bot.on("message", (msg) => {
 								}
 								else {
 									const rnd = Math.floor(Math.random() * body.items.length);
-									var link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
+									let link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
 									player = connection.playArbitraryInput(link);
 									player.setBitrate(96000);
 									m.edit({
@@ -842,7 +842,7 @@ bot.on("message", (msg) => {
 			break;
 		}
 		case "color": {
-			var link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
+			let link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
 			if (args == "") {
 				link = `http://www.colourlovers.com/api/colors/random?format=json`
 			}
@@ -855,7 +855,7 @@ bot.on("message", (msg) => {
 					return;
 				}
 				const rnd = Math.floor(Math.random() * body.length);
-				var colorint = (body[rnd].rgb.red << 16) + (body[rnd].rgb.green << 8) + (body[rnd].rgb.blue);
+				let colorint = (body[rnd].rgb.red << 16) + (body[rnd].rgb.green << 8) + (body[rnd].rgb.blue);
 				msg.channel.send({
 					embed: {
 						color: colorint,
@@ -886,7 +886,7 @@ bot.on("message", (msg) => {
 					msg.channel.send("Nothing found!");
 					return;
 				}
-				var tracktitle = `${body.message.body.track_list[0].track.artist_name} - ${body.message.body.track_list[0].track.track_name}`;
+				let tracktitle = `${body.message.body.track_list[0].track.artist_name} - ${body.message.body.track_list[0].track.track_name}`;
 				request({
 					url: `http://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${body.message.body.track_list[0].track.track_id}`,
 					qs: {
@@ -902,7 +902,7 @@ bot.on("message", (msg) => {
 						embed: {
 							color: 14024703,
 							title: tracktitle,
-							description: body.message.body.lyrics.lyrics_body.slice(0, -55)
+							description: body.message.body.lyrics.lyrics_body.slice(0, -70)
 						},
 					});
 				})
@@ -917,7 +917,7 @@ bot.on("message", (msg) => {
 				});
 				return;
 			}
-			var date = new Date();
+			let date = new Date();
 			date.setDate(1);
 			date.setMonth(date.getMonth() - 2);
 			date = date.getUTCFullYear() + '-' + ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' + ('00' + date.getUTCDate()).slice(-2) + ' ' + '00:00:00';
@@ -928,9 +928,9 @@ bot.on("message", (msg) => {
 				},
 				json: true
 			}, function (error, response, body) {
-				var mapindex = [];
-				var stars;
-				var length;
+				let mapindex = [];
+				let stars;
+				let length;
 				for (a = 0; a < args.length; a++) {
 					if (args[a].startsWith("s:")) {
 						stars = parseFloat(args[a].slice(2));
@@ -945,7 +945,6 @@ bot.on("message", (msg) => {
 							mapindex.push(i);
 						}
 						else {
-							var check = 0;
 							if (stars != undefined) {
 								if (!(body[i].difficultyrating >= stars - 0.3 && body[i].difficultyrating <= stars + 0.3)) {
 									continue;
@@ -965,12 +964,12 @@ bot.on("message", (msg) => {
 					return;
 				}
 				const rnd = Math.floor(Math.random() * mapindex.length)
-				var mins = Math.floor(body[mapindex[rnd]].hit_length % 3600 / 60);
-				var secs = Math.floor(body[mapindex[rnd]].hit_length % 3600 % 60);
+				let mins = Math.floor(body[mapindex[rnd]].hit_length % 3600 / 60);
+				let secs = Math.floor(body[mapindex[rnd]].hit_length % 3600 % 60);
 				if (secs.toString().length < 2) {
 					secs = "0" + secs;
 				}
-				var duration = `${mins}:${secs}`;
+				let duration = `${mins}:${secs}`;
 				msg.channel.send({
 					embed: {
 						color: 15033501,
@@ -1068,11 +1067,11 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 			url: `http://api-en1.akinator.com/ws/new_session?partner=1&player=Jibril`,
 			json: true
 		}, function (error, response, body) {
-			var session = body.parameters.identification.session;
-			var signature = body.parameters.identification.signature;
-			var step = body.parameters.step_information.step;
-			var progression = body.parameters.step_information.progression;
-			var question = body.parameters.step_information.question;
+			let session = body.parameters.identification.session;
+			let signature = body.parameters.identification.signature;
+			let step = body.parameters.step_information.step;
+			let progression = body.parameters.step_information.progression;
+			let question = body.parameters.step_information.question;
 			msg.channel.send(`${parseInt(step) + 1}. ${question}`).then(async m => {
 				await m.react("✅");
 				await m.react("✔");
@@ -1105,9 +1104,9 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 			url: `http://api-en1.akinator.com/ws/answer?session=${session}&signature=${signature}&step=${step}&answer=${answer}`,
 			json: true
 		}, function (error, response, body) {
-			var step = body.parameters.step;
-			var question = body.parameters.question;
-			var progression = body.parameters.progression;
+			let step = body.parameters.step;
+			let question = body.parameters.question;
+			let progression = body.parameters.progression;
 			akimsg.edit(`${parseInt(step) + 1}. ${question}`).then(async m => {
 				const collector = m.createReactionCollector((r, user) =>
 					r.emoji.name === "✅" ||
