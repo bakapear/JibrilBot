@@ -1,21 +1,21 @@
 {
-  "name": "jibrilbot",
+  "name": "jibril",
   "version": "1.0.0",
-  "description": "Expandable Unit",
-  "main": "bot.js",
+  "description": "The youngest and strongest discord bot of the Flügel race.",
+  "main": "core.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node core.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bakapear/JibrilBot.git"
+    "url": "git+https://github.com/bakapear/Jibril.git"
   },
   "author": "bakapear",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bakapear/JibrilBot/issues"
+    "url": "https://github.com/bakapear/Jibril/issues"
   },
-  "homepage": "https://github.com/bakapear/JibrilBot#readme",
+  "homepage": "https://github.com/bakapear/Jibril#readme",
   "dependencies": {
     "discord.js": "^11.3.0",
     "ffmpeg-binaries": "^3.2.2-3",
