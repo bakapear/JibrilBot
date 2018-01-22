@@ -4,4 +4,6 @@
 A yet growing discord bot I created using the [discord.js](https://github.com/discordjs/discord.js) library! <br>
 Feedback, improvements or suggestions are much appreciated!
 
+[Add this bot to your discord server!](https://discordapp.com/oauth2/authorize?client_id=401681744979296256&scope=bot&permissions=8)
+
 still in dev tho.
