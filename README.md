@@ -1,6 +1,7 @@
 # Jibril
-## The youngest and strongest discord bot of the Flügel race.
+#### The youngest and strongest discord bot of the Flügel race.
 
-Written in discord.js
+A yet growing discord bot I created using the [discord.js](https://github.com/discordjs/discord.js) library! <br>
+Feedback, improvements or suggestions are much appreciated!
 
-[still in dev]
+still in dev tho.
