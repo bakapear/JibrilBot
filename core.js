@@ -288,7 +288,13 @@ bot.on("message", msg => {
 			        return;
 			    }
 			    const rnd = Math.floor(Math.random() * body.data.result.items.length);
-				msg.channel.send(body.data.result.items[rnd].media);
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: body.data.result.items[rnd].media
+							}
+						},
+					});
 			})
 			break;
 		}
@@ -1028,6 +1034,426 @@ bot.on("message", msg => {
 					}
 				}
 			});
+			break;
+		}
+		case "lick": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.lick`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=lick`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "cuddle": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.cuddle`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=cuddle`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "smug": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.smug`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=smug`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "hug": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.hug`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=hug`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "cute": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.cute`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=cute`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "kiss": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.kiss`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=kiss`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "chu": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.chu`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=chu`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "pat": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.pat`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=pat`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "pout": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.pout`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=pout`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "cry": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.cry`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=cry`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "stare": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.stare`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=stare`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "triggered": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.triggered`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=triggered`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "slap": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.slap`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=slap`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "tickle": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.tickle`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=tickle`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "lewd": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.lewd`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=lewd`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "owo": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.owo`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=owo`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "nom": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.nom`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=nom`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "weird": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.weird`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=weird`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "clap": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.clap`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=clap`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
+			break;
+		}
+		case "potato": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.potato`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://rra.ram.moe/i/r?type=potato`,
+				json: true
+			}, function (error, response, body) {
+			    msg.channel.send({
+						embed: {
+							image: {
+								url: 'https://rra.ram.moe${body.path}'
+							}
+						},
+					});
+			})
 			break;
 		}
 	}
