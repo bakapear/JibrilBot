@@ -283,7 +283,7 @@ bot.on("message", msg => {
 			    },
 				json: true
 			}, function (error, response, body) {
-			    if(body.data.results.items.length < 1) {
+			    if(body.data.result.items.length < 1) {
 			        msg.channel.send("Nothing found!");
 			        return;
 			    }
