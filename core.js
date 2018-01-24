@@ -1446,10 +1446,11 @@ bot.on("message", msg => {
 				url: `https://rra.ram.moe/i/r?type=potato`,
 				json: true
 			}, function (error, response, body) {
+			    let link = ''https://rra.ram.moe${body.path};
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: link
 							}
 						},
 					});
