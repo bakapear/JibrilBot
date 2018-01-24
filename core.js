@@ -11,7 +11,6 @@ let api_osu = process.env.API_OSU;
 let api_steam = process.env.API_STEAM;
 let api_github = process.env.API_GITHUB;
 let api_musix = process.env.API_MUSIX;
-let api_img = undefined;
 const startdate = new Date();
 
 if (process.env.BOT_TOKEN != undefined) {
@@ -25,7 +24,6 @@ else {
 	api_search = cfg.api.search;
 	api_osu = cfg.api.osu;
 	api_steam = cfg.api.steam;
-	api_img = cfg.imgkeys[0].key;
 	api_github = cfg.api.github;
 	api_musix = cfg.api.musix;
 }
@@ -272,24 +270,26 @@ bot.on("message", msg => {
 			break;
 		}
 		case "img": {
-			if (api_img == undefined) {
-				msg.channel.send(`Command disabled when using heroku!`);
-				return;
-			}
 			if (args == "") {
 				msg.channel.send("Usage: `.img <query>`").then(m => {
 					m.delete(5000);
 				});
 				return;
 			}
-			let info = 0;
-			if (args[0].startsWith("*")) {
-				info = args.splice(0, 1);
-			}
-			info = parseInt(info.toString().substr(1));
-			let key_num = 0;
-			let retried = false;
-			img(msg, args, key_num, retried, info);
+			request({
+				url: `https://api.qwant.com/api/search/images?count=10&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+				headers: {
+			        "User-Agent" : "Jibril"
+			    },
+				json: true
+			}, function (error, response, body) {
+			    if(body.results.items.length < 1) {
+			        msg.channel.send("Nothing found!");
+			        return;
+			    }
+			    const rnd = Math.floor(Math.random() * body.result.items.length);
+				msg.channel.send(body.result.items[rnd].media);
+			})
 			break;
 		}
 		case "osu": {
@@ -629,12 +629,6 @@ bot.on("message", msg => {
 									player = connection.playStream(yt(videoid, { audioonly: true }));
 									player.setBitrate(96000);
 									player.on('end', () => {
-										m.edit({
-											embed: {
-												color: 14506163,
-												title: "Done!"
-											}
-										});
 										msg.member.voiceChannel.leave();
 									});
 								})
@@ -1039,53 +1033,6 @@ bot.on("message", msg => {
 	}
 });
 
-function img(msg, args, key_num, retried, info) {
-	request({
-		url: `https://www.googleapis.com/customsearch/v1?searchType=image&fileType=png+jpg+gif&q=${encodeURIComponent(msg.content.slice(3 + 1).trim())}`,
-		qs: {
-			key: api_img,
-			cx: api_search
-		},
-		json: true
-	}, function (error, response, body) {
-		if (body.error != undefined) {
-			key_num++;
-			if (key_num >= cfg.imgkeys.length) {
-				if (retried == true) {
-					msg.channel.send(`Out of all ${cfg.imgkeys.length} keys!\nPlease wait 24hrs to get all ${cfg.imgkeys.length}00 picture requests back!`);
-					return;
-				}
-				key_num = 0;
-				retried = true;
-			}
-			api_img = cfg.imgkeys[key_num].key;
-			img(msg, args, key_num, retried, info);
-		}
-		else if (body.searchInformation.totalResults < 1) {
-			msg.channel.send("Nothing found!");
-		}
-		else {
-			if (info >= 0 && info < body.items.length) {
-				msg.channel.send({
-					embed: {
-						image: {
-							url: body.items[info].link
-						}
-					},
-				});
-			}
-			else {
-				msg.channel.send({
-					embed: {
-						image: {
-							url: body.items[Math.floor(Math.random() * body.items.length)].link
-						}
-					},
-				});
-			}
-		}
-	})
-}
 
 function aki(msg, args, start, session, signature, step, answer, progression, akimsg) {
 	if (progression >= 92 || parseInt(step) >= 80) {
