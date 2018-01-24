@@ -283,14 +283,12 @@ bot.on("message", msg => {
 			    },
 				json: true
 			}, function (error, response, body) {
-			console.log(body.data.result);
-			return;
-			    if(body.results.items.length < 1) {
+			    if(body.data.results.items.length < 1) {
 			        msg.channel.send("Nothing found!");
 			        return;
 			    }
-			    const rnd = Math.floor(Math.random() * body.result.items.length);
-				msg.channel.send(body.result.items[rnd].media);
+			    const rnd = Math.floor(Math.random() * body.data.result.items.length);
+				msg.channel.send(body.data.result.items[rnd].media);
 			})
 			break;
 		}
