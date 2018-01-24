@@ -670,7 +670,7 @@ bot.on("message", msg => {
 							description: `Joined ${connection.channel} streaming *listen.moe*!`
 						}
 					})
-					radio = connection.playArbitraryInput(`https://listen.moe/stream`);
+					radio = connection.playArbitraryInput(`https://listen.moe/opus`);
 					radio.setBitrate(96000);
 				})
 			}
@@ -711,12 +711,6 @@ bot.on("message", msg => {
 							}
 						}).then(m => {
 							player.on('end', () => {
-								m.edit({
-									embed: {
-										color: 14506163,
-										title: "Done!"
-									}
-								});
 								msg.member.voiceChannel.leave()
 							});
 						});
@@ -763,12 +757,6 @@ bot.on("message", msg => {
 										}
 									});
 									player.on('end', () => {
-										m.edit({
-											embed: {
-												color: 14506163,
-												title: "Done!"
-											}
-										});
 										msg.member.voiceChannel.leave();
 									});
 									player.on('error', e => {
