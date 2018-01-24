@@ -1447,6 +1447,8 @@ bot.on("message", msg => {
 				json: true
 			}, function (error, response, body) {
 			    let link = 'https://rra.ram.moe${body.path}';
+			    console.log(link);
+			    return;
 			    msg.channel.send({
 						embed: {
 							image: {
