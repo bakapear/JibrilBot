@@ -1050,7 +1050,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1071,7 +1071,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1092,7 +1092,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1113,7 +1113,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1134,7 +1134,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1155,7 +1155,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1176,7 +1176,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1197,7 +1197,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1218,7 +1218,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1239,7 +1239,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1260,7 +1260,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1281,7 +1281,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1302,7 +1302,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1323,7 +1323,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1344,7 +1344,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1365,7 +1365,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1386,7 +1386,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1407,7 +1407,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1428,7 +1428,7 @@ bot.on("message", msg => {
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: 'https://rra.ram.moe${body.path}'
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
@@ -1446,13 +1446,10 @@ bot.on("message", msg => {
 				url: `https://rra.ram.moe/i/r?type=potato`,
 				json: true
 			}, function (error, response, body) {
-			    let link = 'https://rra.ram.moe${body.path}';
-			    console.log(link);
-			    return;
 			    msg.channel.send({
 						embed: {
 							image: {
-								url: link
+								url: `https://rra.ram.moe${body.path}`
 							}
 						},
 					});
