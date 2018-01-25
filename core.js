@@ -1460,7 +1460,7 @@ bot.on("message", msg => {
 			}
 			questions.sort();
 			for(i = 0; i < questions.length; i++) {
-			    desc += `**${i++}.** ${questions[i]}\n`;
+			    desc += `**${i+1}.** ${questions[i]}\n`;
 			}
 				 msg.channel.send({
 						embed: {
