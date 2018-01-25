@@ -1467,7 +1467,12 @@ bot.on("message", msg => {
 							title: decodeURIComponent(body.results[0].question),
 							description: decodeURIComponent(desc)
 						},
-					});
+					}).then(async m => {
+					let reactions = ["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"];
+					for(i = 0; i < questions.length; i++) {
+					await m.react(reactions[i]);
+					}
+					}
 			})
 			break;
 		}
