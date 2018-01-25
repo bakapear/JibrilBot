@@ -12,6 +12,7 @@ const api_osu = process.env.API_OSU;
 const api_steam = process.env.API_STEAM;
 const api_github = process.env.API_GITHUB;
 const api_musix = process.env.API_MUSIX;
+
 const date_boot = new Date();
 
 bot.on("ready", () => {
@@ -36,8 +37,7 @@ bot.on("message", msg => {
 			}
 			const date = Date.now();
 			msg.channel.send("Pinging...").then(m => {
-				const newdate = Date.now() - date;
-				m.edit(`Pong! It took me **${newdate}ms**!`);
+				m.edit(`Pong! It took me **${Date.now() - date}ms**!`);
 			});
 			break;
 		}
@@ -81,7 +81,7 @@ bot.on("message", msg => {
 			break;
 		}
 		case "8ball": {
-			let answers = [
+			const answers = [
 				":8ball: It is certain",
 				":8ball: It is decidedly so",
 				":8ball: Without a doubt",
@@ -253,7 +253,7 @@ bot.on("message", msg => {
 				return;
 			}
 			request({
-				url: `https://api.qwant.com/api/search/images?count=50&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+				url: `https://api.qwant.com/api/search/images?count=50&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				headers: {
 			        "User-Agent" : "Jibril"
 			    },
