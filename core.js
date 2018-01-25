@@ -1472,6 +1472,24 @@ bot.on("message", msg => {
 					for(i = 0; i < questions.length; i++) {
 					await m.react(reactions[i]);
 					}
+					const collector = m.createReactionCollector((r, user) =>
+					r.emoji.name === "1⃣" ||
+					r.emoji.name === "2⃣" ||
+					r.emoji.name === "3⃣" ||
+					r.emoji.name === "4⃣" ||
+					r.emoji.name === "5⃣" && user.id != m.author.id
+				);
+				collector.once("collect", r => {
+				let answer;
+					switch (r.emoji.name) {
+					case "1⃣": {answer = question[0]; break;}
+					case "2⃣": {answer = question[1]; break;}
+					case "3⃣": {answer = question[2]; break;}
+					case "4⃣": {answer = question[3]; break;}
+					case "5⃣": {answer = question[4]; break;}
+					}
+					msg.channel.send(answer);
+					collector.stop();
 					})
 			})
 			break;
