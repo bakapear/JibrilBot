@@ -1482,11 +1482,11 @@ bot.on("message", msg => {
 				collector.once("collect", r => {
 				let answer;
 					switch (r.emoji.name) {
-					case "1⃣": {answer = question[0]; break;}
-					case "2⃣": {answer = question[1]; break;}
-					case "3⃣": {answer = question[2]; break;}
-					case "4⃣": {answer = question[3]; break;}
-					case "5⃣": {answer = question[4]; break;}
+					case "1⃣": {answer = questions[0]; break;}
+					case "2⃣": {answer = questions[1]; break;}
+					case "3⃣": {answer = questions[2]; break;}
+					case "4⃣": {answer = questions[3]; break;}
+					case "5⃣": {answer = questions[4]; break;}
 					}
 					msg.channel.send(answer);
 					collector.stop();
