@@ -1468,7 +1468,7 @@ bot.on("message", msg => {
 							description: decodeURIComponent(desc)
 						},
 					}).then(async m => {
-					let reactions = ["✅","✅","✅","✅","✅"];
+					let reactions = [":one:",":two:",":three:",":four:",":five:"];
 					for(i = 0; i < questions.length; i++) {
 					await m.react(reactions[i]);
 					}
