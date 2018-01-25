@@ -1491,6 +1491,7 @@ bot.on("message", msg => {
 					msg.channel.send(answer);
 					collector.stop();
 					})
+					})
 			})
 			break;
 		}
