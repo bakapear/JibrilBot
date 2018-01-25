@@ -1453,9 +1453,19 @@ bot.on("message", msg => {
 				url: `https://opentdb.com/api.php?amount=1&category=9&encode=url3986`,
 				json: true
 			}, function (error, response, body) {
+			let desc = "";
+			let questions = [body.results[0].correct_answer];
+			for(i = 0; i < body.results[0].incorrect_answers.length; i++) {
+			questions.push(incorrect_answers[i]);
+			}
+			questions.sort();
+			for(i = 0; i < questions.length; i++) {
+			    desc += `${questions[0]}\n`;
+			}
 				 msg.channel.send({
 						embed: {
-							title: decodeURIComponent(body.results[0].question)
+							title: decodeURIComponent(body.results[0].question),
+							description: desc
 						},
 					});
 			})
