@@ -1456,7 +1456,7 @@ bot.on("message", msg => {
 			let desc = "";
 			let questions = [body.results[0].correct_answer];
 			for(i = 0; i < body.results[0].incorrect_answers.length; i++) {
-			questions.push(incorrect_answers[i]);
+			questions.push(body.results[0].incorrect_answers[i]);
 			}
 			questions.sort();
 			for(i = 0; i < questions.length; i++) {
