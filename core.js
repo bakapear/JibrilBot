@@ -253,7 +253,7 @@ bot.on("message", msg => {
 				return;
 			}
 			request({
-				url: `https://api.qwant.com/api/search/images?count=50&safesearch=0&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+				url: `https://api.qwant.com/api/search/images?count=10&safesearch=0&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				headers: {
 			        "User-Agent" : "Jibril"
 			    },
