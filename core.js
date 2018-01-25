@@ -1460,12 +1460,12 @@ bot.on("message", msg => {
 			}
 			questions.sort();
 			for(i = 0; i < questions.length; i++) {
-			    desc += `${questions[i]}\n`;
+			    desc += `**${i++}.** ${questions[i]}\n`;
 			}
 				 msg.channel.send({
 						embed: {
 							title: decodeURIComponent(body.results[0].question),
-							description: desc
+							description: decodeURIComponent(desc)
 						},
 					});
 			})
