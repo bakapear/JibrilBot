@@ -2,34 +2,20 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const request = require("request");
 const yt = require('ytdl-core');
-let cfg = "";
 
-let api_google = process.env.API_GOOGLE;
-let api_giphy = process.env.API_GIPHY;
-let api_search = process.env.API_SEARCH;
-let api_osu = process.env.API_OSU;
-let api_steam = process.env.API_STEAM;
-let api_github = process.env.API_GITHUB;
-let api_musix = process.env.API_MUSIX;
-const startdate = new Date();
+bot.login(process.env.BOT_TOKEN);
 
-if (process.env.BOT_TOKEN != undefined) {
-	bot.login(process.env.BOT_TOKEN);
-}
-else {
-	cfg = require("./config.json");
-	bot.login(cfg.token);
-	api_google = cfg.api.google;
-	api_giphy = cfg.api.giphy;
-	api_search = cfg.api.search;
-	api_osu = cfg.api.osu;
-	api_steam = cfg.api.steam;
-	api_github = cfg.api.github;
-	api_musix = cfg.api.musix;
-}
+const api_google = process.env.API_GOOGLE;
+const api_giphy = process.env.API_GIPHY;
+const api_search = process.env.API_SEARCH;
+const api_osu = process.env.API_OSU;
+const api_steam = process.env.API_STEAM;
+const api_github = process.env.API_GITHUB;
+const api_musix = process.env.API_MUSIX;
+const date_boot = new Date();
 
 bot.on("ready", () => {
-	console.log(`Your personal servant ${bot.user.tag} is waiting for orders! oWo`);
+	console.log(`Your personal servant ${bot.user.tag} is waiting for orders!`);
 	bot.user.setPresence({ game: { name: "with master", type: 0 } });
 });
 
@@ -41,16 +27,6 @@ bot.on("message", msg => {
 	const args = msg.content.slice(1).split(" ");
 	const cmd = args.shift().toLowerCase();
 	switch (cmd) {
-		case "note": {
-			msg.channel.send("fix imgkeys for heroku");
-			msg.channel.send("add .help");
-			msg.channel.send("baka, add more api commands oWO");
-			msg.channel.send("WORKING AKI, ARIGATO CONASTIEMAS");
-			msg.channel.send("play queue mayb");
-			msg.channel.send("mayb change all msgs to embed?");
-			msg.channel.send("except this one");
-			break;
-		}
 		case "ping": {
 			if (args == "help") {
 				msg.channel.send("Usage: `.ping`").then(m => {
@@ -1019,7 +995,7 @@ bot.on("message", msg => {
 		}
 		case "invite": {
 			let invitelink = `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8`;
-			const uptime = new Date(Date.now()-startdate);
+			const uptime = new Date(Date.now()-date_boot);
 			msg.channel.send({
 				embed: {
 					color: 14506163,
