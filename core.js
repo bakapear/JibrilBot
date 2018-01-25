@@ -1442,6 +1442,25 @@ bot.on("message", msg => {
 		   }
 		break;
 		}
+		case "trivia": {
+			if (args == "help") {
+				msg.channel.send("Usage: `.trivia`").then(m => {
+					m.delete(5000);
+				});
+				return;
+			}
+			request({
+				url: `https://opentdb.com/api.php?amount=1&category=9`,
+				json: true
+			}, function (error, response, body) {
+				 msg.channel.send({
+						embed: {
+							title: body.results[0].question
+						},
+					});
+			})
+			break;
+		}
 	}
 });
 
