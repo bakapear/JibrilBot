@@ -1450,12 +1450,12 @@ bot.on("message", msg => {
 				return;
 			}
 			request({
-				url: `https://opentdb.com/api.php?amount=1&category=9`,
+				url: `https://opentdb.com/api.php?amount=1&category=9&encode=url3986`,
 				json: true
 			}, function (error, response, body) {
 				 msg.channel.send({
 						embed: {
-							title: body.results[0].question
+							title: decodeURIComponent(body.results[0].question)
 						},
 					});
 			})
