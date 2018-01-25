@@ -1468,7 +1468,7 @@ bot.on("message", msg => {
 							description: decodeURIComponent(desc)
 						},
 					}).then(async m => {
-					let reactions = ["1⃣","2⃣","3⃣","4⃣","5⃣"];
+					let reactions = ["1⃣","2⃣","3⃣","4⃣"];
 					for(i = 0; i < questions.length; i++) {
 					await m.react(reactions[i]);
 					}
@@ -1476,8 +1476,7 @@ bot.on("message", msg => {
 					r.emoji.name === "1⃣" ||
 					r.emoji.name === "2⃣" ||
 					r.emoji.name === "3⃣" ||
-					r.emoji.name === "4⃣" ||
-					r.emoji.name === "5⃣" && user.id != m.author.id
+					r.emoji.name === "4⃣" && user.id != m.author.id
 				);
 				collector.once("collect", r => {
 				let answer;
@@ -1486,7 +1485,6 @@ bot.on("message", msg => {
 					case "2⃣": {answer = questions[1]; break;}
 					case "3⃣": {answer = questions[2]; break;}
 					case "4⃣": {answer = questions[3]; break;}
-					case "5⃣": {answer = questions[4]; break;}
 					}
 					msg.channel.send(answer);
 					collector.stop();
