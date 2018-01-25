@@ -1432,6 +1432,16 @@ bot.on("message", msg => {
 			})
 			break;
 		}
+		case "flip": {
+		   const rnd = Math.random();
+		   if(rnd > 0.5) {
+		      msg.channel.send("**Tails!**");
+		   }
+		   else {
+		       msg.channel.send("**Heads!**");
+		   }
+		break;
+		}
 	}
 });
 
