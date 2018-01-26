@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const request = require("request");
 const yt = require('ytdl-core');
+const google = require('google');
 
 bot.login(process.env.BOT_TOKEN);
 const api_google = process.env.API_GOOGLE;
@@ -520,46 +521,6 @@ bot.on("message", msg => {
 				}
 				else {
 					msg.channel.send(body);
-				}
-			})
-			break;
-		}
-		case "wiki": {
-			if (args == "") {
-				msg.channel.send("Usage: `.wiki <query>`").then(m => {
-					m.delete(5000);
-				});
-				return;
-			}
-			request({
-				url: `https://en.wikipedia.org/w/api.php?action=query&list=search&format=json&srsearch=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
-				json: true
-			}, function (error, response, body) {
-				if (body.query.searchinfo.totalhits < 1) {
-					msg.channel.send("Nothing found!");
-				}
-				else {
-					const rnd = Math.floor(Math.random() * body.query.search.length);
-					request({
-						url: `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=info&inprop=url&pageids=${body.query.search[rnd].pageid}`,
-						json: true
-					}, function (error, response, altbody) {
-						msg.channel.send({
-							embed: {
-								color: 13158600,
-								author: {
-									name: "Wikipedia Article",
-									icon_url: "https://i.imgur.com/WDV9oLh.png"
-								},
-								title: body.query.search[rnd].title,
-								url: altbody.query.pages[body.query.search[rnd].pageid].fullurl,
-								fields: [{
-									name: "Snippet",
-									value: `${body.query.search[rnd].snippet.replace(/<\/?[^>]+(>|$)/g, "")}...`
-								}],
-							}
-						});
-					})
 				}
 			})
 			break;
@@ -1523,7 +1484,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "test": {
+		case "np": {
 			request({
 				url: `https://listen.moe/api/songs`,
 				headers: {
@@ -1534,6 +1495,31 @@ bot.on("message", msg => {
 				json: true
 			}, function (error, response, body) {
 				console.log(body);
+			})
+			break;
+		}
+		case "google": {
+			google(args.join(" "), function (error, res) {
+				if (error) console.error(error);
+				let boi;
+				for (i = 0; i < res.links.length; i++) {
+					if (res.links[i].title != null && res.links[i].description != null && res.links[i].href != null) {
+						boi = i;
+						break;
+					}
+				}
+				if (boi == undefined) {
+					msg.channel.send("Nothing found!");
+					return;
+				}
+				msg.channel.send({
+					embed: {
+						color: 1231312,
+						title: res.links[boi].title,
+						url: res.links[boi].href,
+						description: res.links[boi].description,
+					},
+				});
 			})
 			break;
 		}
