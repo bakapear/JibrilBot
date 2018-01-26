@@ -252,7 +252,7 @@ bot.on("message", msg => {
 				return;
 			}
 			request({
-				url: `https://api.qwant.com/api/search/images?count=10&safesearch=0&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+				url: `https://api.qwant.com/api/search/images?count=10&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				headers: {
 					"User-Agent": "Jibril"
 				},
@@ -1520,6 +1520,20 @@ bot.on("message", msg => {
 						});
 					}
 				})
+			})
+			break;
+		}
+		case "test": {
+			request({
+				url: `https://listen.moe/api/songs`,
+				headers: {
+					"User-Agent": "Jibril",
+					"Content-Type": "application/json",
+					"Accept": "application/vnd.listen.v4+json"
+				},
+				json: true
+			}, function (error, response, body) {
+				console.log(body);
 			})
 			break;
 		}
