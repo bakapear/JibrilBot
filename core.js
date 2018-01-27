@@ -247,7 +247,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "img": case "image": {
+		case "i": case "img": case "image": {
 			if (args == "") {
 				msg.channel.send("Usage: `.img <query>`").then(m => {
 					m.delete(5000);
@@ -561,7 +561,6 @@ bot.on("message", msg => {
 							},
 							json: true
 						}, function (error, response, body) {
-							let player;
 							msg.member.voiceChannel.join().then(connection => {
 								msg.channel.send({
 									embed: {
@@ -573,6 +572,7 @@ bot.on("message", msg => {
 										}
 									}
 								}).then(m => {
+									let player;
 									player = connection.playStream(yt(videoid, { audioonly: true }));
 									player.setBitrate(96000);
 									player.on('end', () => {
@@ -590,6 +590,10 @@ bot.on("message", msg => {
 			}
 			break;
 		}
+		case "t": case "time": {
+			msg.channel.send("test");
+			break;
+		}
 		case "r": case "radio": {
 			if (args == "help") {
 				msg.channel.send("Usage: `.radio`").then(m => {
@@ -601,7 +605,6 @@ bot.on("message", msg => {
 				msg.channel.send("You're not in a voice channel!");
 				return
 			}
-			let radio;
 			if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
 				msg.member.voiceChannel.join().then(connection => {
 					msg.channel.send({
@@ -611,6 +614,7 @@ bot.on("message", msg => {
 							description: `Joined ${connection.channel} streaming *listen.moe*!`
 						}
 					})
+					let radio;
 					radio = connection.playArbitraryInput(`https://listen.moe/opus`);
 					radio.setBitrate(96000);
 				})
@@ -627,9 +631,9 @@ bot.on("message", msg => {
 			}
 			break;
 		}
-		case "s": case "snd": {
+		case "s": case "snd": case "sound": {
 			if (args == "") {
-				msg.channel.send("Usage: `.snd <query>`").then(m => {
+				msg.channel.send("Usage: `.sound <query>`").then(m => {
 					m.delete(5000);
 				});
 				return;
@@ -714,7 +718,7 @@ bot.on("message", msg => {
 			}
 			break;
 		}
-		case "l": case "leave": {
+		case "l": case "leave": case "stop": {
 			if (!msg.member.voiceChannel) {
 				msg.channel.send("You're not in a voice channel!");
 				return
@@ -958,7 +962,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "i": case "invite": {
+		case "invite": {
 			let invitelink = `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8`;
 			const uptime = new Date(Date.now() - date_boot);
 			msg.channel.send({
