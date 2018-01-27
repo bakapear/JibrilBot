@@ -22,9 +22,7 @@ bot.on("ready", () => {
 
 bot.on("message", msg => {
 	if (msg.author.bot || !(msg.content.startsWith(".") || msg.content.startsWith(",") || msg.content.startsWith("-"))) return;
-	if (msg.content.startsWith(",")) {
-		msg.delete();
-	}
+	if (msg.content.startsWith(",")) msg.delete();
 	const args = msg.content.slice(1).split(" ");
 	const cmd = args.shift().toLowerCase();
 	switch (cmd) {
@@ -241,7 +239,7 @@ bot.on("message", msg => {
 				}
 				else {
 					let mod = 0;
-					if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * body.items.length);
+					if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
 					msg.channel.send(`https://www.youtube.com/watch?v=${body.items[mod].id.videoId}`);
 				}
 			})
@@ -270,7 +268,7 @@ bot.on("message", msg => {
 					return;
 				}
 				let mod = 0;
-				if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * body.data.result.items.length);
+				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.data.result.items.length);
 				msg.channel.send({
 					embed: {
 						image: {
@@ -347,7 +345,7 @@ bot.on("message", msg => {
 				}
 				else {
 					let mod = 0;
-					if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * body.list.length);
+					if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.list.length);
 					msg.channel.send({
 						embed: {
 							color: 16777060,
@@ -561,12 +559,14 @@ bot.on("message", msg => {
 							},
 							json: true
 						}, function (error, response, body) {
+							let mod = 0;
+							if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
 							msg.member.voiceChannel.join().then(connection => {
 								msg.channel.send({
 									embed: {
 										color: 14506163,
 										title: "Now Playing",
-										description: `\`${body.items[0].snippet.title}\``,
+										description: `\`${body.items[mod].snippet.title}\``,
 										image: {
 											url: body.items[0].snippet.thumbnails.medium.url
 										}
@@ -690,15 +690,16 @@ bot.on("message", msg => {
 									msg.member.voiceChannel.leave();
 								}
 								else {
-									const rnd = Math.floor(Math.random() * body.items.length);
-									let link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[rnd].path.trim())}`;
+									let mod = 0;
+									if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
+									let link = `https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[mod].path.trim())}`;
 									player = connection.playArbitraryInput(link);
 									player.setBitrate(96000);
 									m.edit({
 										embed: {
 											color: 14506163,
 											title: "Playing Sound",
-											description: `\`${body.items[rnd].name}\``
+											description: `\`${body.items[mod].name}\``
 										}
 									});
 									player.on('end', () => {
@@ -831,15 +832,16 @@ bot.on("message", msg => {
 					msg.channel.send("Nothing found!");
 					return;
 				}
-				const rnd = Math.floor(Math.random() * body.length);
-				let colorint = (body[rnd].rgb.red << 16) + (body[rnd].rgb.green << 8) + (body[rnd].rgb.blue);
+				let mod = 0;
+				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.length);
+				let colorint = (body[mod].rgb.red << 16) + (body[mod].rgb.green << 8) + (body[mod].rgb.blue);
 				msg.channel.send({
 					embed: {
 						color: colorint,
-						title: body[rnd].title,
-						description: `**Hex** #${body[rnd].hex}\n**R** ${body[rnd].rgb.red} **G** ${body[rnd].rgb.green} **B** ${body[rnd].rgb.blue}\n**H** ${body[rnd].hsv.hue} **S** ${body[rnd].hsv.saturation} **V** ${body[rnd].hsv.value}`,
+						title: body[mod].title,
+						description: `**Hex** #${body[mod].hex}\n**R** ${body[mod].rgb.red} **G** ${body[mod].rgb.green} **B** ${body[mod].rgb.blue}\n**H** ${body[mod].hsv.hue} **S** ${body[mod].hsv.saturation} **V** ${body[mod].hsv.value}`,
 						image: {
-							url: body[rnd].imageUrl
+							url: body[mod].imageUrl
 						}
 					}
 				});
@@ -940,9 +942,10 @@ bot.on("message", msg => {
 					msg.channel.send("Nothing found!");
 					return;
 				}
-				const rnd = Math.floor(Math.random() * mapindex.length)
-				let mins = Math.floor(body[mapindex[rnd]].hit_length % 3600 / 60);
-				let secs = Math.floor(body[mapindex[rnd]].hit_length % 3600 % 60);
+				let mod = 0;
+				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * mapindex.length);
+				let mins = Math.floor(body[mapindex[mod]].hit_length % 3600 / 60);
+				let secs = Math.floor(body[mapindex[mod]].hit_length % 3600 % 60);
 				if (secs.toString().length < 2) {
 					secs = "0" + secs;
 				}
@@ -954,9 +957,9 @@ bot.on("message", msg => {
 							name: `osu! Beatmap`,
 							icon_url: `https://i.imgur.com/oEbzSZU.png`
 						},
-						title: `${body[mapindex[rnd]].artist} - ${body[mapindex[rnd]].title}`,
-						description: `**Stars** ${parseFloat(body[mapindex[rnd]].difficultyrating).toFixed(2)} **Length** ${duration} **BPM** ${parseInt(body[mapindex[rnd]].bpm)}`,
-						url: `https://osu.ppy.sh/b/${body[mapindex[rnd]].beatmap_id}`,
+						title: `${body[mapindex[mod]].artist} - ${body[mapindex[mod]].title}`,
+						description: `**Stars** ${parseFloat(body[mapindex[mod]].difficultyrating).toFixed(2)} **Length** ${duration} **BPM** ${parseInt(body[mapindex[mod]].bpm)}`,
+						url: `https://osu.ppy.sh/b/${body[mapindex[mod]].beatmap_id}`,
 					}
 				});
 			})
@@ -1521,7 +1524,7 @@ bot.on("message", msg => {
 					return;
 				}
 				let mod = 0;
-				if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * full.length);
+				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * full.length);
 				msg.channel.send({
 					embed: {
 						color: 1231312,
