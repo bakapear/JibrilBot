@@ -21,7 +21,7 @@ bot.on("ready", () => {
 });
 
 bot.on("message", msg => {
-	if (msg.author.bot || !(msg.content.startsWith(".") || msg.content.startsWith(","))) return;
+	if (msg.author.bot || !(msg.content.startsWith(".") || msg.content.startsWith(",") || msg.content.startsWith("-"))) return;
 	if (msg.content.startsWith(",")) {
 		msg.delete();
 	}
@@ -222,7 +222,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "yt": {
+		case "yt": case "youtube": {
 			if (args == "" || args == "help") {
 				msg.channel.send("Usage: `.yt <query>`").then(m => {
 					m.delete(5000);
@@ -240,12 +240,14 @@ bot.on("message", msg => {
 					msg.channel.send("Nothing found!");
 				}
 				else {
-					msg.channel.send(`https://www.youtube.com/watch?v=${body.items[0].id.videoId}`);
+					let mod = 0;
+					if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * body.items.length);
+					msg.channel.send(`https://www.youtube.com/watch?v=${body.items[mod].id.videoId}`);
 				}
 			})
 			break;
 		}
-		case "img": {
+		case "img": case "image": {
 			if (args == "") {
 				msg.channel.send("Usage: `.img <query>`").then(m => {
 					m.delete(5000);
@@ -253,21 +255,26 @@ bot.on("message", msg => {
 				return;
 			}
 			request({
-				url: `https://api.qwant.com/api/search/images?count=10&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+				url: `https://api.qwant.com/api/search/images?count=100&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 				headers: {
 					"User-Agent": "Jibril"
 				},
 				json: true
 			}, function (error, response, body) {
+				if (body == undefined) {
+					msg.channel.send("API down!");
+					return;
+				}
 				if (body.data.result.items.length < 1) {
 					msg.channel.send("Nothing found!");
 					return;
 				}
-				const rnd = Math.floor(Math.random() * body.data.result.items.length);
+				let mod = 0;
+				if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * body.data.result.items.length);
 				msg.channel.send({
 					embed: {
 						image: {
-							url: body.data.result.items[rnd].media
+							url: body.data.result.items[mod].media
 						}
 					},
 				});
@@ -321,7 +328,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "urban": {
+		case "urb": case "urban": {
 			if (args == "") {
 				msg.channel.send("Usage: `.urban <word>`").then(m => {
 					m.delete(5000);
@@ -339,7 +346,8 @@ bot.on("message", msg => {
 					msg.channel.send("No information about that!");
 				}
 				else {
-					const rnd = Math.floor(Math.random() * body.list.length);
+					let mod = 0;
+					if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * body.list.length);
 					msg.channel.send({
 						embed: {
 							color: 16777060,
@@ -347,21 +355,18 @@ bot.on("message", msg => {
 								name: "Urban Dictionary",
 								icon_url: "https://i.imgur.com/RZrNvTL.jpg"
 							},
-							title: body.list[rnd].word,
-							url: body.list[rnd].permalink,
-							thumbnail: {
-								url: `https://a.ppy.sh/5`
-							},
+							title: body.list[mod].word,
+							url: body.list[mod].permalink,
 							fields: [{
 								name: "Definition",
-								value: `${body.list[rnd].definition.substring(0, 1020)}...`
+								value: `${body.list[mod].definition.substring(0, 1020)}...`
 							},
 							{
 								name: "Example",
-								value: body.list[rnd].example
+								value: body.list[mod].example
 							}],
 							footer: {
-								text: `by ${body.list[rnd].author}`
+								text: `by ${body.list[mod].author}`
 							},
 						}
 					});
@@ -525,7 +530,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "play": {
+		case "p": case "play": {
 			if (args == "") {
 				msg.channel.send("Usage: `.q <query>`").then(m => {
 					m.delete(5000);
@@ -585,7 +590,7 @@ bot.on("message", msg => {
 			}
 			break;
 		}
-		case "radio": {
+		case "r": case "radio": {
 			if (args == "help") {
 				msg.channel.send("Usage: `.radio`").then(m => {
 					m.delete(5000);
@@ -622,7 +627,7 @@ bot.on("message", msg => {
 			}
 			break;
 		}
-		case "snd": {
+		case "s": case "snd": {
 			if (args == "") {
 				msg.channel.send("Usage: `.snd <query>`").then(m => {
 					m.delete(5000);
@@ -709,7 +714,7 @@ bot.on("message", msg => {
 			}
 			break;
 		}
-		case "stop": {
+		case "l": case "leave": {
 			if (!msg.member.voiceChannel) {
 				msg.channel.send("You're not in a voice channel!");
 				return
@@ -794,7 +799,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "math": {
+		case "m": case "math": {
 			if (args == "" || args == "help") {
 				msg.channel.send("Usage: `.math <expression>`").then(m => {
 					m.delete(5000);
@@ -809,7 +814,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "color": {
+		case "c": case "color": {
 			let link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
 			if (args == "") {
 				link = `http://www.colourlovers.com/api/colors/random?format=json`
@@ -878,7 +883,7 @@ bot.on("message", msg => {
 			break;
 
 		}
-		case "osumap": {
+		case "omp": case "osumap": {
 			if (args == "help") {
 				msg.channel.send("Usage: `.osumap (s:stars) (t:length)`").then(m => {
 					m.delete(5000);
@@ -953,7 +958,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "invite": {
+		case "i": case "invite": {
 			let invitelink = `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8`;
 			const uptime = new Date(Date.now() - date_boot);
 			msg.channel.send({
@@ -1203,7 +1208,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "triggered": {
+		case "trig": case "triggered": {
 			if (args == "help") {
 				msg.channel.send("Usage: `.triggered`").then(m => {
 					m.delete(5000);
@@ -1484,7 +1489,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "np": {
+		case "np": case "nowplaying": {
 			request({
 				url: `https://listen.moe/api/songs`,
 				headers: {
@@ -1498,26 +1503,27 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "google": {
+		case "ggl": case "google": {
 			google(args.join(" "), function (error, res) {
 				if (error) console.error(error);
-				let boi;
+				let full = [];
 				for (i = 0; i < res.links.length; i++) {
 					if (res.links[i].title != null && res.links[i].description != null && res.links[i].href != null) {
-						boi = i;
-						break;
+						full.push(res.links[i]);
 					}
 				}
-				if (boi == undefined) {
+				if (full.length < 1) {
 					msg.channel.send("Nothing found!");
 					return;
 				}
+				let mod = 0;
+				if (msg.content.startsWith("-")) mod = Math.floor(Math.random() * full.length);
 				msg.channel.send({
 					embed: {
 						color: 1231312,
-						title: res.links[boi].title,
-						url: res.links[boi].href,
-						description: res.links[boi].description,
+						title: full[mod].title,
+						url: full[mod].href,
+						description: full[mod].description,
 					},
 				});
 			})
