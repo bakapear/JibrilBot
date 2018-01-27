@@ -554,6 +554,7 @@ bot.on("message", msg => {
 						let mod = 0;
 						if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
 						let videoid = body.items[mod].id.videoId;
+						console.log(videoid);
 						request({
 							url: `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}`,
 							qs: {
@@ -566,7 +567,7 @@ bot.on("message", msg => {
 									embed: {
 										color: 14506163,
 										title: "Now Playing",
-										description: `\`${body.items[mod].snippet.title}\``,
+										description: `\`${body.items[0].snippet.title}\``,
 										image: {
 											url: body.items[0].snippet.thumbnails.medium.url
 										}
