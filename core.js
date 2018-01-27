@@ -551,7 +551,9 @@ bot.on("message", msg => {
 						msg.channel.send("Nothing found!");
 					}
 					else {
-						let videoid = body.items[0].id.videoId;
+						let mod = 0;
+						if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
+						let videoid = body.items[mod].id.videoId;
 						request({
 							url: `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}`,
 							qs: {
@@ -559,8 +561,6 @@ bot.on("message", msg => {
 							},
 							json: true
 						}, function (error, response, body) {
-							let mod = 0;
-							if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
 							msg.member.voiceChannel.join().then(connection => {
 								msg.channel.send({
 									embed: {
