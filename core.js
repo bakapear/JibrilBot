@@ -554,7 +554,6 @@ bot.on("message", msg => {
 						let mod = 0;
 						if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
 						let videoid = body.items[mod].id.videoId;
-						console.log(videoid);
 						request({
 							url: `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}`,
 							qs: {
@@ -589,10 +588,6 @@ bot.on("message", msg => {
 			else {
 				msg.channel.send(`Something is already playing!`);
 			}
-			break;
-		}
-		case "t": case "time": {
-			msg.channel.send("test");
 			break;
 		}
 		case "r": case "radio": {
@@ -973,7 +968,7 @@ bot.on("message", msg => {
 				embed: {
 					color: 14506163,
 					title: `Invite ${bot.user.username} to your server!`,
-					description: `The youngest and strongest discord bot of the Flügel race.\n\n**Guilds** ${bot.guilds.size} **Users** ${bot.users.size} **Channels** ${bot.channels.size}\n**Uptime** ${uptime.getMonth()} Months ${uptime.getDate() - 1} Days ${uptime.getHours()} Hours ${uptime.getMinutes()} Minutes ${uptime.getSeconds()} Seconds`,
+					description: `The youngest and strongest discord bot of the Flügel race.\n\n**Guilds** ${bot.guilds.size} **Users** ${bot.users.size} **Channels** ${bot.channels.size}\n**Uptime** ${uptime.getMonth()} Months ${uptime.getDate() - 1} Days ${uptime.getHours() - 1} Hours ${uptime.getMinutes()} Minutes ${uptime.getSeconds()} Seconds`,
 					url: invitelink,
 					thumbnail: {
 						url: bot.user.avatarURL
@@ -1511,7 +1506,7 @@ bot.on("message", msg => {
 			})
 			break;
 		}
-		case "ggl": case "google": {
+		case "g": case "google": {
 			google(args.join(" "), function (error, res) {
 				if (error) console.error(error);
 				let full = [];
@@ -1537,9 +1532,28 @@ bot.on("message", msg => {
 			})
 			break;
 		}
+		case "up": case "uptime": {
+			const uptime = new Date(Date.now() - date_boot);
+			let time = [
+				uptime.getMonth().toString(),
+				(uptime.getDate() - 1).toString(),
+				(uptime.getHours() - 1).toString(),
+				uptime.getMinutes().toString(),
+				uptime.getSeconds().toString()
+			];
+			for (i = 0; i < time.length; i++) {
+				if(time[i].length == 1) {
+					time[i] = "0" + time[i];
+				}
+			}
+			msg.channel.send(`**Uptime:** \`${time[0]}:${time[1]}:${time[2]}:${time[3]}:${time[4]}\``);
+			if(time[3] == "13" && time[4] == "37") {
+				msg.channel.send("Leet!");
+			}
+			break;
+		}
 	}
 });
-
 
 function aki(msg, args, start, session, signature, step, answer, progression, akimsg) {
 	if (progression >= 92 || parseInt(step) >= 80) {
