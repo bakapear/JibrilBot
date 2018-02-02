@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const fs = require("fs");
 const boot = new Date();
+const cleverbot = require('cleverbot.io');
 bot.login(process.env.BOT_TOKEN);
 
 bot.on("ready", () => {
@@ -24,6 +25,17 @@ function getFileData(dir) {
 }
 
 bot.on("message", msg => {
+	if (msg.content.startsWith(`<@${bot.user.id}>`)) {
+		const content = msg.content.slice(21);
+		let cbot = new cleverbot(process.env.CBOT_USER, process.env.CBOT_KEY);
+		cbot.setNick(msg.author.username);
+		cbot.create(function (err, session) {
+			cbot.ask(content, function (err, response) {
+				msg.channel.send(response);
+			});
+		});
+		return;
+	}
 	if (msg.author.bot || !(msg.content.startsWith(".") || msg.content.startsWith(",") || msg.content.startsWith("-"))) return;
 	if (msg.content.startsWith(",")) {
 		msg.content = msg.content.replace(",",".");
@@ -53,7 +65,7 @@ bot.on("message", msg => {
 					msg.channel.send({embed: {
 						color: 11321432,
 						author: {
-						name: `Command Help`,
+						name: "Commands",
 						icon_url: "https://i.imgur.com/4AEPwtC.png"
 						},
 						description: `\`${filenames.join("|")}\``
