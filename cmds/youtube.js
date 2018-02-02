@@ -9,7 +9,7 @@ module.exports = {
     args: 1,
     command: function (boot, msg, cmd, args) {
         request({
-            url: `https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
+            url: `https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
             qs: {
                 key: api_google
             },
