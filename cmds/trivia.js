@@ -5,7 +5,7 @@ module.exports = {
     desc: "Asks questions, you should prolly answer.",
     permission: "",
 	usage: "(question)",
-	needargs: false,
+	args: 0,
     command: function (boot, msg, cmd, args) {
         request({
             url: `https://opentdb.com/api.php?amount=1&category=9&encode=url3986`,

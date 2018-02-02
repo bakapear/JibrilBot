@@ -6,7 +6,7 @@ module.exports = {
     desc: "Displays a video link.",
     permission: "",
     usage: "<query>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args) {
         request({
             url: `https://www.googleapis.com/youtube/v3/search?part=id&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,

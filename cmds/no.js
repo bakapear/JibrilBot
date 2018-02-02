@@ -5,7 +5,7 @@ module.exports = {
     desc: "Displays a random no gif.",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         request({
             url: `https://yesno.wtf/api?force=no`,

@@ -6,7 +6,7 @@ module.exports = {
     desc: "Plays a sound from Metastruct/garrysmod-chatsounds repo.",
     permission: "",
     usage: "<query>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args, bot) {
         if (!msg.member.voiceChannel) {
 			msg.channel.send("You're not in a voice channel!");

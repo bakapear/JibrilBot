@@ -6,7 +6,7 @@ module.exports = {
     desc: "Displays a steam profile!",
     permission: "",
     usage: "<customurl>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args) {
         let steamid;
         request({

@@ -3,7 +3,7 @@ module.exports = {
     desc: "Rolls a random number.",
     permission: "",
 	usage: "(min) (max)",
-	needargs: false,
+	args: 0,
     command: function (boot, msg, cmd, args) {
         let max = 6, min = 1;
 		if (args.length == 1) {

@@ -5,7 +5,7 @@ module.exports = {
     desc: "Gives you a random user profile!",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         request({
             url: `https://api.randomuser.me`,

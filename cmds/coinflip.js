@@ -3,7 +3,7 @@ module.exports = {
     desc: "Flips a coin!",
     permission: "",
 	usage: "",
-	needargs: false,
+	args: 0,
     command: function (boot, msg, cmd, args) {
         const rnd = Math.random();
 		if (rnd > 0.5) {

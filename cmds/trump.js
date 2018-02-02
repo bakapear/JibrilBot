@@ -5,7 +5,7 @@ module.exports = {
     desc: "Prints out a trump quote.",
     permission: "",
     usage: "(something)",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         request({
             url: `https://api.whatdoestrumpthink.com/api/v1/quotes`,

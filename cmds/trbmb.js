@@ -2,10 +2,10 @@ const request = require("request");
 
 module.exports = {
     name: ["trbmb"],
-    desc: "That really helps my command! Idk.",
+    desc: "That really helps my command!",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         request({
             url: `http://api.chew.pro/trbmb`,

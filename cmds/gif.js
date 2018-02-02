@@ -6,7 +6,7 @@ module.exports = {
     desc: "Displays a gif for the given tags. Picks a random one if no tags given.",
     permission: "",
     usage: "(search tags)",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         request({
             url: `http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,

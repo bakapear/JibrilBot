@@ -6,7 +6,7 @@ module.exports = {
     desc: "Gives you the entire lyrics of a song!",
     permission: "",
     usage: "<lyrics/song>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args) {
         request({
             url: `http://api.musixmatch.com/ws/1.1/track.search?q_lyrics=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&page_size=3&page=1&s_track_rating=desc`,

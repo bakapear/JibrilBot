@@ -5,7 +5,7 @@ module.exports = {
     desc: "Displays a number fact!",
     permission: "",
     usage: "(trivia/date/year/math) (number)",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         let link;
         let search = "random";

@@ -5,7 +5,7 @@ module.exports = {
     desc: "Displays a picture. This command uses the Qwant Search Engine to find pictures!",
 	permission: "",
 	usage: "<query>",
-	needargs: true,
+	args: 1,
     command: function (boot, msg, cmd, args) {
 		request({
 			url: `https://api.qwant.com/api/search/images?count=100&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,

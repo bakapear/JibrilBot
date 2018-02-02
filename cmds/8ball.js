@@ -3,7 +3,7 @@ module.exports = {
     desc: "Ask it something!",
     permission: "",
 	usage: "(question)",
-	needargs: false,
+	args: 0,
     command: function (boot, msg, cmd, args) {
         const answers = [
 			":8ball: It is certain",

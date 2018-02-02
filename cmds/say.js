@@ -3,7 +3,7 @@ module.exports = {
     desc: "Let the bot say something.",
     permission: "",
     usage: "<message>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args) {
         msg.channel.send(msg.content.slice(cmd.length + 1));
     }

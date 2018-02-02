@@ -3,7 +3,7 @@ module.exports = {
     desc: "The good old' ping command!",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         const date = Date.now();
         msg.channel.send("Pinging...").then(m => {

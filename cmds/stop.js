@@ -3,7 +3,7 @@ module.exports = {
     desc: "Removes me from the voicechannel.",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args, bot) {
         if (!msg.member.voiceChannel) {
 			msg.channel.send("You're not in a voice channel!");

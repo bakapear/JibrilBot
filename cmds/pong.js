@@ -1,9 +1,9 @@
 module.exports = {
     name: ["pong"],
-    desc: "The good old' pong command!",
+    desc: "Replies with \"Ping!\"",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         msg.channel.send("Ping!");
     }

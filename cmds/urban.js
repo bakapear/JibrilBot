@@ -5,7 +5,7 @@ module.exports = {
     desc: "The Urban Dictionary that gives you information about some words.",
     permission: "",
     usage: "<word>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args) {
         request({
             url: `http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,

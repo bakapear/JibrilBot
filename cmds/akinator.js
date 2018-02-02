@@ -5,7 +5,7 @@ module.exports = {
     desc: "A genie who can guess your character by asking questions.",
     permission: "",
 	usage: "",
-	needargs: false,
+	args: 0,
     command: function (boot, msg, cmd, args) {
         aki(msg, args, true);
     }

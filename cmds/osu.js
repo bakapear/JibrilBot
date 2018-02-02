@@ -6,7 +6,7 @@ module.exports = {
     desc: "Displays a osu! profile",
     permission: "",
     usage: "<user>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args) {
         request({
             url: `https://osu.ppy.sh/api/get_user?u=${args[0]}`,

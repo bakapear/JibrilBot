@@ -5,7 +5,7 @@ module.exports = {
     desc: "Google something!",
     permission: "",
     usage: "<query>",
-    needargs: true,
+    args: 1,
     command: function (boot, msg, cmd, args) {
         google(args.join(" "), function (error, res) {
             if (error) console.error(error);

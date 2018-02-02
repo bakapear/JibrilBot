@@ -3,7 +3,7 @@ module.exports = {
     desc: "Tells you how long I've been running for!",
     permission: "",
 	usage: "",
-	needargs: false,
+	args: 0,
     command: function (boot, msg, cmd, args) {
         const uptime = new Date(Date.now() - boot);
 		let time = [

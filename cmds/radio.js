@@ -5,7 +5,7 @@ module.exports = {
     desc: "Streams the listen.moe anime radio in the voicechannel.",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args, bot) {
         if (!msg.member.voiceChannel) {
 			msg.channel.send("You're not in a voice channel!");

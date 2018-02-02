@@ -5,7 +5,7 @@ module.exports = {
     desc: "Displays a color.",
     permission: "",
     usage: "(color)",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         let link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
         if (args == "") {

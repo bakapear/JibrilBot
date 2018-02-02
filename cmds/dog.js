@@ -5,7 +5,7 @@ module.exports = {
     desc: "Displays a random dog picture.",
     permission: "",
     usage: "",
-    needargs: false,
+    args: 0,
     command: function (boot, msg, cmd, args) {
         request({
             url: "https://dog.ceo/api/breeds/image/random",
