@@ -9,7 +9,7 @@ module.exports = {
 		let time = [
 			uptime.getMonth().toString(),
 			(uptime.getDate() - 1).toString(),
-			(uptime.getHours() - 1).toString(),
+			uptime.getHours().toString(),
 			uptime.getMinutes().toString(),
 			uptime.getSeconds().toString()
 		];
