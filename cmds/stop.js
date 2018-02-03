@@ -17,7 +17,7 @@ module.exports = {
 			msg.channel.send("I'm not in a voice channel!");
 			return
         }
-        if(voiceq.hasOwnProperty(msg.guild.id)) voiceq[msg.guild.id].playing = false;
+        if(voiceq.hasOwnProperty(msg.guild.id)) voiceq[msg.guild.id].songs = []; voiceq[msg.guild.id].playing = false; 
 		msg.member.voiceChannel.leave();
     }
 }
