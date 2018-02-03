@@ -4,8 +4,8 @@ module.exports = {
     name: ["trivia"],
     desc: "Asks questions, you should prolly answer.",
     permission: "",
-	usage: "(question)",
-	args: 0,
+    usage: "(question)",
+    args: 0,
     command: function (msg, cmd, args) {
         request({
             url: `https://opentdb.com/api.php?amount=1&category=9&encode=url3986`,

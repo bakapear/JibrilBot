@@ -84,7 +84,7 @@ module.exports = {
 			}
 		});
 	},
-	end: function() {
+	end: function () {
 		player.end();
 	}
 }
@@ -101,16 +101,16 @@ function next(msg, cmd, args, connection, player) {
 			}
 		}
 	}).then(m => {
-	player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
-	player.setBitrate(96000);
-	player.on("end", () => {
-		voiceq[msg.guild.id].songs.shift();
-		if (!voiceq[msg.guild.id].songs.length < 1) {
-			next(msg, cmd, args, connection, player);
-			return;
-		}
-		voiceq[msg.guild.id].playing = false;
-		msg.member.voiceChannel.leave();
+		player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
+		player.setBitrate(96000);
+		player.on("end", () => {
+			voiceq[msg.guild.id].songs.shift();
+			if (!voiceq[msg.guild.id].songs.length < 1) {
+				next(msg, cmd, args, connection, player);
+				return;
+			}
+			voiceq[msg.guild.id].playing = false;
+			msg.member.voiceChannel.leave();
+		});
 	});
-});
 }

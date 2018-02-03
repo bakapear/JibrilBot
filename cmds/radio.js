@@ -3,13 +3,13 @@ const bot = core.bot;
 const request = require("request");
 
 module.exports = {
-    name: ["radio","r"],
-    desc: "Streams the listen.moe anime radio in the voicechannel.",
-    permission: "",
-    usage: "",
-    args: 0,
-    command: function (msg, cmd, args) {
-        if (!msg.member.voiceChannel) {
+	name: ["radio", "r"],
+	desc: "Streams the listen.moe anime radio in the voicechannel.",
+	permission: "",
+	usage: "",
+	args: 0,
+	command: function (msg, cmd, args) {
+		if (!msg.member.voiceChannel) {
 			msg.channel.send("You're not in a voice channel!");
 			return
 		}
@@ -37,5 +37,5 @@ module.exports = {
 			})
 			msg.member.voiceChannel.leave();
 		}
-    }
+	}
 }

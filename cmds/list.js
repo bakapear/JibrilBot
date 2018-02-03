@@ -8,18 +8,18 @@ module.exports = {
     usage: "",
     args: 0,
     command: function (msg, cmd, args) {
-        if(voiceq.hasOwnProperty(msg.guild.id)) {
-            if(voiceq[msg.guild.id].songs.length < 1) {
+        if (voiceq.hasOwnProperty(msg.guild.id)) {
+            if (voiceq[msg.guild.id].songs.length < 1) {
                 msg.channel.send("No songs in queue!");
                 return;
             }
             let songnames = [];
-            for(i = 0; i < voiceq[msg.guild.id].songs.length; i++) {
+            for (i = 0; i < voiceq[msg.guild.id].songs.length; i++) {
                 let song = voiceq[msg.guild.id].songs[i][1];
-                if(song.length > 50) {
+                if (song.length > 50) {
                     song = song.substring(0, 50) + "...";
                 }
-                songnames.push(`${i+1}. \`${song}\`\n`);
+                songnames.push(`${i + 1}. \`${song}\`\n`);
             }
             msg.channel.send({
                 embed: {

@@ -1,12 +1,12 @@
 const request = require("request");
 
 module.exports = {
-    name: ["i", "img", "image"],
-    desc: "Displays a picture. This command uses the Qwant Search Engine to find pictures!",
+	name: ["i", "img", "image"],
+	desc: "Displays a picture. This command uses the Qwant Search Engine to find pictures!",
 	permission: "",
 	usage: "<query>",
 	args: 1,
-    command: function (msg, cmd, args) {
+	command: function (msg, cmd, args) {
 		request({
 			url: `https://api.qwant.com/api/search/images?count=100&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 			headers: {
@@ -32,5 +32,5 @@ module.exports = {
 				},
 			});
 		})
-    }
+	}
 }

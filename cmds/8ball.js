@@ -1,11 +1,11 @@
 module.exports = {
-    name: ["8ball"],
-    desc: "Ask it something!",
-    permission: "",
+	name: ["8ball"],
+	desc: "Ask it something!",
+	permission: "",
 	usage: "(question)",
 	args: 0,
-    command: function (msg, cmd, args) {
-        const answers = [
+	command: function (msg, cmd, args) {
+		const answers = [
 			":8ball: It is certain",
 			":8ball: It is decidedly so",
 			":8ball: Without a doubt",
@@ -27,5 +27,5 @@ module.exports = {
 			":8ball: Very doubtful"
 		];
 		msg.channel.send(answers[Math.floor(Math.random() * answers.length)]);
-    }
+	}
 }

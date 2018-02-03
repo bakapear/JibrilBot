@@ -11,15 +11,15 @@ module.exports = {
     args: 0,
     command: function (msg, cmd, args) {
         if (!msg.member.voiceChannel) {
-			msg.channel.send("You're not in a voice channel!");
-			return
+            msg.channel.send("You're not in a voice channel!");
+            return
         }
         if (voiceq.hasOwnProperty(msg.guild.id)) {
-		if (voiceq[msg.guild.id].playing == false) {
-			msg.channel.send("I'm not in a voice channel!");
-			return
-        }
-        play.end();
+            if (voiceq[msg.guild.id].playing == false) {
+                msg.channel.send("I'm not in a voice channel!");
+                return
+            }
+            play.end();
         }
     }
 }

@@ -6,8 +6,8 @@ module.exports = {
     args: 1,
     command: function (msg, cmd, args) {
         const parts = msg.content.slice(cmd.length + 1).split(";");
-		if (parts.length < 2) {msg.channel.send("Please enter atleast 2 things to choose from!"); return;}
-		const rnd = Math.floor(Math.random() * parts.length);
+        if (parts.length < 2) { msg.channel.send("Please enter atleast 2 things to choose from!"); return; }
+        const rnd = Math.floor(Math.random() * parts.length);
         msg.channel.send(`I chose **${parts[rnd].trim()}**, because why not!`);
     }
 }

@@ -10,7 +10,7 @@ module.exports = {
     command: function (msg, cmd, args) {
         let source;
         let target;
-        if(cmd == "toen") {
+        if (cmd == "toen") {
             source = "auto";
             target = "en"
         }

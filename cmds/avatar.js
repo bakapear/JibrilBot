@@ -6,10 +6,10 @@ module.exports = {
     args: 0,
     command: function (msg, cmd, args) {
         let avatarimg;
-        if(args == "") avatarimg = msg.author.avatarURL;
+        if (args == "") avatarimg = msg.author.avatarURL;
         else {
             let member = msg.mentions.members.first();
-            if(member == undefined) {
+            if (member == undefined) {
                 msg.channel.send("Invalid user!");
                 return;
             }

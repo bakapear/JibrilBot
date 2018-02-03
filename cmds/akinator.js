@@ -1,14 +1,14 @@
 const request = require("request");
 
 module.exports = {
-    name: ["aki", "akinator"],
-    desc: "A genie who can guess your character by asking questions.",
-    permission: "",
+	name: ["aki", "akinator"],
+	desc: "A genie who can guess your character by asking questions.",
+	permission: "",
 	usage: "",
 	args: 0,
-    command: function (msg, cmd, args) {
-        aki(msg, args, true);
-    }
+	command: function (msg, cmd, args) {
+		aki(msg, args, true);
+	}
 }
 
 function aki(msg, args, start, session, signature, step, answer, progression, akimsg) {
