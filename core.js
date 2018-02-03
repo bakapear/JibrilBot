@@ -26,12 +26,14 @@ function getFileData(dir) {
 
 bot.on("message", msg => {
 	if (msg.content.startsWith(`<@${bot.user.id}>`)) {
+		msg.channel.startTyping();
 		const content = msg.content.slice(21);
 		let cbot = new cleverbot(process.env.CBOT_USER, process.env.CBOT_KEY);
 		cbot.setNick(msg.author.username);
 		cbot.create(function (err, session) {
 			cbot.ask(content, function (err, response) {
 				msg.channel.send(response);
+				msg.channel.stopTyping();
 			});
 		});
 		return;
