@@ -42,7 +42,7 @@ module.exports = {
                             case "2⃣": { answer = questions[1]; break; }
                         }
                         collector.stop();
-                    })
+                    });
                 }
                 else {
                     let reactions = ["1⃣", "2⃣", "3⃣", "4⃣"];
@@ -60,7 +60,7 @@ module.exports = {
                             case "4⃣": { answer = questions[3]; break; }
                         }
                         collector.stop();
-                    })
+                    });
                 }
                 if (answer == body.results[0].correct_answer) {
                     m.edit({

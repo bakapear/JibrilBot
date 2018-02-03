@@ -81,7 +81,7 @@ bot.on("message", msg => {
 								name: "Commands",
 								icon_url: "https://i.imgur.com/4AEPwtC.png"
 							},
-							description: `\`${filenames.join("|")}\``
+							description: `\`${filenames.join("|")}\`\n\nUsage: \`.help <cmd>\``
 						}
 					});
 				}
@@ -99,5 +99,5 @@ bot.on("message", msg => {
 				return;
 			}
 		});
-	})
+	});
 });

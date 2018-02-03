@@ -72,7 +72,7 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 					collector.stop();
 				});
 			});
-		})
+		});
 	}
 	else {
 		request({
@@ -100,7 +100,7 @@ function aki(msg, args, start, session, signature, step, answer, progression, ak
 					r.remove(msg.author);
 					collector.stop();
 				});
-			})
+			});
 		});
 	}
 }

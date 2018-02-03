@@ -21,11 +21,11 @@ module.exports = {
 						title: "Radio",
 						description: `Joined ${connection.channel} streaming *listen.moe*!`
 					}
-				})
+				});
 				let radio;
 				radio = connection.playArbitraryInput(`https://listen.moe/opus`);
 				radio.setBitrate(96000);
-			})
+			});
 		}
 		else {
 			msg.channel.send({
@@ -34,7 +34,7 @@ module.exports = {
 					title: "Radio",
 					description: `Stopped streaming radio.`
 				}
-			})
+			});
 			msg.member.voiceChannel.leave();
 		}
 	}
