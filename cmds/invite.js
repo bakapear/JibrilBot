@@ -1,10 +1,14 @@
+const core = require("../core.js");
+const bot = core.bot;
+const boot = core.boot;
+
 module.exports = {
     name: ["invite", "inv"],
     desc: "Gives information about me with invite link.",
     permission: "",
     usage: "",
     args: 0,
-    command: function (boot, msg, cmd, args, bot) {
+    command: function (msg, cmd, args) {
         let invitelink = `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=8`;
         const uptime = new Date(Date.now() - boot);
         msg.channel.send({

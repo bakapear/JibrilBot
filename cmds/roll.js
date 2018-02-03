@@ -4,7 +4,7 @@ module.exports = {
     permission: "",
 	usage: "(min) (max)",
 	args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         let max = 6, min = 1;
 		if (args.length == 1) {
 			max = parseInt(args[0]);

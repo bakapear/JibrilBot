@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
     usage: "(trivia/date/year/math) (number)",
     args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         let link;
         let search = "random";
         if (args[1] != undefined) {

@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
 	usage: "(question)",
 	args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         request({
             url: `https://opentdb.com/api.php?amount=1&category=9&encode=url3986`,
             json: true

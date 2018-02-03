@@ -1,3 +1,5 @@
+const core = require("../core.js");
+const bot = core.bot;
 const request = require("request");
 const api_github = process.env.API_GITHUB;
 
@@ -7,7 +9,7 @@ module.exports = {
 	permission: "",
 	usage: "<query>",
 	args: 1,
-	command: function (boot, msg, cmd, args, bot) {
+	command: function (msg, cmd, args) {
 		if (!msg.member.voiceChannel) {
 			msg.channel.send("You're not in a voice channel!");
 			return

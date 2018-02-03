@@ -7,7 +7,7 @@ module.exports = {
     permission: "",
     usage: "<customurl>",
     args: 1,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         let steamid;
         request({
             url: `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?vanityurl=${args[0]}`,

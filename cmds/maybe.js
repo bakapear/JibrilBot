@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
     usage: "",
     args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         request({
             url: `https://yesno.wtf/api?force=maybe`,
             json: true

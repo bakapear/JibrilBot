@@ -1,10 +1,13 @@
+const core = require("../core.js");
+const boot = core.boot;
+
 module.exports = {
     name: ["up", "uptime"],
     desc: "Tells you how long I've been running for!",
     permission: "",
 	usage: "",
 	args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         const uptime = new Date(Date.now() - boot);
 		let time = [
 			uptime.getMonth().toString(),

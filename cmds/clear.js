@@ -4,7 +4,7 @@ module.exports = {
     permission: "MANAGE_MESSAGES",
     usage: "",
     args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         msg.channel.fetchMessages().then(msgs => {
             msg.channel.bulkDelete(msgs);
         });

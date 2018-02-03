@@ -7,7 +7,7 @@ module.exports = {
     permission: "",
     usage: "(search tags)",
     args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         request({
             url: `http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
             qs: {

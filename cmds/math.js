@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
     usage: "<math stuff>",
     args: 1,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         request({
             url: `http://api.mathjs.org/v1/?expr=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
             json: true

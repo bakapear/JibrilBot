@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
     usage: "<query>",
     args: 1,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         google(args.join(" "), function (error, res) {
             if (error) console.error(error);
             let full = [];

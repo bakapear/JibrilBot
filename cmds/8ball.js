@@ -4,7 +4,7 @@ module.exports = {
     permission: "",
 	usage: "(question)",
 	args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         const answers = [
 			":8ball: It is certain",
 			":8ball: It is decidedly so",

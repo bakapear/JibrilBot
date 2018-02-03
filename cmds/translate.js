@@ -7,7 +7,7 @@ module.exports = {
     permission: "",
     usage: "<source lang> <target lang> <text>",
     args: 1,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         let source;
         let target;
         if(cmd == "toen") {

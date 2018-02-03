@@ -7,7 +7,7 @@ module.exports = {
     permission: "",
     usage: "<user>",
     args: 1,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         request({
             url: `https://osu.ppy.sh/api/get_user?u=${args[0]}`,
             qs: {

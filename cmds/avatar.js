@@ -4,7 +4,7 @@ module.exports = {
     permission: "",
     usage: "(user mention)",
     args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         let avatarimg;
         if(args == "") avatarimg = msg.author.avatarURL;
         else {

@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
 	usage: "",
 	args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         aki(msg, args, true);
     }
 }

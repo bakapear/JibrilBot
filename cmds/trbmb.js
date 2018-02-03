@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
     usage: "",
     args: 0,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
         request({
             url: `http://api.chew.pro/trbmb`,
             json: true

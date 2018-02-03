@@ -6,7 +6,7 @@ module.exports = {
 	permission: "",
 	usage: "<query>",
 	args: 1,
-    command: function (boot, msg, cmd, args) {
+    command: function (msg, cmd, args) {
 		request({
 			url: `https://api.qwant.com/api/search/images?count=100&safesearch=1&locale=en_US&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
 			headers: {
