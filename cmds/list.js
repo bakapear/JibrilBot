@@ -13,9 +13,21 @@ module.exports = {
                 msg.channel.send("No songs in queue!");
                 return;
             }
+            let songnames = [];
             for(i = 0; i < voiceq[msg.guild.id].songs.length; i++) {
-                msg.channel.send(`\`${voiceq[msg.guild.id].songs[i][1]}\``);
+                let song = voiceq[msg.guild.id].songs[i][1];
+                if(song.length > 50) {
+                    song = song.substring(0, 50) + "...";
+                }
+                songnames.push(`${i+1}. \`${song}\`\n`);
             }
+            msg.channel.send({
+                embed: {
+                    color: 14506163,
+                    title: "Play Queue",
+                    description: songnames.join("")
+                }
+            });
         }
         else {
             msg.channel.send("No songs in queue!");

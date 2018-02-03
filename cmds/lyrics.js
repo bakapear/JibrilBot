@@ -35,7 +35,7 @@ module.exports = {
                     embed: {
                         color: 14024703,
                         title: tracktitle,
-                        description: body.message.body.lyrics.lyrics_body.substring(0, 1020).slice(0, -70)
+                        description: body.message.body.lyrics.lyrics_body.slice(0, -70).substring(0, 1020)
                     },
                 });
             });
