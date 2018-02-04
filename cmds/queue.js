@@ -2,7 +2,7 @@ const core = require("../core.js");
 let voiceq = core.voiceq;
 
 module.exports = {
-    name: ["list"],
+    name: ["q", "queue"],
     desc: "Shows the entire queue.",
     permission: "",
     usage: "",
@@ -19,7 +19,9 @@ module.exports = {
                 if (song.length > 50) {
                     song = song.substring(0, 50) + "...";
                 }
-                songnames.push(`${i + 1}. \`${song}\`\n`);
+                let num = i + ".";
+                if (num == 0) num = "NP:"
+                songnames.push(`${num} \`${song}\`\n`);
             }
             msg.channel.send({
                 embed: {

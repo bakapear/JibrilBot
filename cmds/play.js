@@ -7,7 +7,7 @@ const api_google = process.env.API_GOOGLE;
 let player;
 
 module.exports = {
-	name: ["play", "p"],
+	name: ["play", "ply"],
 	desc: "Plays a youtube video in the voicechannel.",
 	permission: "",
 	usage: "<query>",
@@ -56,18 +56,17 @@ module.exports = {
 										url: voiceq[msg.guild.id].songs[0][2]
 									}
 								}
-							}).then(m => {
-								player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
-								player.setBitrate(96000);
-								player.on("end", () => {
-									voiceq[msg.guild.id].songs.shift();
-									if (!voiceq[msg.guild.id].songs.length < 1) {
-										next(msg, cmd, args, connection, player);
-										return;
-									}
-									voiceq[msg.guild.id].playing = 0;
-									msg.member.voiceChannel.leave();
-								});
+							});
+							player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
+							player.setBitrate(96000);
+							player.on("end", () => {
+								voiceq[msg.guild.id].songs.shift();
+								if (!voiceq[msg.guild.id].songs.length < 1) {
+									next(msg, cmd, args, connection);
+									return;
+								}
+								voiceq[msg.guild.id].playing = 0;
+								msg.member.voiceChannel.leave();
 							});
 						});
 					}
@@ -93,7 +92,7 @@ module.exports = {
 	}
 }
 
-function next(msg, cmd, args, connection, player) {
+function next(msg, cmd, args, connection) {
 	voiceq[msg.guild.id].playing = 1;
 	msg.channel.send({
 		embed: {
@@ -104,17 +103,16 @@ function next(msg, cmd, args, connection, player) {
 				url: voiceq[msg.guild.id].songs[0][2]
 			}
 		}
-	}).then(m => {
-		player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
-		player.setBitrate(96000);
-		player.on("end", () => {
-			voiceq[msg.guild.id].songs.shift();
-			if (!voiceq[msg.guild.id].songs.length < 1) {
-				next(msg, cmd, args, connection, player);
-				return;
-			}
-			voiceq[msg.guild.id].playing = 0;
-			msg.member.voiceChannel.leave();
-		});
+	});
+	player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
+	player.setBitrate(96000);
+	player.on("end", () => {
+		voiceq[msg.guild.id].songs.shift();
+		if (!voiceq[msg.guild.id].songs.length < 1) {
+			next(msg, cmd, args, connection, player);
+			return;
+		}
+		voiceq[msg.guild.id].playing = 0;
+		msg.member.voiceChannel.leave();
 	});
 }
