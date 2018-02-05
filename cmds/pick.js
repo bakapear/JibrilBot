@@ -1,8 +1,8 @@
 module.exports = {
-    name: ["pick"],
+    name: ["pick", "choose"],
     desc: "Picks a choice from multiple. Seperator: \`;\`",
     permission: "",
-    usage: "<choice1;choice2;choice3...>",
+    usage: "<choice1 ; choice2 ; choice3...>",
     args: 1,
     command: function (msg, cmd, args) {
         const parts = msg.content.slice(cmd.length + 1).split(";");
