@@ -2,8 +2,8 @@ const tts = require('google-tts-api');
 
 module.exports = {
     name: ["tts"],
-    desc: "Tee",
-    permission: "Make the bot say something in Text-To-Speech!",
+    desc: "Make the bot say something in Text-To-Speech!",
+    permission: "",
     usage: "<message>",
     args: 1,
     command: function (msg, cmd, args) {
