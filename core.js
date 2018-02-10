@@ -33,6 +33,12 @@ function getFileData(dir) {
 }
 
 bot.on("message", msg => {
+	if(msg.content.includes("notsobot")) {
+		msg.delete();
+	}
+	if(msg.content.includes("not so bot")) {
+		msg.delete();
+	}
 	if (msg.content.startsWith(`<@${bot.user.id}>`)) {
 		msg.channel.startTyping();
 		const content = msg.content.slice(21);
