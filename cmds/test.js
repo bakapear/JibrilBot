@@ -1,16 +1,34 @@
-const yt = require("ytdl-core");
+var Scraper = require ('images-scraper'), google = new Scraper.Google();
 
 module.exports = {
-    name: ["tea"],
+    name: ["wow"],
     desc: "Does some test stuff",
     permission: "",
     usage: "",
     args: 0,
     command: function (msg, cmd, args) {
-        msg.member.voiceChannel.join().then(connection => {
-            let toast = connection.playStream(yt("http://www.youtube.com/watch?v=A02s8omM_hI", { audioonly: true }));
-            toast.setBitrate(96000);
-            toast.on('error', console.error);
+        google.list({
+            keyword: args.join(" "),
+            num: 100,
+            detail: true,
+            nightmare: {
+                show: false
+            }
+        })
+        .then(function (res) {
+			if (res.length < 1) {
+				msg.channel.send("Nothing found!");
+				return;
+			}
+			let mod = 0;
+			if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * res.length);
+			msg.channel.send({
+				embed: {
+					image: {
+						url: res[mod].url
+					}
+				},
+			});
         });
     }
 }
