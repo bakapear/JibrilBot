@@ -35,7 +35,6 @@ module.exports = {
 				}).then(m => {
 					player.on("end", () => {
 						voiceq[msg.guild.id].playing = 0;
-						msg.member.voiceChannel.leave()
 					});
 				});
 				player.on("error", e => {
@@ -74,7 +73,6 @@ module.exports = {
 						});
 						player.on("end", () => {
 							voiceq[msg.guild.id].playing = 0;
-							msg.member.voiceChannel.leave();
 						});
 						player.on("error", e => {
 							console.log(e);

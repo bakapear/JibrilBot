@@ -66,7 +66,6 @@ module.exports = {
 									return;
 								}
 								voiceq[msg.guild.id].playing = 0;
-								msg.member.voiceChannel.leave();
 							});
 						});
 					}
@@ -113,6 +112,5 @@ function next(msg, cmd, args, connection) {
 			return;
 		}
 		voiceq[msg.guild.id].playing = 0;
-		msg.member.voiceChannel.leave();
 	});
 }
