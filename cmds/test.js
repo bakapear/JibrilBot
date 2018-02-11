@@ -1,10 +1,12 @@
+
+
 module.exports = {
-    name: ["wow"],
+    name: ["a"],
     desc: "Does some test stuff",
-    permission: "",
+    permission: "ADMINISTRATOR",
     usage: "",
     args: 0,
     command: function (msg, cmd, args) {
-        msg.channel.send("test");
+        msg.channel.send(eval(msg.content.slice(cmd.length + 1)));
     }
 }

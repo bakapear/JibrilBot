@@ -19,7 +19,7 @@ module.exports = {
 			msg.channel.send("Something is already playing!");
 			return;
 		}
-		if (bot.voiceConnections.get(msg.channel.guild.id) == undefined) {
+		if (voiceq[msg.guild.id].playing == 0) {
 			msg.member.voiceChannel.join().then(connection => {
 				voiceq[msg.guild.id].playing = 2;
 				msg.channel.send({
