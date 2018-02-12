@@ -32,8 +32,11 @@ module.exports = {
 				},
 				json: true
 			}, function (error, response, body) {
-				if (body.items.length < 1) {
-					msg.channel.send("Nothing found!");
+				if(body.items == undefined) {
+					msg.channel.send("No Playlist found!");
+				}
+				else if (body.items.length < 1) {
+					msg.channel.send("Nothing found in Playlist!");
 				}
 				else {
 					for (i = 0; i < body.items.length; i++) {
