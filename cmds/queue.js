@@ -27,7 +27,7 @@ module.exports = {
                 embed: {
                     color: 14506163,
                     title: "Play Queue",
-                    description: songnames.join("")
+                    description: songnames.join("").substring(0,2045) + "..."
                 }
             });
         }

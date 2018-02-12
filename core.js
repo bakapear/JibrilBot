@@ -57,7 +57,10 @@ bot.on("message", msg => {
 		let filenames = [];
 		files.forEach(file => {
 			if (cmd == "help") {
-				if (file.name.includes(args[0])) {
+				if (args == "") {
+					filenames.push(file.name);
+				}
+				else if (file.name.includes(args[0])) {
 					msg.channel.send({
 						embed: {
 							color: 11321432,
@@ -69,9 +72,6 @@ bot.on("message", msg => {
 						}
 					});
 					return;
-				}
-				if (args == "") {
-					filenames.push(file.name);
 				}
 				if (filenames.length == files.length) {
 					msg.channel.send({

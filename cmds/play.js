@@ -4,6 +4,7 @@ let voiceq = core.voiceq;
 const yt = require("ytdl-core");
 const request = require("request");
 const api_google = process.env.API_GOOGLE;
+let toaster;
 let player;
 
 module.exports = {
@@ -50,6 +51,7 @@ module.exports = {
 								embed: {
 									color: 14506163,
 									title: "Now Playing",
+									url: `https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[0][0]}`,
 									description: `\`${voiceq[msg.guild.id].songs[0][1]}\``,
 									image: {
 										url: voiceq[msg.guild.id].songs[0][2]
@@ -114,6 +116,7 @@ module.exports = {
 										color: 14506163,
 										title: "Now Playing",
 										description: `\`${voiceq[msg.guild.id].songs[0][1]}\``,
+										url: `https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[0][0]}`,
 										image: {
 											url: voiceq[msg.guild.id].songs[0][2]
 										}
@@ -137,6 +140,7 @@ module.exports = {
 									color: 14506163,
 									title: "Added to Queue",
 									description: `\`${body.items[0].snippet.title}\``,
+									url: `https://youtube.com/watch?v=${videoid}`,
 									thumbnail: {
 										url: body.items[0].snippet.thumbnails.default.url
 									}
@@ -161,6 +165,7 @@ function next(msg, cmd, args, connection) {
 			color: 14506163,
 			title: "Now Playing",
 			description: `\`${voiceq[msg.guild.id].songs[0][1]}\``,
+			url: `https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[0][0]}`,
 			image: {
 				url: voiceq[msg.guild.id].songs[0][2]
 			}
@@ -171,7 +176,7 @@ function next(msg, cmd, args, connection) {
 	player.on("end", () => {
 		voiceq[msg.guild.id].songs.shift();
 		if (!voiceq[msg.guild.id].songs.length < 1) {
-			next(msg, cmd, args, connection, player);
+			next(msg, cmd, args, connection);
 			return;
 		}
 		voiceq[msg.guild.id].playing = 0;
