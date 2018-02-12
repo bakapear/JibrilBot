@@ -32,7 +32,7 @@ module.exports = {
 				},
 				json: true
 			}, function (error, response, body) {
-				if(body.items == undefined) {
+				if (body.items == undefined) {
 					msg.channel.send("No Playlist found!");
 				}
 				else if (body.items.length < 1) {
@@ -179,17 +179,17 @@ function next(msg, cmd, args, connection) {
 }
 
 function formatPlaylistId(input) {
-    var index = input.indexOf("?list=") != -1 ? input.indexOf("?list=") : -1;
-    var output;
-    //if (index == -1) index = input.indexOf("&list=");
-    if (index != -1) {
-        output = input.substring(index + 6);
-        if (output.indexOf("&") != -1) {
-            output = input.substring(0, input.indexOf("&"));
-        }
-        return output;
-    }
-    else {
-        return -1;
-    }
+	var index = input.indexOf("?list=") != -1 ? input.indexOf("?list=") : -1;
+	var output;
+	//if (index == -1) index = input.indexOf("&list=");
+	if (index != -1) {
+		output = input.substring(index + 6);
+		if (output.indexOf("&") != -1) {
+			output = input.substring(0, input.indexOf("&"));
+		}
+		return output;
+	}
+	else {
+		return -1;
+	}
 }
