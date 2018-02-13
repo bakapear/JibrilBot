@@ -1,5 +1,5 @@
 module.exports = {
-    name: ["clear"],
+    name: ["clear", "prune"],
     desc: "Deletes 100 Messages. Works only if you have the permission \`MANAGE_MESSAGES\`.",
     permission: "MANAGE_MESSAGES",
     usage: "",
