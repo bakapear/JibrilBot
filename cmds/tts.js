@@ -19,7 +19,7 @@ module.exports = {
 			msg.channel.send("Something is already playing!");
 			return;
 		}
-        tts(args.join(" ").substring(0, 200), 'ja', 1).then(function (url) {
+        tts(args.join(" ").substring(0, 200), 'fr', 1).then(function (url) {
             msg.member.voiceChannel.join().then(connection => {
                 voiceq[msg.guild.id].playing = 4;
                 let toast = connection.playStream(url);
