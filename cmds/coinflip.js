@@ -5,8 +5,7 @@ module.exports = {
 	usage: "",
 	args: 0,
 	command: function (msg, cmd, args) {
-		const rnd = Math.random();
-		if (rnd > 0.5) {
+		if (Math.random() >= 0.5) {
 			msg.channel.send("It's **Tails!**");
 		}
 		else {

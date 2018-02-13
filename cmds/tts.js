@@ -7,7 +7,7 @@ module.exports = {
     name: ["tts"],
     desc: "Make the bot say something in Text-To-Speech!",
     permission: "",
-    usage: "<message>",
+    usage: "(language) ; <message>",
     args: 1,
     command: function (msg, cmd, args) {
         if (!voiceq.hasOwnProperty(msg.guild.id)) voiceq[msg.guild.id] = [], voiceq[msg.guild.id].songs = [], voiceq[msg.guild.id].playing = 0;

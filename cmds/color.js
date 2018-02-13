@@ -2,14 +2,23 @@ const request = require("request");
 
 module.exports = {
     name: ["color"],
-    desc: "Displays a color.",
+    desc: "Displays a color. If no color is given, a random one will be chosen. If you put a # infront it will convert it to RGB and if you put 3 numbers it will give you the hex value of those.",
     permission: "",
-    usage: "(color)",
+    usage: "(color/#hex/r g b)",
     args: 0,
     command: function (msg, cmd, args) {
         let link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
         if (args == "") {
             link = `http://www.colourlovers.com/api/colors/random?format=json`
+        }
+        else if (args[0].startsWith("#")) {
+            if (hexToRgb(args[0].substring(1)) == null) { msg.channel.send("Invalid Hex!"); return; }
+            msg.channel.send(`RGB: ${hexToRgb(args[0].substring(1)).r},${hexToRgb(args[0].substring(1)).g},${hexToRgb(args[0].substring(1)).b}`);
+            return;
+        }
+        else if (!isNaN(args[0]) && !isNaN(args[1]) && !isNaN(args[2])) {
+            msg.channel.send(`HEX: ${rgbToHex(parseInt(args[0]), parseInt(args[1]), parseInt(args[2]))}`);
+            return;
         }
         request({
             url: link,
@@ -34,4 +43,25 @@ module.exports = {
             });
         });
     }
+}
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+function hexToRgb(hex) {
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
 }

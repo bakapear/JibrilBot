@@ -92,7 +92,7 @@ bot.on("message", msg => {
 					return;
 				}
 				if (file.args > args.length) {
-					msg.channel.send("Invalid arguments!");
+					msg.channel.send(`Usage: \`.${cmd} ${file.usage}\``);
 					return;
 				}
 				file.command(msg, cmd, args);
