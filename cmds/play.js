@@ -4,7 +4,6 @@ let voiceq = core.voiceq;
 const yt = require("ytdl-core");
 const request = require("request");
 const api_google = process.env.API_GOOGLE;
-let toaster;
 let player;
 
 module.exports = {
