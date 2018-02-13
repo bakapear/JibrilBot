@@ -18,8 +18,10 @@ module.exports = {
         if (voiceq[msg.guild.id].playing >= 1 && voiceq[msg.guild.id].playing != 4) {
 			msg.channel.send("Something is already playing!");
 			return;
-		}
-        tts(args.join(" ").substring(0, 200), 'fr', 1).then(function (url) {
+        }
+        let lang = "en";
+        if(args[1] == ";") {lang = args[0]; args.splice(0,2);}
+        tts(args.join(" ").substring(0, 200), lang, 1).then(function (url) {
             msg.member.voiceChannel.join().then(connection => {
                 voiceq[msg.guild.id].playing = 4;
                 let toast = connection.playStream(url);
