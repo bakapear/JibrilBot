@@ -32,6 +32,7 @@ module.exports = {
                 if (args[1] == "clear") {
                     fs.writeFile(config, "", function (err) {
                         if (err) { console.log(err); return; }
+                        msg.channel.send("Cleared it!");
                     });
                 }
                 else if (isNaN(args[1])) msg.channel.send("I said number!");
@@ -41,6 +42,7 @@ module.exports = {
                     var newdata = darray.join('\n');
                     fs.writeFile(config, newdata, function (err) {
                         if (err) { console.log(err); return; }
+                        msg.channel.send("Deleted dat " + args[1]);
                     });
                 }
                 return;
