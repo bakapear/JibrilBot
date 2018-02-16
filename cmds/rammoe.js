@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 
 module.exports = {
     name: ["nyan", "lick", "cuddle", "smug", "hug", "cute", "kiss", "chu", "pat", "pout", "cry", "stare", "triggered", "slap", "weird", "tickle", "lewd", "owo", "nom", "clap", "potato"],
@@ -6,18 +6,14 @@ module.exports = {
     permission: "",
     usage: "",
     args: 0,
-    command: function (msg, cmd, args) {
-        request({
-            url: `https://rra.ram.moe/i/r?type=${cmd}`,
-            json: true
-        }, function (error, response, body) {
-            msg.channel.send({
-                embed: {
-                    image: {
-                        url: `https://rra.ram.moe${body.path}`
-                    }
-                },
-            });
+    command: async function (msg, cmd, args) {
+        const res = await got(`https://rra.ram.moe/i/r?type=${cmd}`, { json: true });
+        msg.channel.send({
+            embed: {
+                image: {
+                    url: `https://rra.ram.moe${res.body.path}`
+                }
+            },
         });
     }
 }

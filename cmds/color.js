@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 
 module.exports = {
     name: ["color"],
@@ -6,7 +6,7 @@ module.exports = {
     permission: "",
     usage: "(color/#hex/r g b)",
     args: 0,
-    command: function (msg, cmd, args) {
+    command: async function (msg, cmd, args) {
         let link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
         if (args == "") {
             link = `http://www.colourlovers.com/api/colors/random?format=json`
@@ -20,27 +20,19 @@ module.exports = {
             msg.channel.send(`HEX: ${rgbToHex(parseInt(args[0]), parseInt(args[1]), parseInt(args[2]))}`);
             return;
         }
-        request({
-            url: link,
-            json: true
-        }, function (error, response, body) {
-            if (body.length < 1) {
-                msg.channel.send("Nothing found!");
-                return;
-            }
-            let mod = 0;
-            if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.length);
-            let colorint = (body[mod].rgb.red << 16) + (body[mod].rgb.green << 8) + (body[mod].rgb.blue);
-            msg.channel.send({
-                embed: {
-                    color: colorint,
-                    title: body[mod].title,
-                    description: `**Hex** #${body[mod].hex}\n**R** ${body[mod].rgb.red} **G** ${body[mod].rgb.green} **B** ${body[mod].rgb.blue}\n**H** ${body[mod].hsv.hue} **S** ${body[mod].hsv.saturation} **V** ${body[mod].hsv.value}`,
-                    image: {
-                        url: body[mod].imageUrl
-                    }
+        const res = await got(link, { json: true });
+        if (res.body.length < 1) { msg.channel.send("Nothing found!"); return; }
+        let mod = 0;
+        if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * res.body.length);
+        msg.channel.send({
+            embed: {
+                color: (res.body[mod].rgb.red << 16) + (res.body[mod].rgb.green << 8) + (res.body[mod].rgb.blue),
+                title: res.body[mod].title,
+                description: `**Hex** #${res.body[mod].hex}\n**R** ${res.body[mod].rgb.red} **G** ${res.body[mod].rgb.green} **B** ${res.body[mod].rgb.blue}\n**H** ${res.body[mod].hsv.hue} **S** ${res.body[mod].hsv.saturation} **V** ${res.body[mod].hsv.value}`,
+                image: {
+                    url: res.body[mod].imageUrl
                 }
-            });
+            }
         });
     }
 }

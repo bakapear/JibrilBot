@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 
 module.exports = {
     name: ["catgirl"],
@@ -6,26 +6,15 @@ module.exports = {
     permission: "",
     usage: "",
     args: 0,
-    command: function (msg, cmd, args) {
-        request({
-            url: `https://nekos.brussell.me/api/v1/random/image?nsfw=false`,
-            headers: {
-                "User-Agent": "Jibril"
+    command: async function (msg, cmd, args) {
+        const res = await got("https://nekos.brussell.me/api/v1/random/image?nsfw=false", { json: true, headers: { "User-Agent": "Jibril" } });
+        if (res.body.images.length < 1) { msg.channel.send("Nothing found!"); return; }
+        msg.channel.send({
+            embed: {
+                image: {
+                    url: `https://nekos.brussell.me/image/${res.body.images[0].id}`
+                }
             },
-            json: true
-        }, function (error, response, body) {
-            if (body.images.length < 1) {
-                msg.channel.send("Nothing found!");
-            }
-            else {
-                msg.channel.send({
-                    embed: {
-                        image: {
-                            url: `https://nekos.brussell.me/image/${body.images[0].id}`
-                        }
-                    },
-                });
-            }
         });
     }
 }

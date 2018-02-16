@@ -5,11 +5,7 @@ module.exports = {
 	usage: "",
 	args: 0,
 	command: function (msg, cmd, args) {
-		if (Math.random() >= 0.5) {
-			msg.channel.send("It's **Tails!**");
-		}
-		else {
-			msg.channel.send("It's **Heads!**");
-		}
+		if (Math.random() >= 0.5) msg.channel.send("It's **Tails!**");
+		else msg.channel.send("It's **Heads!**");
 	}
 }

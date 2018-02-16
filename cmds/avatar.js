@@ -9,10 +9,7 @@ module.exports = {
         if (args == "") avatarimg = msg.author.avatarURL;
         else {
             let member = msg.mentions.members.first();
-            if (member == undefined) {
-                msg.channel.send("Invalid user!");
-                return;
-            }
+            if (!member) { msg.channel.send("Invalid user!"); return; }
             avatarimg = member.user.avatarURL;
             console.log(member);
         }

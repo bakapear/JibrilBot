@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 
 module.exports = {
     name: ["dog"],
@@ -6,18 +6,14 @@ module.exports = {
     permission: "",
     usage: "",
     args: 0,
-    command: function (msg, cmd, args) {
-        request({
-            url: "https://dog.ceo/api/breeds/image/random",
-            json: true
-        }, function (error, response, body) {
-            msg.channel.send({
-                embed: {
-                    image: {
-                        url: body.message
-                    }
-                },
-            });
+    command: async function (msg, cmd, args) {
+        const res = await got("https://dog.ceo/api/breeds/image/random", { json: true });
+        msg.channel.send({
+            embed: {
+                image: {
+                    url: res.body.message
+                }
+            },
         });
     }
 }

@@ -15,10 +15,7 @@ module.exports = {
                     full.push(res.links[i]);
                 }
             }
-            if (full.length < 1) {
-                msg.channel.send("Nothing found!");
-                return;
-            }
+            if (full.length < 1) { msg.channel.send("Nothing found!"); return; }
             let mod = 0;
             if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * full.length);
             msg.channel.send({

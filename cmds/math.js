@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 
 module.exports = {
     name: ["math"],
@@ -6,12 +6,8 @@ module.exports = {
     permission: "",
     usage: "<math stuff>",
     args: 1,
-    command: function (msg, cmd, args) {
-        request({
-            url: `http://api.mathjs.org/v1/?expr=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
-            json: true
-        }, function (error, response, body) {
-            msg.channel.send(body);
-        });
+    command: async function (msg, cmd, args) {
+        const res = await got(`http://api.mathjs.org/v1/?expr=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`, { json: true });
+        msg.channel.send(res.body);
     }
 }

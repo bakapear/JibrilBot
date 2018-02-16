@@ -17,16 +17,15 @@
   },
   "homepage": "https://github.com/bakapear/Jibril#readme",
   "dependencies": {
-    "base64-img": "^1.0.3",
     "cleverbot.io": "^1.0.4",
     "discord.js": "^11.3.0",
     "ffmpeg-binaries": "^3.2.2-3",
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
     "google-tts-api": "0.0.2",
+    "got": "^8.1.0",
     "jimp": "^0.2.28",
     "node-opus": "^0.2.7",
-    "request": "^2.83.0",
     "ytdl-core": "^0.20.1"
   }
 }

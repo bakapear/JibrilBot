@@ -1,6 +1,6 @@
 module.exports = {
     name: ["try"],
-    desc: "Test command.",
+    desc: "Basically roll command but more options.",
     permission: "",
     usage: "<min> <max> <target>",
     args: 3,
@@ -9,8 +9,8 @@ module.exports = {
         var min = parseInt(args[0]);
         var max = parseInt(args[1]);
         var target = parseInt(args[2]);
-        if(target > max || target < min) {msg.channel.send("Search is not between min and max!"); return;}
         if (min > max) max = [min, min = max][0];
+        if(target > max || target < min) {msg.channel.send("Search is not between min and max!"); return;}
         var count = 0;
         var num;
         while (num != target) {

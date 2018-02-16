@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 
 module.exports = {
     name: ["trbmb"],
@@ -6,12 +6,8 @@ module.exports = {
     permission: "",
     usage: "",
     args: 0,
-    command: function (msg, cmd, args) {
-        request({
-            url: `http://api.chew.pro/trbmb`,
-            json: true
-        }, function (error, response, body) {
-            msg.channel.send(body[0]);
-        });
+    command: async function (msg, cmd, args) {
+        const res = await got("http://api.chew.pro/trbmb", { json: true });
+        msg.channel.send(res.body[0]);
     }
 }

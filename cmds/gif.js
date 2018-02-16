@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 const api_giphy = process.env.API_GIPHY;
 
 module.exports = {
@@ -7,29 +7,22 @@ module.exports = {
     permission: "",
     usage: "(search tags)",
     args: 0,
-    command: function (msg, cmd, args) {
-        request({
-            url: `http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`,
-            qs: {
+    command: async function (msg, cmd, args) {
+        const res = await got(`http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`, {
+            json: true, query: {
                 api_key: api_giphy,
                 rating: "r",
                 format: "json",
                 limit: 1
+            }
+        });
+        if (!res.body.data.image_url) { msg.channel.send("Nothing found!"); return; }
+        msg.channel.send({
+            embed: {
+                image: {
+                    url: res.body.data.image_url
+                }
             },
-            json: true
-        }, function (error, response, body) {
-            if (body.data.image_url == undefined) {
-                msg.channel.send("Nothing found!");
-            }
-            else {
-                msg.channel.send({
-                    embed: {
-                        image: {
-                            url: body.data.image_url
-                        }
-                    },
-                });
-            }
         });
     }
 }

@@ -1,4 +1,4 @@
-const request = require("request");
+const got = require("got");
 
 module.exports = {
     name: ["numfact"],
@@ -6,12 +6,10 @@ module.exports = {
     permission: "",
     usage: "(trivia/date/year/math) (number)",
     args: 0,
-    command: function (msg, cmd, args) {
+    command: async function (msg, cmd, args) {
         let link;
         let search = "random";
-        if (args[1] != undefined) {
-            search = args[1];
-        }
+        if (args[1]) search = args[1];
         switch (args[0]) {
             case "trivia": { link = `http://numbersapi.com/${search}/trivia`; break; }
             case "date": { link = `http://numbersapi.com/${search}/date`; break; }
@@ -20,16 +18,8 @@ module.exports = {
             case undefined: { link = `http://numbersapi.com/random/`; break; }
             default: { msg.channel.send("Invalid argument!"); return; }
         }
-        request({
-            url: link,
-            json: true
-        }, function (error, response, body) {
-            if (body.startsWith("Cannot GET") || body.startsWith("Invalid url")) {
-                msg.channel.send("Nothing found!");
-            }
-            else {
-                msg.channel.send(body);
-            }
-        });
+        const res = await got(link, { json: true });
+        if (res.body.startsWith("Cannot GET") || res.body.startsWith("Invalid url")) { msg.channel.send("Nothing found!"); return; }
+        msg.channel.send(res.body);
     }
 }

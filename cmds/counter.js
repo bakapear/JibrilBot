@@ -21,13 +21,8 @@ module.exports = {
             }
         }
         if (args[0] == "reset") {
-            if (timer[msg.author.id] == 0) {
-                msg.channel.send("No counter is running!");
-            }
-            else {
-                timer[msg.author.id] = 0;
-                msg.channel.send("Counter has been reset!");
-            }
+            if (timer[msg.author.id] == 0) msg.channel.send("No counter is running!");
+            else { timer[msg.author.id] = 0; msg.channel.send("Counter has been reset!"); }
         }
     }
 }
