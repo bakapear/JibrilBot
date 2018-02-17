@@ -66,12 +66,20 @@ module.exports = {
 			}
 		}
 		else {
-			const res = await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true });
-			if (res.body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
-			let mod = 0;
-			if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * res.body.items.length);
-			let videoid = res.body.items[mod].id.videoId;
+			let videoid;
+			if (args[0].startsWith("https://") || args[0].startsWith("http://")) {
+				videoid = formatVideoId(msg.content.slice(cmd.length + 1));
+				if (videoid == -1) { msg.channel.send("Invalid Link!"); return; }
+			}
+			else {
+				const res = await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true });
+				if (res.body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
+				let mod = 0;
+				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * res.body.items.length);
+				videoid = res.body.items[mod].id.videoId;
+			}
 			const res2 = await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}&key=${api_google}`, { json: true });
+			if (res2.body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
 			voiceq[msg.guild.id].songs.push([videoid, res2.body.items[0].snippet.title, res2.body.items[0].snippet.thumbnails.medium.url]);
 			if (voiceq[msg.guild.id].playing == 0) {
 				msg.member.voiceChannel.join().then(connection => {
@@ -150,6 +158,21 @@ function formatPlaylistId(input) {
 	//if (index == -1) index = input.indexOf("&list=");
 	if (index != -1) {
 		output = input.substring(index + 6);
+		if (output.indexOf("&") != -1) {
+			output = input.substring(0, input.indexOf("&"));
+		}
+		return output;
+	}
+	else {
+		return -1;
+	}
+}
+
+function formatVideoId(input) {
+	var index = input.indexOf("?v=") != -1 ? input.indexOf("?v=") : -1;
+	var output;
+	if (index != -1) {
+		output = input.substring(index + 3);
 		if (output.indexOf("&") != -1) {
 			output = input.substring(0, input.indexOf("&"));
 		}
