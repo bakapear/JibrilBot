@@ -1,5 +1,3 @@
-const core = require("../core.js");
-const boot = core.boot;
 let timer = {};
 
 module.exports = {

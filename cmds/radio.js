@@ -1,7 +1,3 @@
-const core = require("../core.js");
-const bot = core.bot;
-let voiceq = core.voiceq;
-
 module.exports = {
 	name: ["radio", "r"],
 	desc: "Streams the listen.moe anime radio in the voicechannel.",

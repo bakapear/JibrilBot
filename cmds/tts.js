@@ -1,7 +1,4 @@
 const tts = require('google-tts-api');
-const core = require("../core.js");
-const bot = core.bot;
-let voiceq = core.voiceq;
 
 module.exports = {
     name: ["tts"],

@@ -1,17 +1,11 @@
 const Discord = require("discord.js");
-const bot = new Discord.Client();
+global.bot = new Discord.Client();
+global.boot = new Date();
 const fs = require("fs");
-const boot = new Date();
 const cleverbot = require('cleverbot.io');
 bot.login(process.env.BOT_TOKEN);
 
-let voiceq = {};
-
-module.exports = {
-	bot,
-	boot,
-	voiceq
-}
+global.voiceq = {};
 
 bot.on("ready", () => {
 	console.log(`Your personal servant ${bot.user.tag} is waiting for orders!`);

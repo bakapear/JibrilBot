@@ -1,7 +1,3 @@
-const core = require("../core.js");
-const bot = core.bot;
-let voiceq = core.voiceq;
-
 module.exports = {
     name: ["stop", "s"],
     desc: "Clears queue and stops voicechatting.",

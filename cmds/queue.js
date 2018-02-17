@@ -1,6 +1,3 @@
-const core = require("../core.js");
-let voiceq = core.voiceq;
-
 module.exports = {
     name: ["q", "queue"],
     desc: "Shows the entire queue or if a number is given, the song at that position.",

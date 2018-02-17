@@ -1,8 +1,5 @@
 const yt = require("ytdl-core");
 const got = require("got");
-const core = require("../core.js");
-const bot = core.bot;
-let voiceq = core.voiceq;
 const api_google = process.env.API_GOOGLE;
 let player;
 

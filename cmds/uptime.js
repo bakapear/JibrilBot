@@ -1,6 +1,3 @@
-const core = require("../core.js");
-const boot = core.boot;
-
 module.exports = {
 	name: ["up", "uptime"],
 	desc: "Tells you how long I've been running for!",

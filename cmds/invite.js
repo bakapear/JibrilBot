@@ -1,7 +1,3 @@
-const core = require("../core.js");
-const bot = core.bot;
-const boot = core.boot;
-
 module.exports = {
     name: ["invite", "inv"],
     desc: "Gives information about me with invite link.",

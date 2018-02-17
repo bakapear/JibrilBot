@@ -1,7 +1,4 @@
 const got = require("got");
-const core = require("../core.js");
-const bot = core.bot;
-let voiceq = core.voiceq;
 const api_github = process.env.API_GITHUB;
 
 module.exports = {
