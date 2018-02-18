@@ -5,6 +5,7 @@ const fs = require("fs");
 const cleverbot = require('cleverbot.io');
 bot.login(process.env.BOT_TOKEN);
 
+global.token_trivia = {};
 global.voiceq = {};
 
 bot.on("ready", () => {
