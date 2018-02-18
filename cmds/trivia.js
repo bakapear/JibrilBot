@@ -18,71 +18,70 @@ module.exports = {
         if (res.body.results.length < 1) { msg.channel.send("No questions found?!"); return; }
         let answers = decodeURIComponent(res.body.results[0].incorrect_answers.concat(res.body.results[0].correct_answer)).split(",").sort();
         let filter = (r, u) => true
-        if (res.body.results[0].type == "boolean") {
-            answers = answers.reverse();
-            filter = (r, u) =>
-                r.emoji.name === "1⃣" ||
-                r.emoji.name === "2⃣" && u.id === msg.author.id
-        }
-        else {
-            switch (answers.length) {
-                case 3: {
-                    filter = (r, u) =>
-                        r.emoji.name === "1⃣" ||
-                        r.emoji.name === "2⃣" ||
-                        r.emoji.name === "3⃣" && u.id === msg.author.id
-                    break;
-                }
-                case 4: {
-                    filter = (r, u) =>
-                        r.emoji.name === "1⃣" ||
-                        r.emoji.name === "2⃣" ||
-                        r.emoji.name === "3⃣" ||
-                        r.emoji.name === "4⃣" && u.id === msg.author.id
-                    break;
-                }
-                case 5: {
-                    filter = (r, u) =>
-                        r.emoji.name === "1⃣" ||
-                        r.emoji.name === "2⃣" ||
-                        r.emoji.name === "3⃣" ||
-                        r.emoji.name === "4⃣" ||
-                        r.emoji.name === "5⃣" && u.id === msg.author.id
-                    break;
-                }
-                case 6: {
-                    filter = (r, u) =>
-                        r.emoji.name === "1⃣" ||
-                        r.emoji.name === "2⃣" ||
-                        r.emoji.name === "3⃣" ||
-                        r.emoji.name === "4⃣" ||
-                        r.emoji.name === "5⃣" ||
-                        r.emoji.name === "6⃣" && u.id === msg.author.id
-                    break;
-                }
-                case 7: {
-                    filter = (r, u) =>
-                        r.emoji.name === "1⃣" ||
-                        r.emoji.name === "2⃣" ||
-                        r.emoji.name === "3⃣" ||
-                        r.emoji.name === "4⃣" ||
-                        r.emoji.name === "5⃣" ||
-                        r.emoji.name === "6⃣" ||
-                        r.emoji.name === "7⃣" && u.id === msg.author.id
-                    break;
-                }
-                case 8: {
-                    filter = (r, u) =>
-                        r.emoji.name === "1⃣" ||
-                        r.emoji.name === "2⃣" ||
-                        r.emoji.name === "3⃣" ||
-                        r.emoji.name === "4⃣" ||
-                        r.emoji.name === "5⃣" ||
-                        r.emoji.name === "6⃣" ||
-                        r.emoji.name === "7⃣" ||
-                        r.emoji.name === "8⃣" && u.id === msg.author.id
-                    break;
-                }
+        if (res.body.results[0].type == "boolean") answers = answers.reverse();
+        switch (answers.length) {
+            case 2: {
+                filter = (r, u) =>
+                    r.emoji.name === "1⃣" ||
+                    r.emoji.name === "2⃣" && u.id === msg.author.id
+                break;
+            }
+            case 3: {
+                filter = (r, u) =>
+                    r.emoji.name === "1⃣" ||
+                    r.emoji.name === "2⃣" ||
+                    r.emoji.name === "3⃣" && u.id === msg.author.id
+                break;
+            }
+            case 4: {
+                filter = (r, u) =>
+                    r.emoji.name === "1⃣" ||
+                    r.emoji.name === "2⃣" ||
+                    r.emoji.name === "3⃣" ||
+                    r.emoji.name === "4⃣" && u.id === msg.author.id
+                break;
+            }
+            case 5: {
+                filter = (r, u) =>
+                    r.emoji.name === "1⃣" ||
+                    r.emoji.name === "2⃣" ||
+                    r.emoji.name === "3⃣" ||
+                    r.emoji.name === "4⃣" ||
+                    r.emoji.name === "5⃣" && u.id === msg.author.id
+                break;
+            }
+            case 6: {
+                filter = (r, u) =>
+                    r.emoji.name === "1⃣" ||
+                    r.emoji.name === "2⃣" ||
+                    r.emoji.name === "3⃣" ||
+                    r.emoji.name === "4⃣" ||
+                    r.emoji.name === "5⃣" ||
+                    r.emoji.name === "6⃣" && u.id === msg.author.id
+                break;
+            }
+            case 7: {
+                filter = (r, u) =>
+                    r.emoji.name === "1⃣" ||
+                    r.emoji.name === "2⃣" ||
+                    r.emoji.name === "3⃣" ||
+                    r.emoji.name === "4⃣" ||
+                    r.emoji.name === "5⃣" ||
+                    r.emoji.name === "6⃣" ||
+                    r.emoji.name === "7⃣" && u.id === msg.author.id
+                break;
+            }
+            case 8: {
+                filter = (r, u) =>
+                    r.emoji.name === "1⃣" ||
+                    r.emoji.name === "2⃣" ||
+                    r.emoji.name === "3⃣" ||
+                    r.emoji.name === "4⃣" ||
+                    r.emoji.name === "5⃣" ||
+                    r.emoji.name === "6⃣" ||
+                    r.emoji.name === "7⃣" ||
+                    r.emoji.name === "8⃣" && u.id === msg.author.id
+                break;
             }
         }
         let options = "";
