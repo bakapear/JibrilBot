@@ -24,7 +24,8 @@ module.exports = {
         }
         if (method == "mp3") {
             const res2 = await got(`https://youtubetoany.com/@api/json/mp3/${videoid}`);
-            var index = res2.body.indexOf("<script");
+            var index = 2000;
+            if(res2.body.indexOf("<script") != -1) index = res2.body.indexOf("<script");
             const json = JSON.parse(res2.body.substring(0, index));
             if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
             let downloads = [];
@@ -42,9 +43,7 @@ module.exports = {
         }
         if (method == "mp4") {
             const res2 = await got(`https://youtubetoany.com/@api/json/videos/${videoid}`);
-            var index = 2000;
-            if(res2.body.indexOf("<script") != -1) index = res2.body.indexOf("<script");
-            const json = JSON.parse(res2.body.substring(0, index));
+            const json = JSON.parse(res2.body);
             if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
             let downloads = [];
             for (i = 0; i < 5; i++) {
