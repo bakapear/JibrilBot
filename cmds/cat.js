@@ -2,7 +2,7 @@ const got = require("got");
 
 module.exports = {
     name: ["cat"],
-    desc: "Displays a random cat picture.",
+    desc: "Displays a random cute cat picture.",
     permission: "",
     usage: "",
     args: 0,
