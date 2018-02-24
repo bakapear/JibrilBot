@@ -47,7 +47,7 @@ module.exports = {
         if (args[0] == "list") {
             let items = [];
             for (i = 0; i < content.length; i++) {
-                items.push(`${i + 1}. \`${content[i]}\`\n`);
+                items.push(`${i + 1}. \`[${content[i]}](${content[i]})\`\n`);
             }
             msg.channel.send({
                 embed: {

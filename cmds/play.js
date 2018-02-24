@@ -13,15 +13,16 @@ module.exports = {
 		if (!voiceq.hasOwnProperty(msg.guild.id)) voiceq[msg.guild.id] = [], voiceq[msg.guild.id].songs = [], voiceq[msg.guild.id].playing = 0;
 		if (!msg.member.voiceChannel) { msg.channel.send("You're not in a voice channel!"); return }
 		if (voiceq[msg.guild.id].playing >= 1 && voiceq[msg.guild.id].playing != 1) { msg.channel.send("Something is already playing!"); return; }
-		let songlen = 0;
 		let playlist = formatPlaylistId(msg.content.slice(cmd.length + 1));
 		if (playlist != -1) {
 			const res = await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlist}&key=${api_google}`, { json: true });
 			if (!res.body.items) { msg.channel.send("No Playlist found!"); return; }
 			if (res.body.items.length < 1) { msg.channel.send("Nothing found in Playlist!"); return; }
 			for (i = 0; i < res.body.items.length; i++) {
-				voiceq[msg.guild.id].songs.push([res.body.items[i].snippet.resourceId.videoId, res.body.items[i].snippet.title, res.body.items[i].snippet.thumbnails.medium.url, res.body.items[i].snippet.thumbnails.default.url]);
-				songlen++;
+				songlist.push([res.body.items[i].snippet.resourceId.videoId, res.body.items[i].snippet.title, res.body.items[i].snippet.thumbnails.medium.url, res.body.items[i].snippet.thumbnails.default.url]);
+			}
+			for (i = 0; i < songlist.length; i++) {
+				voiceq[msg.guild.id].songs.push(songlist[i][0], songlist[i][1], songlist[i][2], songlist[i][3]);
 			}
 			if (voiceq[msg.guild.id].playing == 0) {
 				msg.member.voiceChannel.join().then(connection => {
@@ -54,7 +55,7 @@ module.exports = {
 					embed: {
 						color: 14506163,
 						title: "Added Playlist to Queue",
-						description: `\`${songlen} Videos\``,
+						description: `\`${songlist.length} Videos\``,
 						thumbnail: {
 							url: res.body.items[0].snippet.thumbnails.default.url
 						}
