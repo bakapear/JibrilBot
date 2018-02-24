@@ -14,14 +14,14 @@ module.exports = {
                 if (song.length > 50) song = song.substring(0, 50) + "...";
                 let num = i + ".";
                 if (num == 0) num = "NP:"
-                songnames.push(`${num} \`[${song}](https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[i][0]})\`\n`);
+                songnames.push(`${num} \`${song}\`\n`);
             }
         }
         else {
             if (isNaN(args[0])) { msg.channel.send("Please enter a number!"); return; }
             let num = args[0] + ".";
             if (num == 0) num = "NP:"
-            songnames.push(`${num} \`[${voiceq[msg.guild.id].songs[args[0]][1]}](https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[args[0]][0]})\`\n`);
+            songnames.push(`${num} \`${voiceq[msg.guild.id].songs[args[0]][1]}\`\n`);
         }
         msg.channel.send({
             embed: {
