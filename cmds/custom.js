@@ -41,7 +41,7 @@ module.exports = {
             newdata = newdata.trim();
             if (newdata.endsWith("/n")) newdata = newdata.substring(0, newdata.length - 2);
             fs.writeFileSync(userpath, newdata);
-            msg.channel.send(`Removed \`@${parseInt(args[1]) - 1}\` from your storage.`);
+            msg.channel.send(`Removed \`@${parseInt(args[1])}\` from your storage.`);
             return;
         }
         if (args[0] == "list") {
