@@ -23,7 +23,7 @@ module.exports = {
 				songlist.push([res.body.items[i].snippet.resourceId.videoId, res.body.items[i].snippet.title, res.body.items[i].snippet.thumbnails.medium.url, res.body.items[i].snippet.thumbnails.default.url]);
 			}
 			if (args[1] == "shuffle") {
-				songlist = shuffle(songlist);
+				shuffle(songlist);
 			}
 			for (i = 0; i < songlist.length; i++) {
 				voiceq[msg.guild.id].songs.push([songlist[i][0], songlist[i][1], songlist[i][2], songlist[i][3]]);
@@ -186,13 +186,8 @@ function formatVideoId(input) {
 }
 
 function shuffle(array) {
-	var currentIndex = array.length, temporaryValue, randomIndex;
-	while (0 !== currentIndex) {
-		randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex -= 1;
-		temporaryValue = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temporaryValue;
-	}
-	return array;
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
 }
