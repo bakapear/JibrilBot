@@ -7,11 +7,11 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const res = await got("http://random.cat/meow.php", { json: true });
+        const body = (await got("http://random.cat/meow.php", { json: true })).body;
         msg.channel.send({
             embed: {
                 image: {
-                    url: res.body.file
+                    url: body.file
                 }
             },
         });

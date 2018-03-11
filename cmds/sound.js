@@ -34,19 +34,19 @@ module.exports = {
 			});
 		}
 		else {
-			const res = await got(`https://api.github.com/search/code?q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds&access_token=${api_github}`, { json: true, headers: { "User-Agent": "Jibril" } });
-			if (res.body.total_count < 1) { msg.channel.send("Nothing found!"); return; }
+			const body = (await got(`https://api.github.com/search/code?q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}+in:path+extension:ogg+path:sound/chatsounds/autoadd+repo:Metastruct/garrysmod-chatsounds&access_token=${api_github}`, { json: true, headers: { "User-Agent": "Jibril" } })).body;
+			if (body.total_count < 1) { msg.channel.send("Nothing found!"); return; }
 			msg.member.voiceChannel.join().then(connection => {
 				voiceq[msg.guild.id].playing = 3;
 				let mod = 0;
-				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * res.body.items.length);
-				player = connection.playArbitraryInput(`https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(res.body.items[mod].path.trim())}`);
+				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
+				player = connection.playArbitraryInput(`https://raw.githubusercontent.com/Metastruct/garrysmod-chatsounds/master/${encodeURIComponent(body.items[mod].path.trim())}`);
 				player.setBitrate(96000);
 				msg.channel.send({
 					embed: {
 						color: 14506163,
 						title: "Playing Sound",
-						description: `\`${res.body.items[mod].name}\``
+						description: `\`${body.items[mod].name}\``
 					}
 				});
 				player.on("end", () => {

@@ -7,18 +7,18 @@ module.exports = {
     usage: "(question)",
     args: 0,
     command: async function (msg, cmd, args) {
-        let res = await got(`https://opentdb.com/api.php?amount=1&encode=url3986&token=${token_trivia[msg.guild.id]}`, { json: true });
-        if (res.body.response_code == 3) {
-            const res2 = await got("https://opentdb.com/api_token.php?command=request", { json: true });
+        let body = (await got(`https://opentdb.com/api.php?amount=1&encode=url3986&token=${token_trivia[msg.guild.id]}`, { json: true })).body;
+        if (body.response_code == 3) {
+            body = (await got("https://opentdb.com/api_token.php?command=request", { json: true })).body;
             if (!token_trivia.hasOwnProperty(msg.guild.id)) token_trivia[msg.guild.id] = "";
-            token_trivia[msg.guild.id] = res2.body.token;
-            res = await got(`https://opentdb.com/api.php?amount=1&encode=url3986&token=${token_trivia[msg.guild.id]}`, { json: true });
+            token_trivia[msg.guild.id] = body.token;
+            body = (await got(`https://opentdb.com/api.php?amount=1&encode=url3986&token=${token_trivia[msg.guild.id]}`, { json: true })).body;
         }
-        if (res.body.response_code != 0) { msg.channel.send("Something went wrong!"); return; }
-        if (res.body.results.length < 1) { msg.channel.send("No questions found?!"); return; }
-        let answers = decodeURIComponent(res.body.results[0].incorrect_answers.concat(res.body.results[0].correct_answer)).split(",").sort();
+        if (body.response_code != 0) { msg.channel.send("Something went wrong!"); return; }
+        if (body.results.length < 1) { msg.channel.send("No questions found?!"); return; }
+        let answers = decodeURIComponent(body.results[0].incorrect_answers.concat(body.results[0].correct_answer)).split(",").sort();
         let filter = (r, u) => true
-        if (res.body.results[0].type == "boolean") answers = answers.reverse();
+        if (body.results[0].type == "boolean") answers = answers.reverse();
         switch (answers.length) {
             case 2: {
                 filter = (r, u) =>
@@ -89,7 +89,7 @@ module.exports = {
             options += `**${i + 1}.** ${answers[i]}\n`;
         }
         let colorint = 0;
-        switch (res.body.results[0].difficulty) {
+        switch (body.results[0].difficulty) {
             case "easy": { colorint = 4980605; break; }
             case "medium": { colorint = 16742455; break; }
             case "hard": { colorint = 16727100; break; }
@@ -98,7 +98,7 @@ module.exports = {
         msg.channel.send({
             embed: {
                 color: colorint,
-                title: decodeURIComponent(res.body.results[0].question),
+                title: decodeURIComponent(body.results[0].question),
                 description: options
             },
         }).then(async m => {
@@ -122,7 +122,7 @@ module.exports = {
                     case "8⃣": { pick = answers[7]; break; }
                 }
                 let title, desc;
-                if (pick == decodeURIComponent(res.body.results[0].correct_answer)) {
+                if (pick == decodeURIComponent(body.results[0].correct_answer)) {
                     title = `✅ Right Answer!`;
                     desc = `<@${msg.author.id}> got the right answer!`
                 }
@@ -132,13 +132,13 @@ module.exports = {
                 }
                 options = "";
                 for (i = 0; i < answers.length; i++) {
-                    if (answers[i] == decodeURIComponent(res.body.results[0].correct_answer)) options += `**${i + 1}.** \`${answers[i]}\`\n`;
+                    if (answers[i] == decodeURIComponent(body.results[0].correct_answer)) options += `**${i + 1}.** \`${answers[i]}\`\n`;
                     else options += `**${i + 1}.** ${answers[i]}\n`;
                 }
                 m.edit({
                     embed: {
                         color: colorint,
-                        title: decodeURIComponent(res.body.results[0].question),
+                        title: decodeURIComponent(body.results[0].question),
                         description: options,
                         fields: [
                             {

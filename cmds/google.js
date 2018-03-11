@@ -7,12 +7,12 @@ module.exports = {
     usage: "<query>",
     args: 1,
     command: function (msg, cmd, args) {
-        google(args.join(" "), function (error, res) {
+        google(args.join(" "), function (error, body) {
             if (error) console.error(error);
             let full = [];
-            for (i = 0; i < res.links.length; i++) {
-                if (res.links[i].title != null && res.links[i].description != null && res.links[i].href != null) {
-                    full.push(res.links[i]);
+            for (i = 0; i < body.links.length; i++) {
+                if (body.links[i].title != null && body.links[i].description != null && body.links[i].href != null) {
+                    full.push(body.links[i]);
                 }
             }
             if (full.length < 1) { msg.channel.send("Nothing found!"); return; }

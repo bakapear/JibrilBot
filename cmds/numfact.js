@@ -18,8 +18,8 @@ module.exports = {
             case undefined: { link = `http://numbersapi.com/random/`; break; }
             default: { msg.channel.send("Invalid argument!"); return; }
         }
-        const res = await got(link, { json: true });
-        if (res.body.startsWith("Cannot GET") || res.body.startsWith("Invalid url")) { msg.channel.send("Nothing found!"); return; }
-        msg.channel.send(res.body);
+        const body = (await got(link, { json: true })).body;
+        if (body.startsWith("Cannot GET") || body.startsWith("Invalid url")) { msg.channel.send("Nothing found!"); return; }
+        msg.channel.send(body);
     }
 }

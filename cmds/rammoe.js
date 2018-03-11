@@ -7,11 +7,11 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const res = await got(`https://rra.ram.moe/i/r?type=${cmd}`, { json: true });
+        const body = (await got(`https://rra.ram.moe/i/r?type=${cmd}`, { json: true })).body;
         msg.channel.send({
             embed: {
                 image: {
-                    url: `https://rra.ram.moe${res.body.path}`
+                    url: `https://rra.ram.moe${body.path}`
                 }
             },
         });

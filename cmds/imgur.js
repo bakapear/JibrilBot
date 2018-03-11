@@ -9,8 +9,8 @@ module.exports = {
     usage: "<image link>",
     args: 1,
     command: async function (msg, cmd, args) {
-        const image = await got(args[0]);
-        const base = Buffer.from(JSON.stringify(image.body)).toString("base64");
+        const body = (await got(args[0])).body;
+        const base = Buffer.from(JSON.stringify(body)).toString("base64");
         got("https://api.imgur.com/3/image", { method: "POST", headers: { "Authorization": `Client-ID ${api_imgur}` }, json: base }, function (error, response, body) {
             console.log(body);
         });
@@ -18,11 +18,11 @@ module.exports = {
         msg.channel.send({
             embed: {
                 color: 9094948,
-                title: res.body.data.link,
-                url: res.body.data.link,
-                description: `**Resolution** ${res.body.data.width}x${res.body.data.height}\n**Size** ${res.body.data.size / 1000}KB\n**Type** ${res.body.data.type}`,
+                title: body.data.link,
+                url: body.data.link,
+                description: `**Resolution** ${body.data.width}x${body.data.height}\n**Size** ${body.data.size / 1000}KB\n**Type** ${body.data.type}`,
                 thumbnail: {
-                    url: res.body.data.link
+                    url: body.data.link
                 }
             }
         });

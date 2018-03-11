@@ -8,19 +8,20 @@ module.exports = {
     usage: "(search tags)",
     args: 0,
     command: async function (msg, cmd, args) {
-        const res = await got(`http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`, {
-            json: true, query: {
+        const body = (await got(`http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`, {
+            json: true, 
+            query: {
                 api_key: api_giphy,
                 rating: "r",
                 format: "json",
                 limit: 1
             }
-        });
-        if (!res.body.data.image_url) { msg.channel.send("Nothing found!"); return; }
+        })).body;
+        if (!body.data.image_url) { msg.channel.send("Nothing found!"); return; }
         msg.channel.send({
             embed: {
                 image: {
-                    url: res.body.data.image_url
+                    url: body.data.image_url
                 }
             },
         });

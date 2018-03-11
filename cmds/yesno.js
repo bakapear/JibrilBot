@@ -7,11 +7,11 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const res = await got(`https://yesno.wtf/api?force=${cmd}`, { json: true });
+        const body = (await got(`https://yesno.wtf/api?force=${cmd}`, { json: true })).body;
         msg.channel.send({
             embed: {
                 image: {
-                    url: res.body.image
+                    url: body.image
                 }
             },
         });

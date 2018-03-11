@@ -16,17 +16,17 @@ module.exports = {
             if (videoid == -1) { msg.channel.send("Invalid Link!"); return; }
         }
         else {
-            const res = await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true });
-            if (res.body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
+            const body = (await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true })).body;
+            if (body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
             let mod = 0;
-            if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * res.body.items.length);
-            videoid = res.body.items[mod].id.videoId;
+            if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
+            videoid = body.items[mod].id.videoId;
         }
         if (method == "mp3") {
-            const res2 = await got(`https://youtubetoany.com/@api/json/mp3/${videoid}`);
+            const body = (await got(`https://youtubetoany.com/@api/json/mp3/${videoid}`)).body;
             var index = 2000;
-            if(res2.body.indexOf("<script") != -1) index = res2.body.indexOf("<script");
-            const json = JSON.parse(res2.body.substring(0, index));
+            if(body.indexOf("<script") != -1) index = body.indexOf("<script");
+            const json = JSON.parse(body.substring(0, index));
             if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
             let downloads = [];
             for (i = 0; i < 5; i++) {
@@ -42,8 +42,8 @@ module.exports = {
             return;
         }
         if (method == "mp4") {
-            const res2 = await got(`https://youtubetoany.com/@api/json/videos/${videoid}`);
-            const json = JSON.parse(res2.body);
+            const body = (await got(`https://youtubetoany.com/@api/json/videos/${videoid}`)).body;
+            const json = JSON.parse(body);
             if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
             let downloads = [];
             for (i = 0; i < 5; i++) {

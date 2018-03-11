@@ -15,12 +15,12 @@ module.exports = {
 		if (voiceq[msg.guild.id].playing >= 1 && voiceq[msg.guild.id].playing != 1) { msg.channel.send("Something is already playing!"); return; }
 		let playlist = formatPlaylistId(args[0]);
 		if (playlist != -1) {
-			const res = await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlist}&key=${api_google}`, { json: true });
-			if (!res.body.items) { msg.channel.send("No Playlist found!"); return; }
-			if (res.body.items.length < 1) { msg.channel.send("Nothing found in Playlist!"); return; }
+			const body = (await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlist}&key=${api_google}`, { json: true })).body;
+			if (!body.items) { msg.channel.send("No Playlist found!"); return; }
+			if (body.items.length < 1) { msg.channel.send("Nothing found in Playlist!"); return; }
 			let songlist = [];
-			for (i = 0; i < res.body.items.length; i++) {
-				songlist.push([res.body.items[i].snippet.resourceId.videoId, res.body.items[i].snippet.title, res.body.items[i].snippet.thumbnails.medium.url, res.body.items[i].snippet.thumbnails.default.url]);
+			for (i = 0; i < body.items.length; i++) {
+				songlist.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.medium.url, body.items[i].snippet.thumbnails.default.url]);
 			}
 			if (args[1] == "shuffle") {
 				shuffle(songlist);
@@ -61,7 +61,7 @@ module.exports = {
 						title: "Added Playlist to Queue",
 						description: `\`${songlist.length} Videos\``,
 						thumbnail: {
-							url: res.body.items[0].snippet.thumbnails.default.url
+							url: body.items[0].snippet.thumbnails.default.url
 						}
 					}
 				});
@@ -74,15 +74,15 @@ module.exports = {
 				if (videoid == -1) { msg.channel.send("Invalid Link!"); return; }
 			}
 			else {
-				const res = await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true });
-				if (res.body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
+				const body = (await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true })).body;
+				if (body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
 				let mod = 0;
-				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * res.body.items.length);
-				videoid = res.body.items[mod].id.videoId;
+				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
+				videoid = body.items[mod].id.videoId;
 			}
-			const res2 = await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}&key=${api_google}`, { json: true });
-			if (res2.body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
-			voiceq[msg.guild.id].songs.push([videoid, res2.body.items[0].snippet.title, res2.body.items[0].snippet.thumbnails.medium.url]);
+			const body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}&key=${api_google}`, { json: true })).body;
+			if (body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
+			voiceq[msg.guild.id].songs.push([videoid, body.items[0].snippet.title, body.items[0].snippet.thumbnails.medium.url]);
 			if (voiceq[msg.guild.id].playing == 0) {
 				msg.member.voiceChannel.join().then(connection => {
 					voiceq[msg.guild.id].playing = 1;
@@ -114,10 +114,10 @@ module.exports = {
 					embed: {
 						color: 14506163,
 						title: "Added to Queue",
-						description: `\`${res2.body.items[0].snippet.title}\``,
+						description: `\`${body.items[0].snippet.title}\``,
 						url: `https://youtube.com/watch?v=${videoid}`,
 						thumbnail: {
-							url: res2.body.items[0].snippet.thumbnails.default.url
+							url: body.items[0].snippet.thumbnails.default.url
 						}
 					}
 				});

@@ -7,7 +7,7 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const res = await got("http://api.chew.pro/trbmb", { json: true });
-        msg.channel.send(res.body[0]);
+        const body = (await got("http://api.chew.pro/trbmb", { json: true })).body;
+        msg.channel.send(body[0]);
     }
 }

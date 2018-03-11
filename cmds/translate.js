@@ -11,10 +11,10 @@ module.exports = {
         if(args[1] == ";") {target = args[0]; source = "auto"; args.splice(0,2);}
         else if(args[2] == ";") {target = args[0]; source = args[1]; args.splice(0,3);}
         else {target = "en"; source = "auto";}
-        translate(args.join(" "), {from: source, to: target}).then(res => {
+        translate(args.join(" "), {from: source, to: target}).then(body => {
             let input;
-            if(res.from.text.autoCorrected) {
-                input = res.from.text.value;
+            if(body.from.text.autoCorrected) {
+                input = body.from.text.value;
             }
             else {
                 input = args.join(" ");
@@ -22,8 +22,8 @@ module.exports = {
             msg.channel.send({
                 embed: {
                     color: 7303167,
-                    title: `${res.from.language.iso.toUpperCase()} to ${target.toUpperCase()}`,
-                    description: `From: \`${input}\`\nTo: \`${res.text}\``
+                    title: `${body.from.language.iso.toUpperCase()} to ${target.toUpperCase()}`,
+                    description: `From: \`${input}\`\nTo: \`${body.text}\``
                 }
             });
         }).catch(err => {
