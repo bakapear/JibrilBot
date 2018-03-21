@@ -9,9 +9,7 @@ module.exports = {
     usage: "<image link>",
     args: 1,
     command: async function (msg, cmd, args) {
-        const body = (await got(args[0])).body;
-        const base = Buffer.from(JSON.stringify(body)).toString("base64");
-        got("https://api.imgur.com/3/image", { method: "POST", headers: { "Authorization": `Client-ID ${api_imgur}` }, json: base }, function (error, response, body) {
+        got("https://api.imgur.com/3/image?type=url", { method: "POST", headers: { "Authorization": `Client-ID ${api_imgur}` }, json: {image:  args[0]} }, function (error, response, body) {
             console.log(body);
         });
         return;
