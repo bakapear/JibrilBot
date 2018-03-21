@@ -100,3 +100,7 @@ bot.on("message", msg => {
 process.on('uncaughtException', function (err) {
 	console.log('Caught: ' + err);
 });
+
+process.on('unhandledRejection', function(err, promise) {
+    console.error('Unhandled rejection (promise: ', promise, ', reason: ', err, ').');
+});
