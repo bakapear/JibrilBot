@@ -98,9 +98,9 @@ bot.on("message", msg => {
 });
 
 process.on('uncaughtException', function (err) {
-	console.log('Caught: ' + err);
+	console.log('Caught Exception: ' + err);
 });
 
 process.on('unhandledRejection', function(err, promise) {
-    console.error('Unhandled rejection (promise: ', promise, ', reason: ', err, ').');
+    console.error('Unhandled rejection: ' + err);
 });
