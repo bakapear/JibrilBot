@@ -9,7 +9,7 @@ module.exports = {
     usage: "<url>",
     args: 1,
     command: async function (msg, cmd, args) {
-        const body = (await got("https://api.imgur.com/3/image", { method: "POST", headers: { "Authorization": `Client-ID ${api_imgur}` }, data: {image: args[0], type: "URL"} })).body;
+        const body = (await got("https://api.imgur.com/3/image", { method: "POST", headers: { "Authorization": `Client-ID ${api_imgur}` }, data: {image: btoa(args[0]), type: "base64"} })).body;
         msg.channel.send("body: " + body);
         msg.channel.send({
             embed: {
