@@ -97,10 +97,10 @@ bot.on("message", msg => {
 	});
 });
 
-process.on('uncaughtException', function (err) {
-	console.log('Caught Exception: ' + err);
+process.on('uncaughtException', err => {
+	console.error('Caught Exception: ' + err);
 });
 
-process.on('unhandledRejection', function(err, promise) {
+process.on('unhandledRejection', err => {
     console.error('Unhandled rejection: ' + err);
 });

@@ -1,6 +1,5 @@
 const got = require("got");
 const api_imgur = process.env.API_IMGUR;
-//not working rn
 
 module.exports = {
     name: ["imgur", "ig"],
