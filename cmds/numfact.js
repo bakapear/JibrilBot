@@ -7,7 +7,7 @@ module.exports = {
     usage: "(number) (trivia/date/year/math)",
     args: 0,
     command: async function (msg, cmd, args) {
-        if(isNaN(args[0])) { msg.channel.send(„Invalid number!“); return; }
+        if(isNaN(args[0])) { msg.channel.send("Invalid number!"); return; }
         let link;
         let search = "random";
         if (args[0]) search = args[0];
