@@ -73,7 +73,7 @@ bot.on("message", msg => {
 						embed: {
 							color: 11321432,
 							author: {
-								name: "Commands",
+								name: `Commands (${files.length}|${filenames.length})`,
 								icon_url: "https://i.imgur.com/4AEPwtC.png"
 							},
 							description: `\`${filenames.join("|")}\`\n\nUsage: \`.help <cmd>\``
