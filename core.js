@@ -50,10 +50,12 @@ bot.on("message", msg => {
 	const cmd = args.shift().toLowerCase();
 	getFileData("./cmds").then(files => {
 		let filenames = [];
+        let subcount = 0;
 		files.forEach(file => {
 			if (cmd == "help") {
 				if (args == "") {
 					filenames.push(file.name);
+                  subcount += file.name.length;
 				}
 				else if (file.name.includes(args[0])) {
 					msg.channel.send({
@@ -73,7 +75,7 @@ bot.on("message", msg => {
 						embed: {
 							color: 11321432,
 							author: {
-								name: `Commands (${files.length}|${filenames.length})`,
+								name: `Commands (${filenames.length} - ${subcount})`,
 								icon_url: "https://i.imgur.com/4AEPwtC.png"
 							},
 							description: `\`${filenames.join("|")}\`\n\nUsage: \`.help <cmd>\``
