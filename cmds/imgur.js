@@ -8,7 +8,7 @@ module.exports = {
     usage: "<url>",
     args: 1,
     command: async function (msg, cmd, args) {
-        const body = (await got("https://api.imgur.com/3/image", { method: "POST", headers: { "Authorization": `Client-ID ${api_imgur}` }, json: true, body: {image: args[0], type: "url"} })).body;
+        const body = (await got("https://api.imgur.com/3/image", { method: "POST", headers: { "Authorization": `Client-ID ${api_imgur}` }, json: true, body: { image: args[0], type: "url" } })).body;
         msg.channel.send({
             embed: {
                 color: 9094948,
