@@ -1,7 +1,7 @@
 const got = require("got");
 
 module.exports = {
-    name: ["word", "w"],
+    name: ["word", "w", "wrd"],
     desc: "Search for words using parameters. Type .w list for a list of parameters.",
     permission: "",
     usage: "<param>:<query>; <param2>:<query2>; <...>",
