@@ -5,34 +5,74 @@ module.exports = {
     name: ["steam"],
     desc: "Displays a steam profile!",
     permission: "",
-    usage: "<customurl>",
+    usage: "<customurl/profileid>",
     args: 1,
     command: async function (msg, cmd, args) {
-        let body = (await got(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?vanityurl=${args[0]}&key=${api_steam}`, { json: true })).body;
-        if (body.response.success != 1) { msg.channel.send("User not found!"); return; }
-        body = (await got(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?steamids=${body.response.steamid}&key=${api_steam}`, { json: true })).body;
-        let date = new Date(body.response.players[0].timecreated * 1000);
-        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        let time = `${date.getDate()}th ${months[date.getMonth()]} ${date.getFullYear()}`;
-        let flag = "";
-        if (body.response.players[0].loccountrycode != undefined) { flag = `:flag_${body.response.players[0].loccountrycode.toLowerCase()}:` }
+        const input = msg.content.slice(cmd.length + 1).trim();
+        let id = await customToId(input);
+        if (!id) id = input;
+        let body = (await getSteamSummary(id));
+        if (!body) { msg.channel.send("User not found!"); return; }
+        body = body[0];
+        const friends = await getSteamFriends(id);
+        let buddies = "N/A";
+        if (friends) buddies = (await getSteamSummary(friends[Math.floor(Math.random() * friends.length)].steamid))[0].personaname;
+        const date = new Date(body.timecreated * 1000);
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const time = `${date.getDate()}th ${months[date.getMonth()]} ${date.getFullYear()}`;
+        let flag = "N/A";
+        if (body.loccountrycode) flag = `:flag_${body.loccountrycode.toLowerCase()}:`;
         msg.channel.send({
             embed: {
-                color: 6579455,
-                author: {
-                    name: "Steam Profile",
-                    icon_url: `https://i.imgur.com/cNqF7U8.png`
-                },
-                title: `${body.response.players[0].personaname} ${flag}`,
-                url: body.response.players[0].profileurl,
-                thumbnail: {
-                    url: body.response.players[0].avatarfull
-                },
-                fields: [{
-                    name: "Statistics",
-                    value: `**Created on** ${time}\n**URL** ${body.response.players[0].profileurl}`
-                }],
+                color: 8555775,
+                title: body.personaname,
+                url: body.profileurl,
+                thumbnail: { url: body.avatarfull },
+                description: "**Realname** " + (body.realname ? body.realname : "N/A") + "\n**Country** " + flag + "\n**Created on** " + time + "\n**Friends** " + (friends ? (friends.length ? friends.length : 0) : 0),
+                fields: [
+                    {
+                        name: "Random Friend",
+                        value: buddies
+                    }
+                ]
             }
         });
     }
+}
+
+async function getSteamFriends(id) {
+    const url = "http://api.steampowered.com/ISteamUser/GetFriendList/v0001/"
+    const body = (await got(url, {
+        json: true, query: {
+            key: api_steam,
+            steamid: id,
+            relationship: "friend"
+        }
+    })).body;
+    if (!body || body.friendslist.friends.length < 1) return;
+    return body.friendslist.friends;
+}
+
+async function getSteamSummary(id) {
+    const url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/";
+    const body = (await got(url, {
+        json: true, query: {
+            key: api_steam,
+            steamids: id
+        }
+    })).body;
+    if (!body || !body.response.players || body.response.players.length < 1) return;
+    return body.response.players;
+}
+
+async function customToId(customurl) {
+    const url = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/"
+    const body = (await got(url, {
+        json: true, query: {
+            key: api_steam,
+            vanityurl: customurl
+        }
+    })).body;
+    if (!body || body.response.success !== 1) return;
+    return body.response.steamid;
 }
