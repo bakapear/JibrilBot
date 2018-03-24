@@ -15,8 +15,8 @@ module.exports = {
         if (!body) { msg.channel.send("User not found!"); return; }
         body = body[0];
         const friends = await getSteamFriends(id);
-        let buddies = "N/A";
-        if (friends) buddies = (await getSteamSummary(friends[Math.floor(Math.random() * friends.length)].steamid))[0].personaname;
+        let buddy = "N/A";
+        if (friends) buddy = (await getSteamSummary(friends[Math.floor(Math.random() * friends.length)].steamid))[0];
         const date = new Date(body.timecreated * 1000);
         const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const time = `${date.getDate()}th ${months[date.getMonth()]} ${date.getFullYear()}`;
@@ -32,7 +32,7 @@ module.exports = {
                 fields: [
                     {
                         name: "Random Friend",
-                        value: buddies
+                        value: `[${buddy.personaname}](${buddy.profileurl})`
                     }
                 ]
             }
