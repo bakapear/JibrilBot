@@ -6,7 +6,7 @@ module.exports = {
     args: 0,
     command: function (msg, cmd, args) {
         if (!voiceq.hasOwnProperty(msg.guild.id)) { msg.channel.send("No songs in queue!"); return; }
-        if (voiceq[msg.guild.id].songs.length < 1) { msg.channel.send("No songs in queue!"); return; }
+        if (!voiceq[msg.guild.id].songs.length) { msg.channel.send("No songs in queue!"); return; }
         msg.channel.send({
             embed: {
                 color: 14506163,

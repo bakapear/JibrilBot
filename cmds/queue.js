@@ -5,8 +5,7 @@ module.exports = {
     usage: "(position)",
     args: 0,
     command: function (msg, cmd, args) {
-        if (!voiceq.hasOwnProperty(msg.guild.id)) { msg.channel.send("No songs in queue!"); return; }
-        if (voiceq[msg.guild.id].songs.length < 1) { msg.channel.send("No songs in queue!"); return; }
+        if (!voiceq.hasOwnProperty(msg.guild.id) || !voiceq[msg.guild.id].songs.length) { msg.channel.send("No songs in queue!"); return; }
         let songnames = [];
         if (args == "") {
             for (i = 0; i < voiceq[msg.guild.id].songs.length; i++) {
@@ -19,6 +18,7 @@ module.exports = {
         }
         else {
             if (isNaN(args[0])) { msg.channel.send("Please enter a number!"); return; }
+            if (parseInt(args[0]) < 0 || parseInt(args[0]) > voiceq[msg.guild.id].songs.length-1) { msg.channel.send("Invalid position!"); return; }
             let num = args[0] + ".";
             if (num == 0) num = "NP:"
             songnames.push(`${num} \`${voiceq[msg.guild.id].songs[args[0]][1]}\`\n`);

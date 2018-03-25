@@ -1,193 +1,130 @@
-const yt = require("ytdl-core");
+const ytdl = require("ytdl-core");
 const got = require("got");
 const api_google = process.env.API_GOOGLE;
-let player;
+let dispatcher;
 
 module.exports = {
-	name: ["play", "ply"],
-	desc: "Plays a youtube video or playlist in the voicechannel.",
-	permission: "",
-	usage: "<query> | <videoURL> | <playlistURL> (shuffle)",
-	args: 1,
-	command: async function (msg, cmd, args) {
-		if (!voiceq.hasOwnProperty(msg.guild.id)) voiceq[msg.guild.id] = [], voiceq[msg.guild.id].songs = [], voiceq[msg.guild.id].playing = 0;
-		if (!msg.member.voiceChannel) { msg.channel.send("You're not in a voice channel!"); return }
-		if (voiceq[msg.guild.id].playing >= 1 && voiceq[msg.guild.id].playing != 1) { msg.channel.send("Something is already playing!"); return; }
-		let playlist = formatPlaylistId(args[0]);
-		if (playlist != -1) {
-			const body = (await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlist}&key=${api_google}`, { json: true })).body;
-			if (!body.items) { msg.channel.send("No Playlist found!"); return; }
-			if (body.items.length < 1) { msg.channel.send("Nothing found in Playlist!"); return; }
-			let songlist = [];
-			for (i = 0; i < body.items.length; i++) {
-				songlist.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.medium.url, body.items[i].snippet.thumbnails.default.url]);
-			}
-			if (args[1] == "shuffle") {
-				shuffle(songlist);
-			}
-			for (i = 0; i < songlist.length; i++) {
-				voiceq[msg.guild.id].songs.push([songlist[i][0], songlist[i][1], songlist[i][2], songlist[i][3]]);
-			}
-			if (voiceq[msg.guild.id].playing == 0) {
-				msg.member.voiceChannel.join().then(connection => {
-					voiceq[msg.guild.id].playing = 1;
-					msg.channel.send({
-						embed: {
-							color: 14506163,
-							title: "Now Playing",
-							url: `https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[0][0]}`,
-							description: `\`${voiceq[msg.guild.id].songs[0][1]}\``,
-							image: {
-								url: voiceq[msg.guild.id].songs[0][2]
-							}
-						}
-					});
-					player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
-					player.setBitrate(96000);
-					player.on("end", () => {
-						voiceq[msg.guild.id].songs.shift();
-						if (!voiceq[msg.guild.id].songs.length < 1) {
-							next(msg, cmd, args, connection);
-							return;
-						}
-						voiceq[msg.guild.id].playing = 0;
-					});
-				});
-			}
-			else {
-				msg.channel.send({
-					embed: {
-						color: 14506163,
-						title: "Added Playlist to Queue",
-						description: `\`${songlist.length} Videos\``,
-						thumbnail: {
-							url: body.items[0].snippet.thumbnails.default.url
-						}
-					}
-				});
-			}
-		}
-		else {
-			let videoid;
-			if (args[0].startsWith("https://") || args[0].startsWith("http://")) {
-				videoid = formatVideoId(msg.content.slice(cmd.length + 1));
-				if (videoid == -1) { msg.channel.send("Invalid Link!"); return; }
-			}
-			else {
-				const body = (await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true })).body;
-				if (body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
-				let mod = 0;
-				if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
-				videoid = body.items[mod].id.videoId;
-			}
-			const body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoid}&key=${api_google}`, { json: true })).body;
-			if (body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
-			voiceq[msg.guild.id].songs.push([videoid, body.items[0].snippet.title, body.items[0].snippet.thumbnails.medium.url]);
-			if (voiceq[msg.guild.id].playing == 0) {
-				msg.member.voiceChannel.join().then(connection => {
-					voiceq[msg.guild.id].playing = 1;
-					msg.channel.send({
-						embed: {
-							color: 14506163,
-							title: "Now Playing",
-							description: `\`${voiceq[msg.guild.id].songs[0][1]}\``,
-							url: `https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[0][0]}`,
-							image: {
-								url: voiceq[msg.guild.id].songs[0][2]
-							}
-						}
-					});
-					player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
-					player.setBitrate(96000);
-					player.on("end", () => {
-						voiceq[msg.guild.id].songs.shift();
-						if (!voiceq[msg.guild.id].songs.length < 1) {
-							next(msg, cmd, args, connection);
-							return;
-						}
-						voiceq[msg.guild.id].playing = 0;
-					});
-				});
-			}
-			else {
-				msg.channel.send({
-					embed: {
-						color: 14506163,
-						title: "Added to Queue",
-						description: `\`${body.items[0].snippet.title}\``,
-						url: `https://youtube.com/watch?v=${videoid}`,
-						thumbnail: {
-							url: body.items[0].snippet.thumbnails.default.url
-						}
-					}
-				});
-			}
-		}
-	},
-	end: function () {
-		player.end();
-	}
-}
+    name: ["play"],
+    desc: "Streams audio from a youtube video into the voicechannel.",
+    permission: "",
+    usage: "<query|url>",
+    args: 1,
+    command: async function (msg, cmd, args) {
+        if (!voiceq.hasOwnProperty(msg.guild.id)) voiceq[msg.guild.id] = [], voiceq[msg.guild.id].songs = [], voiceq[msg.guild.id].playing = 0;
+        if (!msg.member.voiceChannel) { msg.channel.send("You're not in a voice channel!"); return }
+        if (voiceq[msg.guild.id].playing !== 0 && voiceq[msg.guild.id].playing !== "play") { msg.channel.send("Something is already playing!"); return; }
+        const data = getQueryData(msg.content.slice(cmd.length + 1));
+        let songs = [];
+        let count = 0;
+        if ("q" in data || "v" in data) {
+            let id;
+            if ("q" in data) {
+                const body = (await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(data.q.trim())}&key=${api_google}`, { json: true })).body;
+                if (!body.items.length) { msg.channel.send("Nothing found!"); return; }
+                const mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.items.length) : 0;
+                id = body.items[mod].id.videoId;
+            }
+            else {
+                if (!ytdl.validateID(data.v)) { msg.channel.send("Invalid ID!"); return; }
+                id = data.v;
+            }
+            const body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${api_google}`, { json: true })).body;
+            songs.push([id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.default.url, body.items[0].snippet.thumbnails.medium.url]);
 
-function next(msg, cmd, args, connection) {
-	voiceq[msg.guild.id].playing = 1;
-	msg.channel.send({
-		embed: {
-			color: 14506163,
-			title: "Now Playing",
-			description: `\`${voiceq[msg.guild.id].songs[0][1]}\``,
-			url: `https://youtube.com/watch?v=${voiceq[msg.guild.id].songs[0][0]}`,
-			image: {
-				url: voiceq[msg.guild.id].songs[0][2]
-			}
-		}
-	});
-	player = connection.playStream(yt(voiceq[msg.guild.id].songs[0][0], { audioonly: true }));
-	player.setBitrate(96000);
-	player.on("end", () => {
-		voiceq[msg.guild.id].songs.shift();
-		if (!voiceq[msg.guild.id].songs.length < 1) {
-			next(msg, cmd, args, connection);
-			return;
-		}
-		voiceq[msg.guild.id].playing = 0;
-	});
-}
+        }
+        else if ("list" in data) {
+            const body = (await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${data.list}&key=${api_google}`, { json: true })).body;
+            //Unhandled rejection: HTTPError: Response code 404 (Not Found)
+            if (!body.items.length) { msg.channel.send("Nothing found!"); return; }
+            for (var i = 0; i < body.items.length; i++) {
+                songs.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.default.url, body.items[i].snippet.thumbnails.medium.url]);
+            }
+            count = body.items.length;
+        }
+        for (var i = 0; i < songs.length; i++) {
+            voiceq[msg.guild.id].songs.push(songs[i]);
+        }
+        if (voiceq[msg.guild.id].playing !== "play") {
+            voiceq[msg.guild.id].playing = "play";
+            msg.member.voiceChannel.join().then(connection => {
+                playQueue(msg, connection, voiceq[msg.guild.id].songs[0][0]);
+            });
+        }
+        else {
+            if (songs.length > 1) printAddList(msg, count, songs[0][3]);
+            else printAddVideo(msg, songs[0][0], songs[0][1], songs[0][3]);
+        }
 
-function formatPlaylistId(input) {
-	var index = input.indexOf("?list=") != -1 ? input.indexOf("?list=") : -1;
-	var output;
-	//if (index == -1) index = input.indexOf("&list=");
-	if (index != -1) {
-		output = input.substring(index + 6);
-		if (output.indexOf("&") != -1) {
-			output = input.substring(0, input.indexOf("&"));
-		}
-		return output;
-	}
-	else {
-		return -1;
-	}
-}
-
-function formatVideoId(input) {
-	var index = input.indexOf("?v=") != -1 ? input.indexOf("?v=") : -1;
-	var output;
-	if (index != -1) {
-		output = input.substring(index + 3);
-		if (output.indexOf("&") != -1) {
-			output = input.substring(0, input.indexOf("&"));
-		}
-		return output;
-	}
-	else {
-		return -1;
-	}
-}
-
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+    },
+    skip: function () {
+        dispatcher.end();
     }
+}
+
+function getQueryData(input) {
+    if (ytdl.validateURL(input) || input.indexOf("playlist?list=") >= 0) {
+        var id;
+        if (input.indexOf("youtu.be/") >= 0) id = input.substring(input.indexOf("youtu.be/") + 9, input.indexOf("?"));
+        input = input.substring(input.indexOf("?") + 1);
+        if (id) input += "&v=" + id;
+        return JSON.parse('{"' + decodeURI(input).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+    }
+    return { q: input };
+}
+
+function printNowPlaying(msg, id, title, thumbnail) {
+    msg.channel.send({
+        embed: {
+            color: 14506163,
+            title: "Now Playing",
+            url: "https://youtube.com/watch?v=" + id,
+            description: "\`" + title + "\`",
+            image: {
+                url: thumbnail
+            }
+        }
+    });
+}
+
+function printAddVideo(msg, id, title, thumbnail) {
+    msg.channel.send({
+        embed: {
+            color: 14506163,
+            title: "Added to Queue",
+            description: "\`" + title + "\`",
+            url: "https://youtube.com/watch?v=" + id,
+            thumbnail: {
+                url: thumbnail
+            }
+        }
+    });
+}
+
+function printAddList(msg, count, thumbnail) {
+    msg.channel.send({
+        embed: {
+            color: 14506163,
+            title: "Added Playlist to Queue",
+            description: "\`" + count + " Videos\`",
+            thumbnail: {
+                url: thumbnail
+            }
+        }
+    });
+}
+
+function playQueue(msg, connection, streamurl) {
+    printNowPlaying(msg, voiceq[msg.guild.id].songs[0][0], voiceq[msg.guild.id].songs[0][1], voiceq[msg.guild.id].songs[0][2]);
+    const stream = ytdl(streamurl, { audioonly: true });
+    dispatcher = connection.playStream(stream);
+    dispatcher.setBitrate(96000);
+    dispatcher.on("end", () => {
+        stream.destroy();
+        voiceq[msg.guild.id].songs.shift();
+        if (!voiceq[msg.guild.id].songs.length) { voiceq[msg.guild.id].playing = 0; return };
+        playQueue(msg, connection, voiceq[msg.guild.id].songs[0][0]);
+    });
+    dispatcher.on("error", err => {
+        console.log(err);
+    });
 }
