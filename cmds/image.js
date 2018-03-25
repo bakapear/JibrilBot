@@ -7,7 +7,11 @@ module.exports = {
     usage: "<query>",
     args: 1,
     command: function (msg, cmd, args) {
-        gis(msg.content.slice(cmd.length + 1), function (error, results) {
+        var opts = {
+            searchTerm: msg.content.slice(cmd.length + 1),
+            queryStringAddition: '&safe=active'
+        };
+        gis(opts, function (error, results) {
             if (error) { console.log(error); return; }
             let mod = 0;
             if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * results.length);
