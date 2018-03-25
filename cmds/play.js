@@ -4,7 +4,7 @@ const api_google = process.env.API_GOOGLE;
 let dispatcher;
 
 module.exports = {
-    name: ["play"],
+    name: ["gay"],
     desc: "Streams audio from a youtube video into the voicechannel.",
     permission: "",
     usage: "<query|url>",
@@ -29,15 +29,14 @@ module.exports = {
                 id = data.v;
             }
             const body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${api_google}`, { json: true })).body;
-            songs.push([id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.standard.url, body.items[0].snippet.thumbnails.medium.url]);
-
+            songs.push([id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
         }
         else if ("list" in data) {
             const body = (await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${data.list}&key=${api_google}`, { json: true })).body;
             //Unhandled rejection: HTTPError: Response code 404 (Not Found)
             if (!body.items.length) { msg.channel.send("Nothing found!"); return; }
             for (var i = 0; i < body.items.length; i++) {
-                songs.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.standard.url, body.items[i].snippet.thumbnails.medium.url]);
+                songs.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.high.url, body.items[i].snippet.thumbnails.medium.url]);
             }
             count = body.items.length;
         }
