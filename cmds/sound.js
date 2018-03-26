@@ -19,9 +19,6 @@ module.exports = {
             const mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.items.length) : 0;
             playSound(msg, connection, body.items[mod].path, body.items[mod].name);
         });
-    },
-    skip: function () {
-        dispatcher.end();
     }
 }
 

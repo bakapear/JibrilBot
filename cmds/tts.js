@@ -20,9 +20,6 @@ module.exports = {
             });
         });
 
-    },
-    skip: function () {
-        dispatcher.end();
     }
 }
 

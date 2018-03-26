@@ -37,8 +37,5 @@ module.exports = {
                 dispatcher.setBitrate(96000);
             }
         });
-    },
-    skip: function () {
-        dispatcher.end();
     }
 }
