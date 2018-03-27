@@ -28,8 +28,9 @@ module.exports = {
 
 async function getRedditPost(msg, rnd, subreddit, query) {
     var sr = subreddit ? "r/" + subreddit + "/" : "";
-    var q = query ? "search/?limit=100&q=" + encodeURIComponent(query.trim()) + "/" : "hot/?limit=100";
+    var q = query ? "search/?limit=100&restrict_sr=true&q=" + encodeURIComponent(query.trim()) + "/" : "hot/?limit=100&restrict_sr=true";
     var url = "http://api.reddit.com/" + sr + q;
+    msg.channel.send(url);
     const body = (await got(url, { json: true })).body.data.children;
     if (!body.length) { msg.channel.send("Nothing found!"); return }
     let post = [];
@@ -39,5 +40,5 @@ async function getRedditPost(msg, rnd, subreddit, query) {
     if (!post.length) { msg.channel.send("Nothing found with images!"); return }
     var mod = rnd ? Math.floor(Math.random() * post.length) : 0;
     var data = post[mod].data;
-    return {title: data.title, image: data.url, url: "https://reddit.com/" + data.permalink, sr: data.subreddit_name_prefixed, id: data.name}
+    return { title: data.title, image: data.url, url: "https://reddit.com" + data.permalink, sr: data.subreddit_name_prefixed, id: data.name }
 }
