@@ -18,9 +18,14 @@ module.exports = {
         }
         else {
             if (isNaN(args[0])) { msg.channel.send("Please enter a number!"); return; }
-            if (parseInt(args[0]) < 0 || parseInt(args[0]) > voiceq[msg.guild.id].songs.length-1) { msg.channel.send("Invalid position!"); return; }
-            let num = args[0] + ".";
-            if (num == 0) num = "NP:"
+            if (parseInt(args[0]) < 0 || parseInt(args[0]) > voiceq[msg.guild.id].songs.length - 1) { msg.channel.send("Invalid position!"); return; }
+            if (args[1] == "rem") {
+                if (args[0] == "0") { msg.channel.send("You cant delete the first song!"); }
+                msg.channel.send(`Removed \`${voiceq[msg.guild.id].songs[args[0]][1]}\``);
+                voiceq[msg.guild.id].songs.splice(args[0], 1);
+                return;
+            }
+            let num = args[0] == "0" ? "NP:" : args[0] + ".";
             songnames.push(`${num} \`${voiceq[msg.guild.id].songs[args[0]][1]}\`\n`);
         }
         msg.channel.send({
