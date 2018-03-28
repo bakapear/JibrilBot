@@ -9,7 +9,7 @@ module.exports = {
     command: function (msg, cmd, args) {
         var opts = {
             searchTerm: msg.content.slice(cmd.length + 1),
-            queryStringAddition: '&safe=active'
+            queryStringAddition: '&safe=off'
         };
         gis(opts, function (error, results) {
             if (error) { console.log(error); return; }
