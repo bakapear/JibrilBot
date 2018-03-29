@@ -7,6 +7,22 @@ module.exports = {
     usage: "<param>:<query>; <param2>:<query2>; <...>",
     args: 1,
     command: async function (msg, cmd, args) {
+        if(args[0] == "list") {
+            msg.channel.send({
+                embed: {
+                    color: 12391334,
+                    title: "List o' Word Parameters",
+                    description: "**ml** - Means like\n**sl** - Sounds like\n**sp** - Spelled Like\n**rel_[code]** - Related Word\n",
+                    fields: [
+                        {
+                            name: "Codes",
+                            value: "**jja** - Noun from adjective\n**jjb** - Adjective from noun\n**syn** - Synonyms\n**trg** - Triggers\n**ant** - Antonyms\n**spc** - \"Kind of\"\n**gen** - \"More general than\"\n**com** - \"Comprises\"\n**par** - \"Part of\"\n**bga** - Frequent followers\n**bgb** - Frequent predecessors\n**rhy** - Rhymes\n**nry** - Approximate ryhmes\n**hom** - Homophones\n**cns** - Constant match\n"
+                        }
+                    ]
+                }
+            });
+            return;
+        }
         const url = "https://api.datamuse.com/words" + formatParams(msg.content.slice(cmd.length + 1));
         const body = (await got(url, { json: true })).body;
         if (body.length < 1) { msg.channel.send("Nothing found!"); return; }
