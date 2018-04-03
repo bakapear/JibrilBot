@@ -11,7 +11,7 @@ module.exports = {
         if (args[0] == "add") {
             if (!args[1]) { msg.channel.send("Please give an imageurl."); return; }
             var length = await addImage(msg.author.id, args[1]);
-            msg.channel.send("Added to your storage @" + (length - 1));
+            msg.channel.send("Added to your storage @ " + (length - 1));
             return;
         }
         if (args[0] == "list") {
@@ -33,7 +33,7 @@ module.exports = {
         if (args[0] == "rem") {
             if (!args[1] || isNaN(args[1])) { msg.channel.send("Please give a valid index."); return; }
             if (await removeImage(msg.author.id, parseInt(args[1]))) {
-                msg.channel.send("Removed @" + parseInt(args[1]));
+                msg.channel.send("Removed @ " + parseInt(args[1]));
             }
             else {
                 msg.channel.send("Invalid index!");
@@ -51,12 +51,11 @@ module.exports = {
             if (parseInt(args[0]) < 0 || parseInt(args[0]) >= body.length) { msg.channel.send("Invalid index!"); return; }
             msg.channel.send({
                 embed: {
-                    color: 9052163,
                     image: {
                         url: body[parseInt(args[0])]
                     },
                     footer: {
-                        text: `${msg.author.username} @${parseInt(args[0])}`
+                        text: `${msg.author.username} @ ${parseInt(args[0])}`
                     }
                 }
             });
@@ -67,7 +66,6 @@ module.exports = {
             const mod = Math.floor(Math.random() * body.length);
             msg.channel.send({
                 embed: {
-                    color: 9052163,
                     image: {
                         url: body[mod]
                     },
