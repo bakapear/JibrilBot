@@ -1,78 +1,133 @@
 const got = require("got");
-const fs = require("fs");
-const config = "./data/";
+const bin_secret = process.env.BIN_SECRET;
 
 module.exports = {
-    name: ["c", "custom"],
-    desc: "Add your own images to storage and display 'em randomly.",
+    name: ["db"],
+    desc: "Add your own images to storage and display 'em randomly or by index.",
     permission: "",
-    usage: "add <imageurl> | remove <index/clear> | list | <index>",
+    usage: "add <imageurl> | rem <index> | clear | list | <index>",
     args: 0,
     command: async function (msg, cmd, args) {
-        if (!fs.existsSync(config)) fs.mkdirSync(config);
-        const userpath = config + msg.author.id + ".cfg";
-        if (!fs.existsSync(userpath)) fs.closeSync(fs.openSync(userpath, 'w'));
-        const data = fs.readFileSync(userpath, { encoding: "utf8" });
-        const content = data.split("\n");
         if (args[0] == "add") {
-            if (!args[1]) { msg.channel.send("Please give a valid image URL to add!"); return; }
-            let newline = "\n";
-            if (data == "") { newline = "" }
-            fs.writeFileSync(userpath, data + newline + args[1]);
-            msg.channel.send(`Added to your storage.`);
-            return;
-        }
-        if (data == "") { msg.channel.send("Your storage is empty!"); return; }
-        if (args[0] == "remove") {
-            if (args[1] == "clear") {
-                fs.writeFileSync(userpath, "");
-                msg.channel.send("Cleared your storage!");
-                return;
-            }
-            if (!args[1] || isNaN(args[1])) { msg.channel.send("Please enter a valid index to remove!"); return; }
-            if (parseInt(args[1]) - 1 < 0 || parseInt(args[1]) - 1 >= content.length) { msg.channel.send("Invalid index!"); return; }
-            let newdata = "";
-            let newline = "\n";
-            for (i = 0; i < content.length; i++) {
-                if (i == parseInt(args[1]) - 1) continue;
-                if (i == content.length - 1) newline = "";
-                newdata += content[i] + newline;
-            }
-            newdata = newdata.trim();
-            if (newdata.endsWith("/n")) newdata = newdata.substring(0, newdata.length - 2);
-            fs.writeFileSync(userpath, newdata);
-            msg.channel.send(`Removed \`@${parseInt(args[1])}\` from your storage.`);
+            if (!args[1]) { msg.channel.send("Please give an imageurl."); return; }
+            var length = await addImage(msg.author.id, args[1]);
+            msg.channel.send("Added to your storage @" + (length - 1));
             return;
         }
         if (args[0] == "list") {
-            let items = [];
-            for (i = 0; i < content.length; i++) {
-                items.push(`${i + 1}. \`${content[i]}\`\n`);
+            var body = await getImages(msg.author.id);
+            if (!body.length) { msg.channel.send("Your storage is empty!"); return; }
+            var list = "";
+            for (var i = 0; i < body.length; i++) {
+                list += `${i}. ${body[i]}\n`
             }
             msg.channel.send({
                 embed: {
-                    color: 1313320,
-                    title: `Storage [${msg.author.username}]`,
-                    description: items.join("").substring(0, 2045)
-                },
+                    color: 9052163,
+                    title: msg.author.username + "'s Storage",
+                    description: list.substring(0, 2045)
+                }
             });
             return;
         }
-        let mod = Math.floor(Math.random() * content.length);
-        if (!isNaN(args[0])) mod = parseInt(args[0] - 1);
-        if (mod < 0 || mod >= content.length) { msg.channel.send("Invalid index!"); return; }
-        msg.channel.send({
-            embed: {
-                color: 1313320,
-                image: {
-                    url: content[mod]
-                },
-                footer: {
-                    text: `by ${msg.author.username} @${mod + 1}`
+        if (args[0] == "rem") {
+            if (!args[1] || isNaN(args[1])) { msg.channel.send("Please give a valid index."); return; }
+            if (await removeImage(msg.author.id, parseInt(args[1]))) {
+                msg.channel.send("Removed @" + parseInt(args[1]));
+            }
+            else {
+                msg.channel.send("Invalid index!");
+            }
+            return;
+        }
+        if (args[0] == "clear") {
+            await clearImages(msg.author.id);
+            msg.channel.send("Cleared your storage!");
+            return;
+        }
+        if (!isNaN(args[0])) {
+            var body = await getImages(msg.author.id);
+            if (!body.length) { msg.channel.send("Your storage is empty!"); return; }
+            if (parseInt(args[0]) < 0 || parseInt(args[0]) >= body.length) { msg.channel.send("Invalid index!"); return; }
+            msg.channel.send({
+                embed: {
+                    color: 9052163,
+                    image: {
+                        url: body[parseInt(args[0])]
+                    },
+                    footer: {
+                        text: `${msg.author.username} @${parseInt(args[0])}`
+                    }
                 }
-            },
-        }).catch(err => {
-            console.log("WHAT: " + err);
-        });
+            });
+        }
+        else {
+            var body = await getImages(msg.author.id);
+            if (!body.length) { msg.channel.send("Your storage is empty!"); return; }
+            const mod = Math.floor(Math.random() * body.length);
+            msg.channel.send({
+                embed: {
+                    color: 9052163,
+                    image: {
+                        url: body[mod]
+                    },
+                    footer: {
+                        text: `${msg.author.username} @${mod}`
+                    }
+                }
+            });
+        }
     }
+}
+
+async function addImage(user, data) {
+    var body = await fetchStorage();
+    if (!body.hasOwnProperty(user)) body[user] = [];
+    body[user].push(data);
+    updateStorage(body);
+    return body[user].length;
+}
+
+async function removeImage(user, index) {
+    var body = await fetchStorage();
+    if (index < 0 || index >= body[user].length) return false;
+    if (!body.hasOwnProperty(user)) body[user] = [];
+    body[user].splice(index, 1);
+    updateStorage(body);
+    return true;
+}
+
+async function clearImages(user) {
+    var body = await fetchStorage();
+    if (!body.hasOwnProperty(user)) body[user] = [];
+    body[user] = [];
+    updateStorage(body);
+}
+
+async function getImages(user) {
+    var body = await fetchStorage();
+    if (!body.hasOwnProperty(user)) body[user] = [];
+    return body[user];
+}
+
+async function fetchStorage() {
+    var url = "http://api.jsonbin.io/b/5ac32d45656b6e0b857c1a57";
+    var body = (await got(url + "/latest", {
+        json: true,
+        headers: {
+            "secret-key": bin_secret
+        }
+    })).body;
+    return body;
+}
+
+async function updateStorage(data) {
+    var url = "http://api.jsonbin.io/b/5ac32d45656b6e0b857c1a57";
+    got.put(url, {
+        json: true,
+        headers: {
+            "secret-key": bin_secret
+        },
+        body: data
+    });
 }
