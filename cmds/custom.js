@@ -70,7 +70,7 @@ module.exports = {
                         url: body[mod]
                     },
                     footer: {
-                        text: `${msg.author.username} @${mod}`
+                        text: `${msg.author.username} @ ${mod}`
                     }
                 }
             });
