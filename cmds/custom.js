@@ -1,116 +1,52 @@
 const got = require("got");
 const bin_secret = process.env.BIN_SECRET;
+const id = "5ac486f8656b6e0b857c3800";
 
 module.exports = {
     name: ["db"],
-    desc: "Add your own images to storage and display 'em randomly or by index.",
+    desc: "Gotta git get~",
     permission: "",
-    usage: "add <imageurl> | rem <index> | clear | list | <index>",
+    usage: "<folder> | <folder> <create/delete> <name> | <folder> <add/rem> <stuff/index>",
     args: 0,
     command: async function (msg, cmd, args) {
-        if (args[0] == "add") {
-            if (!args[1]) { msg.channel.send("Please give an imageurl."); return; }
-            var length = await addImage(msg.author.id, args[1]);
-            msg.channel.send("Added to your storage @ " + (length - 1));
+        if (!args[0]) {
+            msg.channel.send(await getFromFolder(msg.author.id));
             return;
         }
-        if (args[0] == "list") {
-            var body = await getImages(msg.author.id);
-            if (!body.length) { msg.channel.send("Your storage is empty!"); return; }
-            var list = "";
-            for (var i = 0; i < body.length; i++) {
-                list += `${i}. ${body[i]}\n`
-            }
-            msg.channel.send({
-                embed: {
-                    color: 9052163,
-                    title: msg.author.username + "'s Storage",
-                    description: list.substring(0, 2045)
-                }
-            });
+        if (!args[1]) {
+            msg.channel.send(await getFromFolder(msg.author.id, args[0]));
             return;
         }
-        if (args[0] == "rem") {
-            if (!args[1] || isNaN(args[1])) { msg.channel.send("Please give a valid index."); return; }
-            if (await removeImage(msg.author.id, parseInt(args[1]))) {
-                msg.channel.send("Removed @ " + parseInt(args[1]));
-            }
-            else {
-                msg.channel.send("Invalid index!");
-            }
+        if (args[1] == "create") {
+            if (!args[2]) { msg.channel.send("Please give a folder name"); return; }
+            msg.channel.send(await createFolder(msg.author.id, args[2]));
             return;
         }
-        if (args[0] == "clear") {
-            await clearImages(msg.author.id);
-            msg.channel.send("Cleared your storage!");
+        if (args[1] == "delete") {
+            if (!args[2]) { msg.channel.send("Please give a folder name"); return; }
+            msg.channel.send(await deleteFolder(msg.author.id, args[2]));
             return;
         }
-        if (!isNaN(args[0])) {
-            var body = await getImages(msg.author.id);
-            if (!body.length) { msg.channel.send("Your storage is empty!"); return; }
-            if (parseInt(args[0]) < 0 || parseInt(args[0]) >= body.length) { msg.channel.send("Invalid index!"); return; }
-            msg.channel.send({
-                embed: {
-                    image: {
-                        url: body[parseInt(args[0])]
-                    },
-                    footer: {
-                        text: `${msg.author.username} @ ${parseInt(args[0])}`
-                    }
-                }
-            });
+        if (args[1] == "add") {
+            if (!args[2]) { msg.channel.send("Please give something to add"); return; }
+            msg.channel.send(await addToFolder(msg.author.id, args[0], args[2]));
+            return;
         }
-        else {
-            var body = await getImages(msg.author.id);
-            if (!body.length) { msg.channel.send("Your storage is empty!"); return; }
-            const mod = Math.floor(Math.random() * body.length);
-            msg.channel.send({
-                embed: {
-                    image: {
-                        url: body[mod]
-                    },
-                    footer: {
-                        text: `${msg.author.username} @ ${mod}`
-                    }
-                }
-            });
+        if (args[1] == "rem") {
+            if (!args[2] || isNaN(args[2])) { msg.channel.send("Please give a valid index to remove"); return; }
+            msg.channel.send(await addToFolder(msg.author.id, args[0], parseInt(args[2])));
+            return;
+        }
+        if(args[0] == "DEBUG") {
+            msg.channel.send(await fetchDatabase());
+            return;
         }
     }
 }
 
-async function addImage(user, data) {
-    var body = await fetchStorage();
-    if (!body.hasOwnProperty(user)) body[user] = [];
-    body[user].push(data);
-    updateStorage(body);
-    return body[user].length;
-}
-
-async function removeImage(user, index) {
-    var body = await fetchStorage();
-    if (index < 0 || index >= body[user].length) return false;
-    if (!body.hasOwnProperty(user)) body[user] = [];
-    body[user].splice(index, 1);
-    updateStorage(body);
-    return true;
-}
-
-async function clearImages(user) {
-    var body = await fetchStorage();
-    if (!body.hasOwnProperty(user)) body[user] = [];
-    body[user] = [];
-    updateStorage(body);
-}
-
-async function getImages(user) {
-    var body = await fetchStorage();
-    if (!body.hasOwnProperty(user)) body[user] = [];
-    return body[user];
-}
-
-async function fetchStorage() {
-    var url = "http://api.jsonbin.io/b/5ac32d45656b6e0b857c1a57";
-    var body = (await got(url + "/latest", {
+async function fetchDatabase() {
+    var url = `https://api.jsonbin.io/b/${id}/latest`;
+    var body = (await got(url, {
         json: true,
         headers: {
             "secret-key": bin_secret
@@ -119,13 +55,67 @@ async function fetchStorage() {
     return body;
 }
 
-async function updateStorage(data) {
-    var url = "http://api.jsonbin.io/b/5ac32d45656b6e0b857c1a57";
-    got.put(url, {
+async function updateDatabase(data) {
+    var url = `https://api.jsonbin.io/b/${id}/`;
+    await got.put(url, {
         json: true,
         headers: {
-            "secret-key": bin_secret
+            "secret-key": bin_secret,
+            "content-type": "application/json"
         },
         body: data
     });
 }
+
+async function createFolder(user, folder) {
+    var body = await fetchDatabase();
+    if (!body) body = {};
+    if (!body.hasOwnProperty(user)) body[user] = {};
+    if (body[user].hasOwnProperty(folder)) return false;
+    body[user][folder] = [];
+    await updateDatabase(body);
+    return true;
+}
+
+async function deleteFolder(user, folder) {
+    var body = await fetchDatabase();
+    if (!body) body = {};
+    if (!body.hasOwnProperty(user)) body[user] = {};
+    if (!body[user].hasOwnProperty(folder)) return false;
+    delete body[user][folder];
+    await updateDatabase(body);
+    return true;
+}
+
+async function addToFolder(user, folder, stuff) {
+    var body = await fetchDatabase();
+    if (!body) body = {};
+    if (!body.hasOwnProperty(user)) body[user] = {};
+    if (!body[user].hasOwnProperty(folder)) return false;
+    body[user][folder].push(stuff);
+    await updateDatabase(body);
+    return true;
+}
+
+async function removeFromFolder(user, folder, index) {
+    var body = await fetchDatabase();
+    if (!body) body = {};
+    if (!body.hasOwnProperty(user)) body[user] = {};
+    if (!body[user].hasOwnProperty(folder)) return false;
+    if (index < 0 || index >= body[user][folder].length) return -1;
+    body[user][folder].splice(index, 1);
+    await updateDatabase(body);
+    return true;
+}
+
+async function getFromFolder(user, folder, index) {
+    var body = await fetchDatabase();
+    if (!body) body = {};
+    if (!body.hasOwnProperty(user)) body[user] = {};
+    var folder = folder || Object.keys(body[user])[Math.floor(Math.random() * body[user].length)];
+    if (!body[user].hasOwnProperty(folder)) return false;
+    var index = index || Math.floor(Math.random() * body[user][folder].length);
+    if (index < 0 || index >= body[user][folder].length) return -1;
+    return body[user][folder][index];
+}
+
