@@ -5,7 +5,7 @@ module.exports = {
     name: ["ech"],
     desc: "Add n' remove stuff from your folders n' files. (Ya know the drill!)",
     permission: "",
-    usage: "<folder> | <folder> <create/delete/add/rem> <stuff/index> | (folder) list",
+    usage: "<folder> | <folder> <create/delete/rename/add/rem> <stuff/index> | (folder) list",
     args: 0,
     command: async function (msg, cmd, args) {
         if (!args[0]) { msg.reply("pls specify a folder u feg xd"); return; }
