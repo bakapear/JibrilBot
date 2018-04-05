@@ -38,7 +38,7 @@ module.exports = {
             if (body == -2) { msg.reply("Folder is empty!"); return; }
             if (body == -1) { msg.reply("Invalid index!"); return; }
             if (body.data.startsWith("http://") || body.data.startsWith("https://")) {
-                msg.reply({
+                msg.channel.send({
                     embed: {
                         color: 4212432,
                         image: {
