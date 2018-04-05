@@ -23,10 +23,10 @@ module.exports = {
             for (var i = 0; i < Object.keys(body).length; i++) {
                 folders += `${i}. \`${Object.keys(body)[i]}: ${body[Object.keys(body)[i]]}\`\n`;
             }
-            msg.reply({
+            msg.channel.send({
                 embed: {
                     color: 4212432,
-                    title: "Your Folders",
+                    title: msg.author.username + "'s folders",
                     description: folders.substring(0, 2045)
                 }
             });
@@ -62,10 +62,10 @@ module.exports = {
                 files += `${i}. \`${body[i]}\`\n`;
             }
             if (!files) { msg.reply("Folder is empty!"); return; }
-            msg.reply({
+            msg.channel.send({
                 embed: {
                     color: 4212432,
-                    title: "Files in " + args[0],
+                    title: msg.author.username + "'s files in " + args[0],
                     description: files.substring(0, 2045)
                 }
             });
