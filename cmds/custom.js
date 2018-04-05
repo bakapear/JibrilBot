@@ -8,12 +8,12 @@ module.exports = {
     usage: "<folder> | <folder> <create/delete/add/rem> <stuff/index> | (folder) list",
     args: 0,
     command: async function (msg, cmd, args) {
-        if (!args[0]) { msg.channel.send("pls specify a folder u feg xd"); return; }
+        if (!args[0]) { msg.reply("pls specify a folder u feg xd"); return; }
         /*
         if (!args[0]) {
             const body = await getFromFolder(msg.author.id);
-            if (!body) { msg.channel.send("Nothing found!"); return; }
-            msg.channel.send(body);
+            if (!body) { msg.reply("Nothing found!"); return; }
+            msg.reply(body);
             return;
         }
         */
@@ -23,7 +23,7 @@ module.exports = {
             for (var i = 0; i < Object.keys(body).length; i++) {
                 folders += `${i}. \`${Object.keys(body)[i]}: ${body[Object.keys(body)[i]]}\`\n`;
             }
-            msg.channel.send({
+            msg.reply({
                 embed: {
                     color: 4212432,
                     title: "Your Folders",
@@ -34,11 +34,11 @@ module.exports = {
         }
         if (!args[1] || !isNaN(args[1])) {
             const body = await getFromFolder(msg.author.id, args[0], !isNaN(args[1]) ? parseInt(args[1]) : undefined);
-            if (!body) { msg.channel.send("Folder does not exist!"); return; }
-            if (body == -2) { msg.channel.send("Folder is empty!"); return; }
-            if (body == -1) { msg.channel.send("Invalid index!"); return; }
+            if (!body) { msg.reply("Folder does not exist!"); return; }
+            if (body == -2) { msg.reply("Folder is empty!"); return; }
+            if (body == -1) { msg.reply("Invalid index!"); return; }
             if (body.data.startsWith("http://") || body.data.startsWith("https://")) {
-                msg.channel.send({
+                msg.reply({
                     embed: {
                         color: 4212432,
                         image: {
@@ -51,18 +51,18 @@ module.exports = {
                 });
                 return;
             }
-            msg.channel.send(body.data);
+            msg.reply(body.data);
             return;
         }
         if (args[1] == "list") {
             const body = await getFolderFiles(msg.author.id, args[0]);
-            if (!body) { msg.channel.send("Folder does not exist!"); return; }
+            if (!body) { msg.reply("Folder does not exist!"); return; }
             let files = "";
             for (var i = 0; i < body.length; i++) {
                 files += `${i}. \`${body[i]}\`\n`;
             }
-            if (!files) { msg.channel.send("Folder is empty!"); return; }
-            msg.channel.send({
+            if (!files) { msg.reply("Folder is empty!"); return; }
+            msg.reply({
                 embed: {
                     color: 4212432,
                     title: "Files in " + args[0],
@@ -73,32 +73,32 @@ module.exports = {
         }
         if (args[1] == "create") {
             const body = await createFolder(msg.author.id, args[0]);
-            if (!body) { msg.channel.send("Folder already exists!"); return; }
-            msg.channel.send("Created " + args[0] + "!");
+            if (!body) { msg.reply("Folder already exists!"); return; }
+            msg.reply("Created " + args[0] + "!");
             return;
         }
         if (args[1] == "delete") {
             const body = await deleteFolder(msg.author.id, args[0]);
-            if (!body) { msg.channel.send("Folder does not exist!"); return; }
-            msg.channel.send("Deleted " + args[0] + "!");
+            if (!body) { msg.reply("Folder does not exist!"); return; }
+            msg.reply("Deleted " + args[0] + "!");
             return;
         }
         if (args[1] == "add") {
-            if (!args[2]) { msg.channel.send("Please give something to add"); return; }
+            if (!args[2]) { msg.reply("Please give something to add"); return; }
             var folder = args[0];
             args.splice(0, 2);
             const body = await addToFolder(msg.author.id, folder, args.join(" "));
-            if (!body) { msg.channel.send("Folder does not exist!"); return; }
-            msg.channel.send("Added " + (body - 1) + ". to " + folder + "!");
+            if (!body) { msg.reply("Folder does not exist!"); return; }
+            msg.reply("Added " + (body - 1) + ". to " + folder + "!");
             return;
         }
         if (args[1] == "rem") {
-            if (!args[2] || isNaN(args[2])) { msg.channel.send("Please give a valid index to remove"); return; }
+            if (!args[2] || isNaN(args[2])) { msg.reply("Please give a valid index to remove"); return; }
             const body = await removeFromFolder(msg.author.id, args[0], parseInt(args[2]));
-            if (!body) { msg.channel.send("Folder does not exist!"); return; }
-            if (body == -2) { msg.channel.send("Folder is empty!"); return; }
-            if (body == -1) { msg.channel.send("Invalid index!"); return; }
-            msg.channel.send("Removed " + parseInt(args[2]) + ". from " + args[0] + "!");
+            if (!body) { msg.reply("Folder does not exist!"); return; }
+            if (body == -2) { msg.reply("Folder is empty!"); return; }
+            if (body == -1) { msg.reply("Invalid index!"); return; }
+            msg.reply("Removed " + parseInt(args[2]) + ". from " + args[0] + "!");
             return;
         }
     }
