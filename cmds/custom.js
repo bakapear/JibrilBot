@@ -2,7 +2,7 @@ const got = require("got");
 const bin_secret = process.env.BIN_SECRET;
 
 module.exports = {
-    name: ["c"],
+    name: ["ech"],
     desc: "Add n' remove stuff from your folders n' files. (Ya know the drill!)",
     permission: "",
     usage: "<folder> | <folder> <create/delete/add/rem> <stuff/index> | (folder) list",
@@ -83,6 +83,13 @@ module.exports = {
             msg.reply("Deleted " + args[0] + "!");
             return;
         }
+        if (args[1] == "rename") {
+            if (!args[2]) { msg.reply("Please give a new name for the folder"); return; }
+            const body = await renameFolder(msg.author.id, args[0], args[2]);
+            if (!body) { msg.reply("Folder does not exist!"); return; }
+            msg.reply("Renamed " + args[0] + " to " + body + "!");
+            return;
+        }
         if (args[1] == "add") {
             if (!args[2]) { msg.reply("Please give something to add"); return; }
             var folder = args[0];
@@ -142,6 +149,17 @@ async function deleteFolder(user, folder) {
     delete body[user][folder];
     await updateDatabase(body);
     return true;
+}
+
+async function renameFolder(user, folder, name) {
+    var body = await fetchDatabase();
+    if (!body) body = {};
+    if (!body.hasOwnProperty(user)) body[user] = {};
+    if (!body[user].hasOwnProperty(folder)) return false;
+    body[user][name] = body[user][folder];
+    delete body[user][folder];
+    await updateDatabase(body);
+    return name;
 }
 
 async function addToFolder(user, folder, stuff) {
