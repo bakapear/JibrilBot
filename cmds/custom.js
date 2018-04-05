@@ -2,10 +2,10 @@ const got = require("got");
 const bin_secret = process.env.BIN_SECRET;
 
 module.exports = {
-    name: ["db"],
+    name: ["c"],
     desc: "Add n' remove stuff from your folders n' files. (Ya know the drill!)",
     permission: "",
-    usage: "<folder> | <folder> <create/delete> | <folder> <add/rem> <stuff/index> | (folder) list",
+    usage: "<folder> | <folder> <create/delete/add/rem> <stuff/index> | (folder) list",
     args: 0,
     command: async function (msg, cmd, args) {
         if (!args[0]) { msg.channel.send("pls specify a folder u feg xd"); return; }
@@ -85,9 +85,11 @@ module.exports = {
         }
         if (args[1] == "add") {
             if (!args[2]) { msg.channel.send("Please give something to add"); return; }
-            const body = await addToFolder(msg.author.id, args[0], args[2]);
+            var folder = args[0];
+            args.splice(0, 2);
+            const body = await addToFolder(msg.author.id, folder, args.join(" "));
             if (!body) { msg.channel.send("Folder does not exist!"); return; }
-            msg.channel.send("Added " + (body - 1) + ". to " + args[0] + "!");
+            msg.channel.send("Added " + (body - 1) + ". to " + folder + "!");
             return;
         }
         if (args[1] == "rem") {
