@@ -2,7 +2,7 @@ const got = require("got");
 const bin_secret = process.env.BIN_SECRET;
 
 module.exports = {
-    name: ["ech"],
+    name: ["c"],
     desc: "Add n' remove stuff from your folders n' files. (Ya know the drill!)",
     permission: "",
     usage: "<folder> | <folder> <create/delete/rename/add/rem> <stuff/index> | (folder) list",
