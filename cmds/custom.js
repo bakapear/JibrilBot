@@ -5,18 +5,29 @@ module.exports = {
     name: ["c"],
     desc: "Add n' remove stuff from your folders n' files. (Ya know the drill!)",
     permission: "",
-    usage: "<folder> | <folder> <create/delete/rename/add/rem> <stuff/index> | (folder) list",
+    usage: "(folder) | (folder) list | <folder> <create/delete/rename/add/rem> <stuff/index>",
     args: 0,
     command: async function (msg, cmd, args) {
-        if (!args[0]) { msg.reply("pls specify a folder u feg xd"); return; }
-        /*
         if (!args[0]) {
             const body = await getFromFolder(msg.author.id);
-            if (!body) { msg.reply("Nothing found!"); return; }
-            msg.reply(body);
+            if (body == -3) { msg.reply("You currently have no folders with content!"); return; }
+            if (!body) { msg.reply("Folder does not exist!"); return; }
+            if (body == -2) { msg.reply("Folder is empty!"); return; }
+            if (body == -1) { msg.reply("Invalid index!"); return; }
+            if (body.data.startsWith("http://") || body.data.startsWith("https://")) {
+                msg.channel.send({
+                    embed: {
+                        color: 4212432,
+                        image: {
+                            url: body.data
+                        }
+                    }
+                });
+                return;
+            }
+            msg.reply(body.data);
             return;
         }
-        */
         if (args[0] == "list") {
             const body = await getFolders(msg.author.id);
             let folders = "";
@@ -35,6 +46,7 @@ module.exports = {
         if (!args[1] || !isNaN(args[1])) {
             const body = await getFromFolder(msg.author.id, args[0], !isNaN(args[1]) ? parseInt(args[1]) : undefined);
             if (!body) { msg.reply("Folder does not exist!"); return; }
+            if (body == -3) { msg.reply("You currently have no folders with content!"); return; }
             if (body == -2) { msg.reply("Folder is empty!"); return; }
             if (body == -1) { msg.reply("Invalid index!"); return; }
             if (body.data.startsWith("http://") || body.data.startsWith("https://")) {
@@ -43,9 +55,6 @@ module.exports = {
                         color: 4212432,
                         image: {
                             url: body.data
-                        },
-                        footer: {
-                            text: msg.author.username + " @ " + body.index
                         }
                     }
                 });
@@ -188,7 +197,15 @@ async function getFromFolder(user, folder, index) {
     var body = await fetchDatabase();
     if (!body) body = {};
     if (!body.hasOwnProperty(user)) body[user] = {};
-    if (!folder) folder = Object.keys(body[user])[Math.floor(Math.random() * Object.keys(body[user]).length)];
+    if (!folder) {
+        var folders = [];
+        for (var i = 0; i < Object.keys(body[user]).length; i++) {
+            if (body[user].hasOwnProperty(Object.keys(body[user])[i]) && body[user][Object.keys(body[user])[i]].length)
+                folders.push(Object.keys(body[user])[i]);
+        }
+        if (folders.length) return -3;
+        folder = folders[Math.floor(Math.random() * folders.length)];
+    }
     if (!body[user].hasOwnProperty(folder)) return false;
     if (!body[user][folder].length) return -2;
     if (index == undefined) index = Math.floor(Math.random() * body[user][folder].length);
