@@ -21,7 +21,7 @@ module.exports = {
                         description: `Joined ${connection.channel} streaming *lofi hip hop radio*!`
                     }
                 });
-                let stream = yt("https://www.youtube.com/watch?v=8XiqrERZo_8", { range: { starts: 999999 } });
+                let stream = yt("https://www.youtube.com/watch?v=ohQPySWJToo");
                 dispatcher = connection.playStream(stream);
                 dispatcher.setBitrate(96000);
             }
