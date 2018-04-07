@@ -10,8 +10,8 @@ module.exports = {
     command: async function (msg, cmd, args) {
         if (!args[0]) {
             const body = await getFromFolder(msg.author.id);
-            if (body == -3) { msg.reply("You currently have no folders with content!"); return; }
             if (!body) { msg.reply("Folder does not exist!"); return; }
+            if (body == -3) { msg.reply("You currently have no folders with content!"); return; }
             if (body == -2) { msg.reply("Folder is empty!"); return; }
             if (body == -1) { msg.reply("Invalid index!"); return; }
             if (body.data.startsWith("http://") || body.data.startsWith("https://")) {
@@ -203,7 +203,7 @@ async function getFromFolder(user, folder, index) {
             if (body[user].hasOwnProperty(Object.keys(body[user])[i]) && body[user][Object.keys(body[user])[i]].length)
                 folders.push(Object.keys(body[user])[i]);
         }
-        if (folders.length) return -3;
+        if (!folders.length) return -3;
         folder = folders[Math.floor(Math.random() * folders.length)];
     }
     if (!body[user].hasOwnProperty(folder)) return false;
