@@ -12,16 +12,19 @@ module.exports = {
         if(!body.totalResults) {msg.channel.send("Nothing found!"); return;}
         var mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.articles.length) : 0;
         body = body.articles[mod];
+        var footer = body.publishedAt;
+        if(body.author) footer = body.author + " @ " + body.publishedAt;
         msg.channel.send({
             embed: {
                 title: body.title,
                 url: body.url,
                 description: body.description,
+                color: 4598015,
                 image: {
                     url: body.urlToImage
                 },
                 footer: {
-                    text: body.author + " @ " + body.publishedAt
+                    text: footer
                 }
             },
         });
@@ -33,7 +36,3 @@ async function getHeadlines(country) {
     var body = (await got(url, { json: true })).body;
     return body;
 }
-
-getHeadlines("wdja").then(e => {
-    console.log(e);
-});
