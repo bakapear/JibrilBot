@@ -9,7 +9,7 @@ module.exports = {
     args: 1,
     command: async function (msg, cmd, args) {
         var body = getHeadlines(args[0]);
-        if(!body.totalResults) {msg.channel.send("Nothing found!"); return;}
+        if(body.totalResults < 1) {msg.channel.send("Nothing found!"); return;}
         var mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.articles.length) : 0;
         body = body.articles[mod];
         msg.channel.send({
