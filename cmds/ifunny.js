@@ -12,7 +12,7 @@ module.exports = {
         msg.channel.send({
             embed: {
                 image: {
-                    url: body[mod].img
+                    url: body.result[mod].img
                 }
             }
         });
