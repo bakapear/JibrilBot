@@ -8,12 +8,12 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        let body = await ifunny({shuffle: true});
-        let mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.result.length) : 0;
+        let mod = msg.content.startsWith(".") ? true : false;
+        let body = await ifunny({shuffle: mod});
         msg.channel.send({
             embed: {
                 image: {
-                    url: body.result[mod].img
+                    url: body.result[Math.floor(Math.random() * body.result.length)].img
                 }
             }
         });
