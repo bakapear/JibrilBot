@@ -7,10 +7,12 @@ module.exports = {
     usage: "(number) (trivia/date/year/math)",
     args: 0,
     command: async function (msg, cmd, args) {
-        if (isNaN(args[0])) { msg.channel.send("Invalid number!"); return; }
         let link;
         let search = "random";
-        if (args[0]) search = args[0];
+        if (args[0]) {
+            if (isNaN(args[0])) { msg.channel.send("Invalid number!"); return; }
+            search = args[0];
+        }
         switch (args[1]) {
             case "trivia": { link = `http://numbersapi.com/${search}/trivia`; break; }
             case "date": { link = `http://numbersapi.com/${search}/date`; break; }
