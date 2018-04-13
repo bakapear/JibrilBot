@@ -5,7 +5,7 @@ module.exports = {
     usage: "(something)",
     args: 0,
     command: function (msg, cmd, args) {
-        const rnd = Math.floor(Math.random() * 11);
+        let rnd = Math.floor(Math.random() * 11);
         msg.channel.send(`Rated **${rnd}/10**!`);
     }
 }

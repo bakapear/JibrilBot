@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["trivia"],
@@ -105,7 +105,7 @@ module.exports = {
             for (i = 0; i < answers.length; i++) {
                 await m.react(reactions[i]);
             }
-            const collector = m.createReactionCollector(filter, { time: 300000 }).on("collect", r => {
+            let collector = m.createReactionCollector(filter, { time: 300000 }).on("collect", r => {
                 collector.stop();
                 m.clearReactions();
             });

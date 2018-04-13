@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["taunt"],
@@ -16,7 +16,7 @@ module.exports = {
                 default: { msg.channel.send("Invalid type!"); return; }
             }
         }
-        const body = (await got(`http://api.genr8rs.com/Generator/Fun/GameTauntGenerator?_sInsultLevel=${mode}`, { json: true })).body;
+        let body = (await got(`http://api.genr8rs.com/Generator/Fun/GameTauntGenerator?_sInsultLevel=${mode}`, { json: true })).body;
         msg.channel.send(body._sResult);
     }
 }

@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
 	name: ["aki", "akinator"],

@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 global.bot = new Discord.Client();
 global.boot = new Date();
-const fs = require("fs");
-const cleverbot = require('cleverbot.io');
+let fs = require("fs");
+let cleverbot = require('cleverbot.io');
 bot.login(process.env.BOT_TOKEN);
 
 global.token_trivia = {};
@@ -30,7 +30,7 @@ function getFileData(dir) {
 bot.on("message", msg => {
 	if (msg.content.startsWith(`<@${bot.user.id}>`)) {
 		msg.channel.startTyping();
-		const content = msg.content.slice(21);
+		let content = msg.content.slice(21);
 		let cbot = new cleverbot(process.env.CBOT_USER, process.env.CBOT_KEY);
 		cbot.setNick(msg.author.username);
 		cbot.create(function (err, session) {
@@ -46,8 +46,8 @@ bot.on("message", msg => {
 		msg.content = msg.content.replace(",", ".");
 		msg.delete();
 	}
-	const args = msg.content.slice(1).split(" ");
-	const cmd = args.shift().toLowerCase();
+	let args = msg.content.slice(1).split(" ");
+	let cmd = args.shift().toLowerCase();
 	getFileData("./cmds").then(files => {
 		let filenames = [];
 		let subcount = 0;

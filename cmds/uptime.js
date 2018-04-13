@@ -5,7 +5,7 @@ module.exports = {
 	usage: "",
 	args: 0,
 	command: function (msg, cmd, args) {
-		const uptime = new Date(Date.now() - boot);
+		let uptime = new Date(Date.now() - boot);
 		let time = [
 			uptime.getMonth().toString(),
 			(uptime.getDate() - 1).toString(),

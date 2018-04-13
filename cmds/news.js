@@ -1,5 +1,5 @@
-const got = require("got");
-const api_news = process.env.API_NEWS; //add to .env file cuz did this on other pc
+let got = require("got");
+let api_news = process.env.API_NEWS; //add to .env file cuz did this on other pc
 
 module.exports = {
     name: ["news"],
@@ -8,11 +8,11 @@ module.exports = {
     usage: "<country>",
     args: 1,
     command: async function (msg, cmd, args) {
-        var body = await getHeadlines(args[0]);
+        let body = await getHeadlines(args[0]);
         if(!body.totalResults) {msg.channel.send("Nothing found!"); return;}
-        var mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.articles.length) : 0;
+        let mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.articles.length) : 0;
         body = body.articles[mod];
-        var footer = body.publishedAt;
+        let footer = body.publishedAt;
         if(body.author) footer = body.author + " @ " + body.publishedAt;
         msg.channel.send({
             embed: {
@@ -32,7 +32,7 @@ module.exports = {
 }
 
 async function getHeadlines(country) {
-    var url = `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${api_news}`;
-    var body = (await got(url, { json: true })).body;
+    let url = `https://newsapi.org/v2/top-headlines?country=${country}&apiKey=${api_news}`;
+    let body = (await got(url, { json: true })).body;
     return body;
 }

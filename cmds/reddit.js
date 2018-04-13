@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["reddit"],
@@ -7,9 +7,10 @@ module.exports = {
     usage: "(subreddit) ; (query)",
     args: 0,
     command: async function (msg, cmd, args) {
-        if (args[1] == ";") { var sr = args[0]; args.splice(0, 2); }
-        const rnd = msg.content.startsWith(".") ? true : false;
-        const body = await getRedditPost(msg, rnd, sr, args.join(" "))
+        let sr = undefined;
+        if (args[1] == ";") { sr = args[0]; args.splice(0, 2); }
+        let rnd = msg.content.startsWith(".") ? true : false;
+        let body = await getRedditPost(msg, rnd, sr, args.join(" "))
         if (body.type == "image") {
             msg.channel.send({
                 embed: {
@@ -42,21 +43,21 @@ module.exports = {
 }
 
 async function getRedditPost(msg, rnd, subreddit, query) {
-    var sr = subreddit ? "r/" + subreddit + "/" : "";
-    var q = query ? "search/?limit=100&restrict_sr=true&q=" + encodeURIComponent(query.trim()) + "/" : "hot/?limit=100&restrict_sr=true";
-    var url = "http://api.reddit.com/" + sr + q;
-    const body = (await got(url, { json: true })).body.data.children;
+    let sr = subreddit ? "r/" + subreddit + "/" : "";
+    let q = query ? "search/?limit=100&restrict_sr=true&q=" + encodeURIComponent(query.trim()) + "/" : "hot/?limit=100&restrict_sr=true";
+    let url = "http://api.reddit.com/" + sr + q;
+    let body = (await got(url, { json: true })).body.data.children;
     if (!body || !body.length) { msg.channel.send("Nothing found!"); return }
     let post = [];
-    for (var i = 0; i < body.length; i++) {
+    for (let i = 0; i < body.length; i++) {
         if (body[i].data.post_hint === "image")
             post.push(body[i]);
         if (body[i].data.post_hint === undefined && body[i].data.selftext !== "")
             post.push(body[i]);
     }
     if (!post.length) { msg.channel.send("Nothing found for that!"); return }
-    var mod = rnd ? Math.floor(Math.random() * post.length) : 0;
-    var data = post[mod].data;
+    let mod = rnd ? Math.floor(Math.random() * post.length) : 0;
+    let data = post[mod].data;
     return {
         title: data.title.substring(0, 250),
         text: data.selftext.substring(0, 1020),

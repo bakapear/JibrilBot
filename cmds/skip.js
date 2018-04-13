@@ -1,4 +1,4 @@
-const play = require("./play.js");
+let play = require("./play.js");
 module.exports = {
     name: ["skip"],
     desc: "Skips current song.",

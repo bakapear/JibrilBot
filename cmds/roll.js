@@ -11,7 +11,7 @@ module.exports = {
 			min = parseInt(args[1]);
 			max = parseInt(args[0]);
 		}
-		const rnd = Math.floor(Math.random() * (max - min + 1)) + min;
+		let rnd = Math.floor(Math.random() * (max - min + 1)) + min;
 		msg.channel.send(`:game_die: ${msg.author.username} rolled a **${rnd}**!`);
 	}
 }

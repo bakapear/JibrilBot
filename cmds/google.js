@@ -1,4 +1,4 @@
-const google = require("google");
+let google = require("google");
 
 module.exports = {
     name: ["g", "google"],

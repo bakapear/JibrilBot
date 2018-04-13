@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["inspiro"],
@@ -7,7 +7,7 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const body = (await got("http://inspirobot.me/api?generate=true")).body;
+        let body = (await got("http://inspirobot.me/api?generate=true")).body;
         msg.channel.send({
             embed: {
                 image: {

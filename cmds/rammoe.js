@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["nyan", "lick", "cuddle", "smug", "hug", "cute", "kiss", "chu", "pat", "pout", "cry", "stare", "triggered", "slap", "weird", "tickle", "lewd", "owo", "nom", "clap", "potato"],
@@ -7,7 +7,7 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const body = (await got(`https://rra.ram.moe/i/r?type=${cmd}`, { json: true })).body;
+        let body = (await got(`https://rra.ram.moe/i/r?type=${cmd}`, { json: true })).body;
         msg.channel.send({
             embed: {
                 image: {

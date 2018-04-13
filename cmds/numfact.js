@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["numfact"],
@@ -20,7 +20,7 @@ module.exports = {
             case "math": { link = `http://numbersapi.com/${search}/math`; break; }
             default: { link = `http://numbersapi.com/${search}`; break; }
         }
-        const body = (await got(link)).body;
+        let body = (await got(link)).body;
         if (body.startsWith("Cannot GET") || body.startsWith("Invalid url")) { msg.channel.send("Nothing found!"); return; }
         msg.channel.send(body);
     }

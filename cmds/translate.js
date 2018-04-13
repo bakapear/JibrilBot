@@ -1,4 +1,4 @@
-const translate = require('google-translate-api');
+let translate = require('google-translate-api');
 
 module.exports = {
     name: ["toen", "translate"],

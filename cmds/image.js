@@ -1,4 +1,4 @@
-var gis = require('g-i-s');
+let gis = require('g-i-s');
 
 module.exports = {
     name: ["image", "img", "i"],
@@ -7,7 +7,7 @@ module.exports = {
     usage: "<query>",
     args: 1,
     command: function (msg, cmd, args) {
-        var opts = {
+        let opts = {
             searchTerm: msg.content.slice(cmd.length + 1),
             queryStringAddition: '&safe=off'
         };

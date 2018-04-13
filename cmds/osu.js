@@ -1,5 +1,5 @@
-const got = require("got");
-const api_osu = process.env.API_OSU;
+let got = require("got");
+let api_osu = process.env.API_OSU;
 
 module.exports = {
     name: ["osu"],
@@ -8,7 +8,7 @@ module.exports = {
     usage: "<user>",
     args: 1,
     command: async function (msg, cmd, args) {
-        const body = (await got(`https://osu.ppy.sh/api/get_user?u=${args[0]}&k=${api_osu}`, { json: true })).body;
+        let body = (await got(`https://osu.ppy.sh/api/get_user?u=${args[0]}&k=${api_osu}`, { json: true })).body;
         if (!body[0]) { msg.channel.send("User not found!"); return; }
         if (!body[0].pp_rank) { msg.channel.send("No information for that user!"); return; }
         msg.channel.send({

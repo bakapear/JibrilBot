@@ -1,5 +1,5 @@
-const got = require("got");
-const api_giphy = process.env.API_GIPHY;
+let got = require("got");
+let api_giphy = process.env.API_GIPHY;
 
 module.exports = {
     name: ["gif"],
@@ -8,7 +8,7 @@ module.exports = {
     usage: "(search tags)",
     args: 0,
     command: async function (msg, cmd, args) {
-        const body = (await got(`http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`, {
+        let body = (await got(`http://api.giphy.com/v1/gifs/random?tag=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`, {
             json: true, 
             query: {
                 api_key: api_giphy,

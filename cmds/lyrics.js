@@ -1,5 +1,5 @@
-const got = require("got");
-const api_musix = process.env.API_MUSIX;
+let got = require("got");
+let api_musix = process.env.API_MUSIX;
 
 module.exports = {
     name: ["lyrics"],

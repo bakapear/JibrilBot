@@ -1,4 +1,4 @@
-const tts = require('google-tts-api');
+let tts = require('google-tts-api');
 let dispatcher;
 
 module.exports = {

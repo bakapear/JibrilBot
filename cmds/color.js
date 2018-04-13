@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["color"],
@@ -20,7 +20,7 @@ module.exports = {
             msg.channel.send(`HEX: ${rgbToHex(parseInt(args[0]), parseInt(args[1]), parseInt(args[2]))}`);
             return;
         }
-        const body = (await got(link, { json: true })).body;
+        let body = (await got(link, { json: true })).body;
         if (body.length < 1) { msg.channel.send("Nothing found!"); return; }
         let mod = 0;
         if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.length);
@@ -37,7 +37,7 @@ module.exports = {
     }
 }
 function componentToHex(c) {
-    var hex = c.toString(16);
+    let hex = c.toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 }
 
@@ -46,11 +46,11 @@ function rgbToHex(r, g, b) {
 }
 
 function hexToRgb(hex) {
-    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, function (m, r, g, b) {
         return r + r + g + g + b + b;
     });
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),

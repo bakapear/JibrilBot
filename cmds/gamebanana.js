@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["gb", "gamebanana"],
@@ -7,7 +7,7 @@ module.exports = {
     usage: "map/spray/sound/member <query>",
     args: 2,
     command: async function (msg, cmd, args) {
-        const types = ["map", "spray", "sound", "member"];
+        let types = ["map", "spray", "sound", "member"];
         if (!types.includes(args[0])) { msg.channel.send("Invalid type!"); return; }
         args[0] = args[0].charAt(0).toUpperCase() + args[0].slice(1);
         let body = [];
@@ -47,7 +47,7 @@ module.exports = {
         switch (args[0]) {
             case "Map": {
                 if (body[3].length < 20) { msg.channel.send("No information about that submission!"); return; }
-                const dlid = Object.keys(body[2])[0];
+                let dlid = Object.keys(body[2])[0];
                 body[3] = JSON.parse(body[3]);
                 title = body[0];
                 url = "https://gamebanana.com/maps/" + id;
@@ -58,7 +58,7 @@ module.exports = {
             }
             case "Spray": {
                 if (body[3].length < 20) { msg.channel.send("No information about that submission!"); return; }
-                const dlid = Object.keys(body[2])[0];
+                let dlid = Object.keys(body[2])[0];
                 body[3] = JSON.parse(body[3]);
                 title = body[0];
                 url = "https://gamebanana.com/sprays/" + id;
@@ -68,7 +68,7 @@ module.exports = {
                 break;
             }
             case "Sound": {
-                const dlid = Object.keys(body[2])[0];
+                let dlid = Object.keys(body[2])[0];
                 title = body[0];
                 url = "https://gamebanana.com/sounds/" + id;
                 desc = body[1] + `\n\nDownload: [${body[2][dlid]._sFile}](${body[2][dlid]._sDownloadUrl})`;

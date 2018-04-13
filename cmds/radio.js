@@ -1,4 +1,4 @@
-const yt = require("ytdl-core");
+let yt = require("ytdl-core");
 let dispatcher;
 
 module.exports = {

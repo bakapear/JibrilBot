@@ -5,7 +5,7 @@ module.exports = {
     usage: "",
     args: 0,
     command: function (msg, cmd, args) {
-        const date = Date.now();
+        let date = Date.now();
         msg.channel.send("Pinging...").then(m => {
             m.edit(`Pong! It took me **${Date.now() - date}ms**!`);
         });

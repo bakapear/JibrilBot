@@ -6,7 +6,7 @@ module.exports = {
     args: 0,
     command: function (msg, cmd, args) {
         let invitelink = `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958583`;
-        const uptime = new Date(Date.now() - boot);
+        let uptime = new Date(Date.now() - boot);
         msg.channel.send({
             embed: {
                 color: 14506163,

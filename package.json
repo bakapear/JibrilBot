@@ -25,6 +25,7 @@
     "google-translate-api": "^2.3.0",
     "google-tts-api": "0.0.2",
     "got": "^8.1.0",
+    "ifunny": "^1.2.0",
     "jimp": "^0.2.28",
     "node-opus": "^0.2.7",
     "ytdl-core": "^0.20.1"

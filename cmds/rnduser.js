@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["rnduser"],
@@ -7,7 +7,7 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const body = (await got("https://api.randomuser.me", { json: true })).body;
+        let body = (await got("https://api.randomuser.me", { json: true })).body;
         msg.channel.send({
             embed: {
                 color: 13158600,

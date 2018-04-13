@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["leet", "1337"],
@@ -14,7 +14,7 @@ module.exports = {
         }
         let types = ["classic", "ultra", "glyphtek", "wolfenstein", "fancy", "beefy", "broadway", "fullwidth"];
         if (!types.includes(mode)) { msg.channel.send("Invalid type!"); return; }
-        const body = (await got(`http://api.genr8rs.com/Generator/Fun/LeetSpeakGenerator?_sText=${encodeURIComponent(args.join(" ").trim())}&_sCharacterSet=${mode}`, { json: true })).body;
+        let body = (await got(`http://api.genr8rs.com/Generator/Fun/LeetSpeakGenerator?_sText=${encodeURIComponent(args.join(" ").trim())}&_sCharacterSet=${mode}`, { json: true })).body;
         msg.channel.send(body._sResult);
     }
 }

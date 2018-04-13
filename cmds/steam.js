@@ -1,5 +1,5 @@
-const got = require("got");
-const api_steam = process.env.API_STEAM;
+let got = require("got");
+let api_steam = process.env.API_STEAM;
 
 module.exports = {
     name: ["steam"],
@@ -8,18 +8,18 @@ module.exports = {
     usage: "<customurl/profileid>",
     args: 1,
     command: async function (msg, cmd, args) {
-        const input = msg.content.slice(cmd.length + 1).trim();
+        let input = msg.content.slice(cmd.length + 1).trim();
         let id = await customToId(input);
         if (!id) id = input;
         let body = (await getSteamSummary(id));
         if (!body) { msg.channel.send("User not found!"); return; }
         body = body[0];
-        const friends = await getSteamFriends(id);
+        let friends = await getSteamFriends(id);
         let buddy = "N/A";
         if (friends) buddy = (await getSteamSummary(friends[Math.floor(Math.random() * friends.length)].steamid))[0];
-        const date = new Date(body.timecreated * 1000);
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const time = `${date.getDate()}th ${months[date.getMonth()]} ${date.getFullYear()}`;
+        let date = new Date(body.timecreated * 1000);
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let time = `${date.getDate()}th ${months[date.getMonth()]} ${date.getFullYear()}`;
         let flag = "N/A";
         if (body.loccountrycode) flag = `:flag_${body.loccountrycode.toLowerCase()}:`;
         msg.channel.send({
@@ -41,8 +41,8 @@ module.exports = {
 }
 
 async function getSteamFriends(id) {
-    const url = "http://api.steampowered.com/ISteamUser/GetFriendList/v0001/"
-    const body = (await got(url, {
+    let url = "http://api.steampowered.com/ISteamUser/GetFriendList/v0001/"
+    let body = (await got(url, {
         json: true, query: {
             key: api_steam,
             steamid: id,
@@ -54,8 +54,8 @@ async function getSteamFriends(id) {
 }
 
 async function getSteamSummary(id) {
-    const url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/";
-    const body = (await got(url, {
+    let url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/";
+    let body = (await got(url, {
         json: true, query: {
             key: api_steam,
             steamids: id
@@ -66,8 +66,8 @@ async function getSteamSummary(id) {
 }
 
 async function customToId(customurl) {
-    const url = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/"
-    const body = (await got(url, {
+    let url = "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/"
+    let body = (await got(url, {
         json: true, query: {
             key: api_steam,
             vanityurl: customurl

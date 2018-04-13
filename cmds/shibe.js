@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["shibe"],
@@ -7,7 +7,7 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const body = (await got("http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=false", { json: true })).body;
+        let body = (await got("http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=false", { json: true })).body;
         msg.channel.send({
             embed: {
                 image: {

@@ -1,4 +1,4 @@
-const got = require("got");
+let got = require("got");
 
 module.exports = {
     name: ["chuck", "norris"],
@@ -7,7 +7,7 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        const body = (await got("https://api.chucknorris.io/jokes/random", { json: true })).body;
+        let body = (await got("https://api.chucknorris.io/jokes/random", { json: true })).body;
         msg.channel.send(body.value);
     }
 }

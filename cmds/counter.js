@@ -14,7 +14,7 @@ module.exports = {
                 msg.channel.send(`Counter started!`);
             }
             else {
-                const elapsed = new Date(Date.now() - timer[msg.author.id]);
+                let elapsed = new Date(Date.now() - timer[msg.author.id]);
                 msg.channel.send(`${elapsed.getSeconds()} and counting...`);
             }
         }

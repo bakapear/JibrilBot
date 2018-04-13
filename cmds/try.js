@@ -6,13 +6,13 @@ module.exports = {
     args: 3,
     command: function (msg, cmd, args) {
         if (isNaN(args[0]) || isNaN(args[1]) || isNaN(args[2])) { msg.channel.send("Invalid numbers!"); return; }
-        var min = parseInt(args[0]);
-        var max = parseInt(args[1]);
-        var target = parseInt(args[2]);
+        let min = parseInt(args[0]);
+        let max = parseInt(args[1]);
+        let target = parseInt(args[2]);
         if (min > max) max = [min, min = max][0];
         if(target > max || target < min) {msg.channel.send("Search is not between min and max!"); return;}
-        var count = 0;
-        var num;
+        let count = 0;
+        let num;
         while (num != target) {
             num = getRandomInt(min, max);
             count++;
