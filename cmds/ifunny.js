@@ -1,4 +1,5 @@
 let got = require("got");
+let ifunny = require("ifunny");
 
 module.exports = {
     name: ["fun", "ifunny"],
