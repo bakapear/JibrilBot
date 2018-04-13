@@ -12,7 +12,7 @@ module.exports = {
             link = `http://www.colourlovers.com/api/colors/random?format=json`
         }
         else if (args[0].startsWith("#")) {
-            if (hexToRgb(args[0].substring(1)) == null) { msg.channel.send("Invalid Hex!"); return; }
+            if (hexToRgb(args[0].substring(1)) == null) { msg.channel.send("Invalid hex!"); return; }
             msg.channel.send(`RGB: ${hexToRgb(args[0].substring(1)).r},${hexToRgb(args[0].substring(1)).g},${hexToRgb(args[0].substring(1)).b}`);
             return;
         }

@@ -13,7 +13,7 @@ module.exports = {
         let videoid = "";
         if (args[0].startsWith("https://") || args[0].startsWith("http://")) {
             videoid = formatVideoId(msg.content.slice(cmd.length + 1));
-            if (videoid == -1) { msg.channel.send("Invalid Link!"); return; }
+            if (videoid == -1) { msg.channel.send("Invalid link!"); return; }
         }
         else {
             let body = (await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true })).body;

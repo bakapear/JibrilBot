@@ -25,7 +25,7 @@ module.exports = {
                 id = body.items[mod].id.videoId;
             }
             else {
-                if (!ytdl.validateID(data.v)) { msg.channel.send("Invalid ID!"); return; }
+                if (!ytdl.validateID(data.v)) { msg.channel.send("Invalid id!"); return; }
                 id = data.v;
             }
             let body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${api_google}`, { json: true })).body;
