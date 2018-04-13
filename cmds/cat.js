@@ -13,7 +13,7 @@ module.exports = {
                 image: {
                     url: body.file
                 }
-            },
+            }
         });
     }
 }

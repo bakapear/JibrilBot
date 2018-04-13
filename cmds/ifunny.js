@@ -7,13 +7,14 @@ module.exports = {
     usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
-        let body = (await got("http://aws.random.cat/meow.php", { json: true })).body;
+        let body = await ifunny({shuffle: true});
+        let mod = msg.content.startsWith(".") ? Math.floor(Math.random() * body.items.length) : 0;
         msg.channel.send({
             embed: {
                 image: {
-                    url: body.file
+                    url: body[mod].img
                 }
-            },
+            }
         });
     }
 }
