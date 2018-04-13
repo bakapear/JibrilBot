@@ -2,10 +2,10 @@
 const got = require("got");
 
 module.exports = {
-    name: ["thighs"],
-    desc: "Gets a random thigh image",
+    name: ["thighs", "thighsthatrequiremuchworktoget"],
+    desc: "Gets a random thigh image for beel",
     permission: "",
-    usage: "(subreddit) ; (query)",
+    usage: "",
     args: 0,
     command: async function (msg, cmd, args) {
         const rnd = msg.content.startsWith(".") ? true : false;
@@ -19,9 +19,11 @@ module.exports = {
         });
     }
 }
-
 async function getRedditThighs(msg, rnd) {
-    var url = "https://api.reddit.com/r/thighs/?limit=100&restrict_sr=true";
+    let thighs = [
+"thighs","hipcleavage","thickthighs","perfectthighs","asianthighs","sexysittingthighs"
+];
+var url = "https://api.reddit.com/r/" + thighs[Math.floor(Math.random() * thighs.length)] + "/?limit=100&restrict_sr=true";
     const body = (await got(url, { json: true })).body.data.children;
     if (!body || !body.length) { msg.channel.send("Nothing found!"); return }
     let post = [];
