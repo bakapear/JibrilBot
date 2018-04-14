@@ -9,11 +9,13 @@ module.exports = {
     args: 0,
     command: async function (msg, cmd, args) {
         let mod = msg.content.startsWith(".") ? true : false;
-        let body = await ifunny({shuffle: mod});
+        let body = await ifunny({ shuffle: mod });
+        let data = body.result[Math.floor(Math.random() * body.result.length)];
+        if (data.type == "mp4") { msg.channel.send(data.src); return; }
         msg.channel.send({
             embed: {
                 image: {
-                    url: body.result[Math.floor(Math.random() * body.result.length)].img
+                    url: data.src
                 }
             }
         });
