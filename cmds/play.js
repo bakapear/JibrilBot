@@ -4,7 +4,7 @@ let api_google = process.env.API_GOOGLE;
 let dispatcher;
 
 module.exports = {
-    name: ["toast"],
+    name: ["play"],
     desc: "Streams audio from a youtube video into the voicechannel.",
     permission: "",
     usage: "<query|url>",
