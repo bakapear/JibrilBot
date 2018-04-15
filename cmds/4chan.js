@@ -48,7 +48,6 @@ async function getRandom4ChanPost(board) {
         if (body.posts[i].ext) data.push(body.posts[i]);
     }
     mod = Math.floor(Math.random() * data.length);
-    console.log(data[mod])
     return {
         "image": `https://i.4cdn.org/${board}/${data[mod].tim}${data[mod].ext}`,
         "comment": data[mod].com || "",
