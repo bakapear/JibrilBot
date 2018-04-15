@@ -20,7 +20,7 @@ module.exports = {
                     image: {
                         url: results[mod].url
                     }
-                },
+                }
             });
         });
     }
