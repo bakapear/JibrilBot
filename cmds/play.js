@@ -36,7 +36,7 @@ module.exports = {
             //Unhandled rejection: HTTPError: Response code 404 (Not Found)
             if (!body.items.length) { msg.channel.send("Nothing found!"); return; }
             for (let i = 0; i < body.items.length; i++) {
-                if(body.items[i].snippet.thumbnails.high) continue;
+                if(!body.items[i].snippet.thumbnails) continue;
                 songs.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.high.url, body.items[i].snippet.thumbnails.medium.url]);
             }
             count = body.items.length;
