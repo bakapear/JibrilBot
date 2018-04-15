@@ -119,10 +119,12 @@ function playQueue(msg, connection, streamurl) {
     dispatcher = connection.playStream(stream);
     dispatcher.setBitrate(96000);
     dispatcher.on("end", () => {
-        stream.destroy();
-        voiceq[msg.guild.id].songs.shift();
-        if (!voiceq[msg.guild.id].songs.length) { voiceq[msg.guild.id].playing = 0; return };
-        playQueue(msg, connection, voiceq[msg.guild.id].songs[0][0]);
+        setTimeout(function() {
+            stream.destroy();
+            voiceq[msg.guild.id].songs.shift();
+            if (!voiceq[msg.guild.id].songs.length) { voiceq[msg.guild.id].playing = 0; return };
+            playQueue(msg, connection, voiceq[msg.guild.id].songs[0][0]);
+        }, 1500);
     });
     dispatcher.on("error", err => {
         console.log(err);
