@@ -1,4 +1,5 @@
 let got = require("got");
+let file = require("./file.js");
 let bin_secret = process.env.BIN_SECRET;
 
 module.exports = {
@@ -15,6 +16,10 @@ module.exports = {
             if (body == -2) { msg.reply("Folder is empty!"); return; }
             if (body == -1) { msg.reply("Invalid index!"); return; }
             if (body.data.startsWith("http://") || body.data.startsWith("https://")) {
+                if(body.data.endsWith(".ogg") || body.data.endsWith(".wav") || body.data.endsWith(".mp3")) {
+                    file.command(msg, cmd, [body.data]);
+                    return;
+                }
                 msg.channel.send({
                     embed: {
                         color: 4212432,
@@ -50,6 +55,10 @@ module.exports = {
             if (body == -2) { msg.reply("Folder is empty!"); return; }
             if (body == -1) { msg.reply("Invalid index!"); return; }
             if (body.data.startsWith("http://") || body.data.startsWith("https://")) {
+                if(body.data.endsWith(".ogg") || body.data.endsWith(".wav") || body.data.endsWith(".mp3")) {
+                    file.command(msg, cmd, [body.data], body.index);
+                    return;
+                }
                 msg.channel.send({
                     embed: {
                         color: 4212432,
