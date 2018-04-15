@@ -14,7 +14,7 @@ module.exports = {
                 image: {
                     url: `https://nekos.brussell.me/image/${body.images[0].id}`
                 }
-            },
+            }
         });
     }
 }
