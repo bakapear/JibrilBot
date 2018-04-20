@@ -3,7 +3,7 @@ let file = require("./file.js");
 let bin_secret = process.env.BIN_SECRET;
 
 module.exports = {
-    name: ["c"],
+    name: ["c", "custom"],
     desc: "Add n' remove stuff from your folders n' files. (Ya know the drill!)",
     permission: "",
     usage: "(folder) | (folder) list | <folder> <create/delete/rename/add/rem> <stuff/index>",
