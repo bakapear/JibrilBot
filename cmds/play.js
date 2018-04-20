@@ -47,7 +47,7 @@ module.exports = {
         if (voiceq[msg.guild.id].playing !== "play") {
             voiceq[msg.guild.id].playing = "play";
             msg.member.voiceChannel.join().then(connection => {
-                playQueue(msg, connection, voiceq[msg.guild.id].songs[0][0]);
+                playQueue(msg, connection, voiceq[msg.guild.id].songs[0][0], data);
             });
         }
         else {
@@ -113,9 +113,12 @@ function printAddList(msg, count, thumbnail) {
     });
 }
 
-function playQueue(msg, connection, streamurl) {
+function playQueue(msg, connection, streamurl, data) {
     printNowPlaying(msg, voiceq[msg.guild.id].songs[0][0], voiceq[msg.guild.id].songs[0][1], voiceq[msg.guild.id].songs[0][2]);
-    let stream = ytdl(streamurl, { audioonly: true });
+    let opts = { audioonly: true };
+    if(data && data.hasOwnProperty("t")) opts["begin"] = parseInt(data.t) + "s"; 
+    let stream = ytdl(streamurl, opts);
+    console.log(opts);
     dispatcher = connection.playStream(stream);
     dispatcher.setBitrate(96000);
     dispatcher.on("end", () => {

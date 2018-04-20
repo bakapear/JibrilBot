@@ -99,6 +99,7 @@ bot.on("message", msg => {
 	});
 });
 
+
 process.on('uncaughtException', err => {
 	console.error('Caught Exception: ' + err);
 });
