@@ -19,14 +19,3 @@ module.exports = {
         msg.channel.send(wordlist);
     }
 }
-
-function formatParams(str) {
-    let parts = str.split(";");
-    for (let i = 0; i < parts.length; i++) {
-        let index = parts[i].indexOf(":");
-        let param = parts[i].substr(0, index).trim();
-        let query = parts[i].substr(index + 1, parts[i].length).trim();
-        parts[i] = param + "=" + encodeURIComponent(query);
-    }
-    return "?" + parts.join("&");
-}
