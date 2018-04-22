@@ -7,7 +7,7 @@ module.exports = {
     usage: "<word>",
     args: 1,
     command: async function (msg, cmd, args) {
-        let url = "https://api.datamuse.com/words?md=d&sp=" + encodeURIComponent(msg.content.slice(cmd.length + 1).trim());
+        let url = "https://api.datamuse.com/words?md=d&v=enwiki&sp=" + encodeURIComponent(msg.content.slice(cmd.length + 1).trim());
         let body = (await got(url, { json: true })).body;
         if (body.length < 1) { msg.channel.send("Nothing found!"); return; }
         if (body[0].defs.length < 1) { msg.channel.send("No definition for that!"); return; }

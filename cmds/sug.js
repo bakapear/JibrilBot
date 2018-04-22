@@ -7,7 +7,7 @@ module.exports = {
     usage: "<word>",
     args: 1,
     command: async function (msg, cmd, args) {
-        let url = "https://api.datamuse.com/sug?s=" + encodeURIComponent(msg.content.slice(cmd.length + 1).trim());
+        let url = "https://api.datamuse.com/sug?v=enwiki&s=" + encodeURIComponent(msg.content.slice(cmd.length + 1).trim());
         let body = (await got(url, { json: true })).body;
         if (body.length < 1) { msg.channel.send("Nothing found!"); return; }
         let wordlist = "";

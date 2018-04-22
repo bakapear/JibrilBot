@@ -7,7 +7,7 @@ module.exports = {
     usage: "<param>:<query>; <param2>:<query2>; <...>",
     args: 1,
     command: async function (msg, cmd, args) {
-        if(args[0] == "list") {
+        if (args[0] == "list") {
             msg.channel.send({
                 embed: {
                     color: 12391334,
@@ -23,7 +23,7 @@ module.exports = {
             });
             return;
         }
-        let url = "https://api.datamuse.com/words" + formatParams(msg.content.slice(cmd.length + 1));
+        let url = "https://api.datamuse.com/words?v=enwiki" + formatParams(msg.content.slice(cmd.length + 1));
         let body = (await got(url, { json: true })).body;
         if (body.length < 1) { msg.channel.send("Nothing found!"); return; }
         let wordlist = "";
@@ -44,5 +44,5 @@ function formatParams(str) {
         let query = parts[i].substr(index + 1, parts[i].length).trim();
         parts[i] = param + "=" + encodeURIComponent(query);
     }
-    return "?" + parts.join("&");
+    return "&" + parts.join("&");
 }
