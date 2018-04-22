@@ -1,8 +1,10 @@
 const Discord = require("discord.js");
+let fs = require("fs");
+let util = require("util");
+let cleverbot = require('cleverbot.io');
+
 global.bot = new Discord.Client();
 global.boot = new Date();
-let fs = require("fs");
-let cleverbot = require('cleverbot.io');
 bot.login(process.env.BOT_TOKEN);
 
 global.token_trivia = {};
@@ -101,9 +103,9 @@ bot.on("message", msg => {
 
 
 process.on('uncaughtException', err => {
-	console.error('Caught Exception: ' + err);
+	console.error('Caught Exception: ' + util.inspect(err, false, null));
 });
 
 process.on('unhandledRejection', err => {
-	console.error('Unhandled rejection: ' + err);
+	console.error('Unhandled rejection: ' + util.inspect(err, false, null));
 });
