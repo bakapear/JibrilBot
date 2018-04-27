@@ -32,14 +32,17 @@ module.exports = {
             songs.push([id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
         }
         else if ("list" in data) {
-            let body = (await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${data.list}&key=${api_google}`, { json: true })).body;
-            //Unhandled rejection: HTTPError: Response code 404 (Not Found)
-            if (!body.items.length) { msg.channel.send("Nothing found!"); return; }
-            for (let i = 0; i < body.items.length; i++) {
-                if(!body.items[i].snippet.thumbnails) continue;
-                songs.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.high.url, body.items[i].snippet.thumbnails.medium.url]);
-            }
-            count = body.items.length;
+            let next = "";
+            do {
+                let body = (await got(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&pageToken=${next}&maxResults=50&playlistId=${data.list}&key=${api_google}`, { json: true })).body;
+                if (!body.items.length) { msg.channel.send("Nothing found!"); return; }
+                for (let i = 0; i < body.items.length; i++) {
+                    if (!body.items[i].snippet.thumbnails) continue;
+                    songs.push([body.items[i].snippet.resourceId.videoId, body.items[i].snippet.title, body.items[i].snippet.thumbnails.high.url, body.items[i].snippet.thumbnails.medium.url]);
+                }
+                count += body.items.length;
+                next = body.nextPageToken;
+            } while (next)
         }
         for (let i = 0; i < songs.length; i++) {
             voiceq[msg.guild.id].songs.push(songs[i]);
@@ -116,13 +119,12 @@ function printAddList(msg, count, thumbnail) {
 function playQueue(msg, connection, streamurl, data) {
     printNowPlaying(msg, voiceq[msg.guild.id].songs[0][0], voiceq[msg.guild.id].songs[0][1], voiceq[msg.guild.id].songs[0][2]);
     let opts = { audioonly: true };
-    if(data && data.hasOwnProperty("t")) opts["begin"] = parseInt(data.t) + "s"; 
+    if (data && data.hasOwnProperty("t")) opts["begin"] = parseInt(data.t) + "s";
     let stream = ytdl(streamurl, opts);
-    console.log(opts);
     dispatcher = connection.playStream(stream);
     dispatcher.setBitrate(96000);
     dispatcher.on("end", () => {
-        setTimeout(function() {
+        setTimeout(function () {
             stream.destroy();
             voiceq[msg.guild.id].songs.shift();
             if (!voiceq[msg.guild.id].songs.length) { voiceq[msg.guild.id].playing = 0; return };
