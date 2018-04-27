@@ -6,7 +6,11 @@ module.exports = {
     args: 0,
     command: function (msg, cmd, args) {
         if (!voiceq.hasOwnProperty(msg.guild.id) || !voiceq[msg.guild.id].songs.length) { msg.channel.send("No songs in queue!"); return; }
-        shuffleArray(voiceq[msg.guild.id].songs);
+        if (voiceq[msg.guild.id].songs.length > 1) {
+            var currentsong = voiceq[msg.guild.id].songs.shift();
+            shuffleArray(voiceq[msg.guild.id].songs);
+            voiceq[msg.guild.id].songs.unshift(currentsong);
+        }
         msg.channel.send("Shuffled the song queue!");
     }
 }
