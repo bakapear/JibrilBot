@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 let fs = require("fs");
 let util = require("util");
 let cleverbot = require('cleverbot.io');
+let moment = require("moment");
 
 global.bot = new Discord.Client();
 global.boot = new Date();
@@ -101,6 +102,14 @@ bot.on("message", msg => {
 	});
 });
 
+//Reset everytime at midnight
+setInterval(function () {
+	let time = moment().format("H:mm:ss");
+	if (time === "0:00:00") {
+		console.log("- Midnight reset! -");
+		process.exit(0);
+	}
+}, 1000);
 
 process.on('uncaughtException', err => {
 	console.error('Caught Exception: ' + util.inspect(err, false, null));
