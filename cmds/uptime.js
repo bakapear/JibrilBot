@@ -7,8 +7,6 @@ module.exports = {
 	command: function (msg, cmd, args) {
 		let uptime = new Date(Date.now() - boot);
 		let time = [
-			uptime.getMonth().toString(),
-			(uptime.getDate() - 1).toString(),
 			uptime.getHours().toString(),
 			uptime.getMinutes().toString(),
 			uptime.getSeconds().toString()
@@ -18,7 +16,7 @@ module.exports = {
 				time[i] = "0" + time[i];
 			}
 		}
-		msg.channel.send(`**Uptime:** \`${time[0]}:${time[1]}:${time[2]}:${time[3]}:${time[4]}\``);
+		msg.channel.send(`**Uptime:** \`${time[0]}:${time[1]}:${time[2]}\``);
 		if (time[3] == "13" && time[4] == "37") {
 			msg.channel.send("Leet!");
 		}
