@@ -9,7 +9,7 @@ module.exports = {
         let songnames = [];
         if (args == "") {
             let len = voiceq[msg.guild.id].songs.length > 15 ? 15 : voiceq[msg.guild.id].songs.length;
-            for (i = 0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 let song = voiceq[msg.guild.id].songs[i][1];
                 let num = i + ".";
                 if (num == 0) num = "NP:"

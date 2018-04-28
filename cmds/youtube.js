@@ -25,11 +25,11 @@ module.exports = {
         if (method == "mp3") {
             let body = (await got(`https://youtubetoany.com/@api/json/mp3/${videoid}`)).body;
             let index = 2000;
-            if(body.indexOf("<script") != -1) index = body.indexOf("<script");
+            if (body.indexOf("<script") != -1) index = body.indexOf("<script");
             let json = JSON.parse(body.substring(0, index));
             if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
             let downloads = [];
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 downloads.push(`[${json.vidInfo[i].bitrate} kbit/s - ${json.vidInfo[i].mp3size}](https:${json.vidInfo[i].dloadUrl})\n`);
             }
             msg.channel.send({
@@ -46,7 +46,7 @@ module.exports = {
             let json = JSON.parse(body);
             if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
             let downloads = [];
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 downloads.push(`[${json.vidInfo[i].quality}p - ${json.vidInfo[i].rSize}](https:${json.vidInfo[i].dloadUrl})\n`);
             }
             msg.channel.send({

@@ -11,7 +11,7 @@ module.exports = {
 			uptime.getMinutes().toString(),
 			uptime.getSeconds().toString()
 		];
-		for (i = 0; i < time.length; i++) {
+		for (let i = 0; i < time.length; i++) {
 			if (time[i].length == 1) {
 				time[i] = "0" + time[i];
 			}

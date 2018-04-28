@@ -10,7 +10,7 @@ module.exports = {
         google(args.join(" "), function (error, body) {
             if (error) console.error(error);
             let full = [];
-            for (i = 0; i < body.links.length; i++) {
+            for (let i = 0; i < body.links.length; i++) {
                 if (body.links[i].title != null && body.links[i].description != null && body.links[i].href != null) {
                     full.push(body.links[i]);
                 }

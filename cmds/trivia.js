@@ -85,7 +85,7 @@ module.exports = {
             }
         }
         let options = "";
-        for (i = 0; i < answers.length; i++) {
+        for (let i = 0; i < answers.length; i++) {
             options += `**${i + 1}.** ${answers[i]}\n`;
         }
         let colorint = 0;
@@ -102,7 +102,7 @@ module.exports = {
                 description: options
             },
         }).then(async m => {
-            for (i = 0; i < answers.length; i++) {
+            for (let i = 0; i < answers.length; i++) {
                 await m.react(reactions[i]);
             }
             let collector = m.createReactionCollector(filter, { time: 300000 }).on("collect", r => {
@@ -131,7 +131,7 @@ module.exports = {
                     desc = `<@${msg.author.id}> got the wrong answer!`
                 }
                 options = "";
-                for (i = 0; i < answers.length; i++) {
+                for (let i = 0; i < answers.length; i++) {
                     if (answers[i] == decodeURIComponent(body.results[0].correct_answer)) options += `**${i + 1}.** \`${answers[i]}\`\n`;
                     else options += `**${i + 1}.** ${answers[i]}\n`;
                 }
