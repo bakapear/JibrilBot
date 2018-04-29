@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 let fs = require("fs");
 let util = require("util");
+let got = require("got");
 let cleverbot = require('cleverbot.io');
 let moment = require("moment");
 
@@ -13,22 +14,8 @@ global.voiceq = {};
 
 bot.on("ready", () => {
 	console.log(`Your personal servant ${bot.user.tag} is waiting for orders!`);
-	bot.user.setPresence({ game: { name: "with master", type: 0 } });
+	rndPresence();
 });
-
-function getFileData(dir) {
-	return new Promise(resolve => {
-		fs.readdir(dir, (err, files) => {
-			let data = [];
-			files.forEach((file, num) => {
-				data.push(require(`${dir}/${file}`));
-				if (num >= files.length - 1) {
-					resolve(data);
-				}
-			});
-		});
-	});
-}
 
 bot.on("message", msg => {
 	if (msg.content.startsWith(`<@${bot.user.id}>`)) {
@@ -111,6 +98,9 @@ setInterval(function () {
 	}
 }, 1000);
 
+//Change presence every 10mins~
+setInterval(rndPresence, 654321);
+
 process.on('uncaughtException', err => {
 	console.error('Caught Exception: ' + util.inspect(err, false, null));
 });
@@ -118,3 +108,22 @@ process.on('uncaughtException', err => {
 process.on('unhandledRejection', err => {
 	console.error('Unhandled rejection: ' + util.inspect(err, false, null));
 });
+
+function rndPresence() {
+	let word = (await got("http://api.urbandictionary.com/v0/random", { json: true })).body.list[0].word;
+	if (word) bot.user.setPresence({ game: { name: word.substring(0, 25), type: Math.floor(Math.random() * 4) } });
+}
+
+function getFileData(dir) {
+	return new Promise(resolve => {
+		fs.readdir(dir, (err, files) => {
+			let data = [];
+			files.forEach((file, num) => {
+				data.push(require(`${dir}/${file}`));
+				if (num >= files.length - 1) {
+					resolve(data);
+				}
+			});
+		});
+	});
+}
