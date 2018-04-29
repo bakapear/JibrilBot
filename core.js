@@ -109,7 +109,7 @@ process.on('unhandledRejection', err => {
 	console.error('Unhandled rejection: ' + util.inspect(err, false, null));
 });
 
-function rndPresence() {
+async function rndPresence() {
 	let word = (await got("http://api.urbandictionary.com/v0/random", { json: true })).body.list[0].word;
 	if (word) bot.user.setPresence({ game: { name: word.substring(0, 25), type: Math.floor(Math.random() * 4) } });
 }
