@@ -22,9 +22,9 @@ module.exports = {
                 img.greyscale();
                 break;
             case "text":
-                if (params.length != 1) { msg.channel.send("Invalid parameters!"); return; }
+                if (params.length != 3) { msg.channel.send("Invalid parameters!"); return; }
                 jimp.loadFont(jimp.FONT_SANS_16_WHITE).then(font => {
-                    img.print(font, 0, 0, params[0]);
+                    img.print(font, parseInt(params[0]), (params[1]), params[2]);
                     img.write(`./data/leap_${msg.author.id}.png`, () => {
                         msg.channel.send({ file: `./data/leap_${msg.author.id}.png` });
                     });
@@ -62,6 +62,9 @@ module.exports = {
                 if (params.length != 1) { msg.channel.send("Invalid parameters!"); return; }
                 img.contrast(parseInt(params[0]));
                 break;
+            case "help":
+                msg.channel.send("https://i.imgur.com/MVRnpcD.png");
+                return;
             default:
                 msg.channel.send("Invalid action!");
                 return;
