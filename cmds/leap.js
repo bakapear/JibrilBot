@@ -24,7 +24,7 @@ module.exports = {
             case "text":
                 if (params.length != 3) { msg.channel.send("Invalid parameters!"); return; }
                 jimp.loadFont(jimp.FONT_SANS_16_WHITE).then(font => {
-                    img.print(font, parseInt(params[0]), (params[1]), params[2]);
+                    img.print(font, parseInt(params[0]), parseInt(params[1]), params[2]);
                     img.write(`./data/leap_${msg.author.id}.png`, () => {
                         msg.channel.send({ file: `./data/leap_${msg.author.id}.png` });
                     });
