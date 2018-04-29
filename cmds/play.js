@@ -13,7 +13,7 @@ module.exports = {
         if (!voiceq.hasOwnProperty(msg.guild.id)) voiceq[msg.guild.id] = [], voiceq[msg.guild.id].songs = [], voiceq[msg.guild.id].playing = 0;
         if (!msg.member.voiceChannel) { msg.channel.send("You're not in a voice channel!"); return }
         if (voiceq[msg.guild.id].playing !== 0 && voiceq[msg.guild.id].playing !== "play") { msg.channel.send("Something is already playing!"); return; }
-        let data = getQueryData(args[0]);
+        let data = getQueryData(msg.content.slice(cmd.length + 1));
         let songs = [];
         let count = 0;
         if ("q" in data || "v" in data) {
@@ -29,7 +29,7 @@ module.exports = {
                 id = data.v;
             }
             let body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${api_google}`, { json: true })).body;
-            if (args[1] == "sneaky") {
+            if (msg.content.slice(cmd.length + 1).indexOf("--force") != -1) {
                 songs.splice(1, 0, [id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
             }
             else {
