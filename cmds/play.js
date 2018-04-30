@@ -30,6 +30,7 @@ module.exports = {
             }
             let body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${api_google}`, { json: true })).body;
             if (cmd == "fplay") {
+                console.log("YEP");
                 songs.splice(1, 0, [id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
             }
             else {
