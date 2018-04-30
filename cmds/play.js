@@ -4,7 +4,7 @@ let api_google = process.env.API_GOOGLE;
 let dispatcher;
 
 module.exports = {
-    name: ["play"],
+    name: ["play", "fplay"],
     desc: "Streams audio from a youtube video into the voicechannel.",
     permission: "",
     usage: "<query|url>",
@@ -29,7 +29,7 @@ module.exports = {
                 id = data.v;
             }
             let body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${api_google}`, { json: true })).body;
-            if (msg.content.slice(cmd.length + 1).indexOf("--force") != -1) {
+            if (cmd == "fplay") {
                 songs.splice(1, 0, [id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
             }
             else {
