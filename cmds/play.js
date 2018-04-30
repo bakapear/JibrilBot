@@ -29,13 +29,7 @@ module.exports = {
                 id = data.v;
             }
             let body = (await got(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${api_google}`, { json: true })).body;
-            if (cmd == "fplay") {
-                console.log("YEP");
-                songs.splice(1, 0, [id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
-            }
-            else {
-                songs.push([id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
-            }
+            songs.push([id, body.items[0].snippet.title, body.items[0].snippet.thumbnails.high.url, body.items[0].snippet.thumbnails.medium.url]);
         }
         else if ("list" in data) {
             let next = "";
@@ -50,8 +44,13 @@ module.exports = {
                 next = body.nextPageToken;
             } while (next)
         }
-        for (let i = 0; i < songs.length; i++) {
-            voiceq[msg.guild.id].songs.push(songs[i]);
+        if (cmd == "fplay" && songs.length == 1) {
+            voiceq[msg.guild.id].songs.splice(1, 0, songs[0]);
+        }
+        else {
+            for (let i = 0; i < songs.length; i++) {
+                voiceq[msg.guild.id].songs.push(songs[i]);
+            }
         }
         if (voiceq[msg.guild.id].playing !== "play") {
             voiceq[msg.guild.id].playing = "play";
