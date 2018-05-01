@@ -26,7 +26,7 @@ module.exports = {
                     lEye: data.faces[i].landmark.left_eye_center,
                     rEye: data.faces[i].landmark.right_eye_center,
                     nose: data.faces[i].landmark.nose_tip,
-                    mouth: data.faces[i].landmark.mouth_lower_lip_top
+                    mouth: data.faces[i].landmark.mouth_upper_lip_bottom
                 };
                 let parts = [
                     await jimp.read("./data/assets/thot/left_ear.png"),
@@ -49,7 +49,7 @@ module.exports = {
                 if (err) { console.log(err); msg.channel.send("Something went wrong!"); return; }
                 msg.channel.send({ file: file });
             });
-        } catch (e) { msg.channel.send("Invalid URL!"); }
+        } catch (e) { console.log(e); msg.channel.send("Invalid URL!"); }
     }
 }
 
