@@ -11,7 +11,6 @@ module.exports = {
             let member = msg.mentions.members.first();
             if (!member) { msg.channel.send("Invalid user!"); return; }
             avatarimg = member.user.avatarURL;
-            console.log(member);
         }
         msg.channel.send({
             embed: {

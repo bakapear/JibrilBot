@@ -44,16 +44,12 @@ module.exports = {
                 img.composite(parts[2], face.nose.x - (parts[2].bitmap.width / 2), face.nose.y - (parts[2].bitmap.height / 2));
                 img.composite(parts[3], face.mouth.x - (parts[3].bitmap.width / 2), face.mouth.y - (parts[3].bitmap.height / 2));
             }
-            let file = `./data/temp/thot_${msg.author.id}.jpg`
+            let file = `./data/temp/thot_${msg.author.id}.jpg`;
             img.write(file, function (err) {
                 if (err) { console.log(err); msg.channel.send("Something went wrong!"); return; }
                 msg.channel.send({ file: file });
             });
-        }
-        catch (e) {
-            if (e.code == "ETIMEDOUT" || e.code == "ENOTFOUND") { msg.channel.send("Invalid URL!"); }
-            else console.log(e); msg.channel.send("Something went wrong!");
-        }
+        } catch (e) { msg.channel.send("Invalid URL!"); }
     }
 }
 
