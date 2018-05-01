@@ -9,7 +9,7 @@ module.exports = {
     command: async function (msg, cmd, args) {
         let link = `http://www.colourlovers.com/api/colors?format=json&keywords=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`;
         if (args == "") {
-            link = `http://www.colourlovers.com/api/colors/random?format=json`
+            link = `http://www.colourlovers.com/api/colors/random?format=json`;
         }
         else if (args[0].startsWith("#")) {
             if (hexToRgb(args[0].substring(1)) == null) { msg.channel.send("Invalid hex!"); return; }
