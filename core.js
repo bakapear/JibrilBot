@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 let fs = require("fs");
-let util = require("util");
 let got = require("got");
 let cleverbot = require('cleverbot.io');
 let moment = require("moment");
@@ -102,11 +101,11 @@ setInterval(function () {
 setInterval(rndPresence, 654321);
 
 process.on('uncaughtException', err => {
-	console.error('Caught Exception: ' + util.inspect(err, false, null));
+	console.error('Caught Exception: ' + err);
 });
 
 process.on('unhandledRejection', err => {
-	console.error('Unhandled rejection: ' + util.inspect(err, false, null));
+	console.error('Unhandled rejection: ' + err);
 });
 
 async function rndPresence() {
