@@ -2,7 +2,7 @@ let got = require("got");
 let api_google = process.env.API_GOOGLE;
 
 module.exports = {
-    name: ["youtube", "yt"],
+    name: ["youtube", "yt", "playlist"],
     desc: "Displays a video link or converts it into audio/video.",
     permission: "",
     usage: "(mp3/mp4) ; <query>",
@@ -16,10 +16,16 @@ module.exports = {
             if (videoid == -1) { msg.channel.send("Invalid link!"); return; }
         }
         else {
-            let body = (await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true })).body;
+            let type = "video";
+            if (cmd == "playlist") type = "playlist"
+            let body = (await got(`https://www.googleapis.com/youtube/v3/search?part=id&type=${type}&q=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}&key=${api_google}`, { json: true })).body;
             if (body.items.length < 1) { msg.channel.send("Nothing found!"); return; }
             let mod = 0;
             if (msg.content.startsWith(".")) mod = Math.floor(Math.random() * body.items.length);
+            if (cmd == "playlist") {
+                msg.channel.send(`https://www.youtube.com/playlist?list=${body.items[mod].id.playlistId}`);
+                return;
+            }
             videoid = body.items[mod].id.videoId;
         }
         if (method == "mp3") {
