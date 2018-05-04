@@ -13,7 +13,7 @@ module.exports = {
             msg.channel.fetchWebhooks().then(async hooks => {
                 let hook = hooks.find("name", "Jibs - Reply Hook");
                 if (hook == null) {
-                    hook = msg.channel.createWebhook("Jibs - Reply Hook");
+                    hook = await msg.channel.createWebhook("Jibs - Reply Hook");
                 }
                 await hook.edit(msg.author.username, msg.author.avatarURL);
                 await hook.sendSlackMessage({
@@ -28,7 +28,6 @@ module.exports = {
                 await hook.edit("Jibs - Reply Hook", "");
             });
         }).catch(e => {
-            console.log(e)
             msg.channel.send("Invalid message ID!");
             return;
         });
