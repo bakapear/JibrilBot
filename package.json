@@ -19,7 +19,6 @@
   "dependencies": {
     "cleverbot.io": "^1.0.4",
     "discord.js": "^11.3.2",
-    "ffmpeg-binaries": "^3.2.2",
     "g-i-s": "^2.1.1",
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
