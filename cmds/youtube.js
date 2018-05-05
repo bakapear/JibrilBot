@@ -31,6 +31,7 @@ module.exports = {
             videoid = body.items[mod].id.videoId;
         }
         if (method == "mp3") {
+            if (!fs.existsSync("./data/temp/")) fs.mkdirSync("./data/temp/");
             let file = `./data/temp/mp3_${msg.author.id}.mp3`;
             let stream = await ytdl("https://youtube.com/watch?v=" + videoid, { filter: "audioonly" })
             stream.pipe(fs.createWriteStream(file));
@@ -40,6 +41,7 @@ module.exports = {
             return;
         }
         if (method == "mp4") {
+            if (!fs.existsSync("./data/temp/")) fs.mkdirSync("./data/temp/");
             let file = `./data/temp/mp4_${msg.author.id}.mp4`;
             let stream = await ytdl("https://youtube.com/watch?v=" + videoid, { filter: "audioandvideo" })
             stream.pipe(fs.createWriteStream(file));
