@@ -1,8 +1,10 @@
+let ytdl = require("ytdl-core");
 let got = require("got");
+let fs = require("fs");
 let api_google = process.env.API_GOOGLE;
 
 module.exports = {
-    name: ["youtube", "yt", "playlist"],
+    name: ["youtube", "yt", "playlist", "yaw"],
     desc: "Displays a video link or converts it into audio/video.",
     permission: "",
     usage: "(mp3/mp4) ; <query>",
@@ -29,38 +31,20 @@ module.exports = {
             videoid = body.items[mod].id.videoId;
         }
         if (method == "mp3") {
-            let body = (await got(`https://youtubetoany.com/@api/json/mp3/${videoid}`)).body;
-            let index = 2000;
-            if (body.indexOf("<script") != -1) index = body.indexOf("<script");
-            let json = JSON.parse(body.substring(0, index));
-            if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
-            let downloads = [];
-            for (let i = 0; i < 5; i++) {
-                downloads.push(`[${json.vidInfo[i].bitrate} kbit/s - ${json.vidInfo[i].mp3size}](https:${json.vidInfo[i].dloadUrl})\n`);
-            }
-            msg.channel.send({
-                embed: {
-                    color: 382329,
-                    title: json.vidTitle,
-                    description: downloads.join("").substring(0, 2045)
-                }
+            let file = `./data/temp/mp3_${msg.author.id}.mp3`;
+            let stream = await ytdl("https://youtube.com/watch?v=" + videoid, { filter: "audioonly" })
+            stream.pipe(fs.createWriteStream(file));
+            stream.on("end", () => {
+                msg.channel.send({ file: file });
             });
             return;
         }
         if (method == "mp4") {
-            let body = (await got(`https://youtubetoany.com/@api/json/videos/${videoid}`)).body;
-            let json = JSON.parse(body);
-            if (!json.vidInfo || json.vidInfo.length < 1) { msg.channel.send("Nothing found!"); return; }
-            let downloads = [];
-            for (let i = 0; i < 5; i++) {
-                downloads.push(`[${json.vidInfo[i].quality}p - ${json.vidInfo[i].rSize}](https:${json.vidInfo[i].dloadUrl})\n`);
-            }
-            msg.channel.send({
-                embed: {
-                    color: 382329,
-                    title: json.vidTitle,
-                    description: downloads.join("").substring(0, 2045)
-                }
+            let file = `./data/temp/mp4_${msg.author.id}.mp4`;
+            let stream = await ytdl("https://youtube.com/watch?v=" + videoid, { filter: "audioandvideo" })
+            stream.pipe(fs.createWriteStream(file));
+            stream.on("end", () => {
+                msg.channel.send({ file: file });
             });
             return;
         }
