@@ -2,9 +2,9 @@
   "name": "jibril",
   "version": "1.0.0",
   "description": "The youngest and strongest discord bot of the Flügel race.",
-  "main": "core.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node core.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
