@@ -20,7 +20,6 @@
     "cheerio": "^1.0.0-rc.2",
     "cleverbot.io": "^1.0.4",
     "discord.js": "^11.4.2",
-    "ffmpeg-binaries": "^4.0.0",
     "g-i-s": "^2.1.2",
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
