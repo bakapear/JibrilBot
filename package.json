@@ -24,10 +24,10 @@
     "google-translate-api": "^2.3.0",
     "google-tts-api": "0.0.3",
     "got": "^9.2.2",
-    "jimp": "^0.5.3",
+    "jimp": "^0.5.4",
     "moment": "^2.22.2",
     "node-opus": "^0.3.0",
     "youtube-info": "^1.2.1",
-    "ytdl-core": "^0.26.0"
+    "ytdl-core": "^0.26.3"
   }
 }
