@@ -26,7 +26,6 @@
     "got": "^9.2.2",
     "jimp": "^0.5.4",
     "jsonbin.org": "^1.0.0",
-    "moment": "^2.22.2",
     "node-opus": "^0.3.0",
     "youtube-info": "^1.2.1",
     "ytdl-core": "^0.26.3"
