@@ -18,7 +18,6 @@
   "homepage": "https://github.com/bakapear/Jibril#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "cleverbot.io": "^1.0.4",
     "discord.js": "^11.4.2",
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
