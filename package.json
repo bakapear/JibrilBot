@@ -21,7 +21,6 @@
     "discord.js": "^11.4.2",
     "google": "^2.1.0",
     "google-translate-api": "^2.3.0",
-    "google-tts-api": "0.0.3",
     "got": "^9.2.2",
     "jimp": "^0.5.4",
     "jsonbin.org": "^1.0.0",
