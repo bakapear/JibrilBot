@@ -1,4 +1,4 @@
-//now rm jibril --yes ; now --public ; now alias
+require("child_process").exec(`now rm jibril --safe --yes --token ${process.env.TOKEN}`)
 
 require("http").createServer((req, res) => {
     res.write(t(process.uptime()))
