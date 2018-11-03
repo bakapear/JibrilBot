@@ -1,5 +1,7 @@
 //now rm jibril --yes ; now --public ; now alias
 
+//kill me
+
 require("http").createServer((req, res) => {
     res.write(t(process.uptime()))
     res.end()
