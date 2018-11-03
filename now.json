@@ -1,8 +1,11 @@
 {
     "name": "jibril",
-    "alias": "jibril",
+    "alias": [
+        "jibril.now.sh"
+    ],
     "type": "npm",
     "github": {
+        "autoAlias": true,
         "enabled": true
     },
     "env": {
