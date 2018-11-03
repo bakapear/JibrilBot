@@ -6,4 +6,4 @@ Feedback, improvements or suggestions are much appreciated!
 
 still in dev tho.
 
-[website](https://jibril.now.sh/)
+[website](https://jibril.now.sh/) 
