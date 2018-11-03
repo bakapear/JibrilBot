@@ -5,25 +5,5 @@
     "github": {
         "enabled": true
     },
-    "env": {
-        "API_GIPHY": "@api_giphy",
-        "API_GITHUB": "@api_github",
-        "API_GOOGLE": "@api_google",
-        "API_IMGUR": "@api_imgur",
-        "API_JSONBIN": "@api_jsonbin",
-        "API_MUSIX": "@api_musix",
-        "API_NEWS": "@api_news",
-        "API_OSU": "@api_osu",
-        "API_REPLIKA_BOT": "@api_replika_bot",
-        "API_REPLIKA_CHAT": "@api_replika_chat",
-        "API_REPLIKA_DEVICE": "@api_replika_device",
-        "API_REPLIKA_KEY": "@api_replika_key",
-        "API_REPLIKA_TOKEN": "@api_replika_token",
-        "API_REPLIKA_USER": "@api_replika_user",
-        "API_SOUNDCLOUD": "@api_soundcloud",
-        "API_STEAM": "@api_steam",
-        "API_STOCK": "@api_stock",
-        "API_STOCK_SECRET": "@api_stock_secret",
-        "BOT_TOKEN": "@bot_token"
-    }
+    "env": {}
 }
