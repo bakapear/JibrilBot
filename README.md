@@ -5,3 +5,5 @@ A yet growing discord bot I created using the [discord.js](https://github.com/di
 Feedback, improvements or suggestions are much appreciated!
 
 still in dev tho.
+
+[website](https://jibril.now.sh/)
