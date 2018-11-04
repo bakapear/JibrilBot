@@ -1,9 +1,6 @@
-let http = require("http")
-let child = require("child_process")
+setTimeout(() => require("child_process").exec(`now alias jibril --token ${process.env.TOKEN} ; rm jibril --safe --yes --token ${process.env.TOKEN}`), 60000)
 
-setTimeout(() => child.exec(`now alias jibril --token ${process.env.TOKEN} ; rm jibril --safe --yes --token ${process.env.TOKEN}`), 60000)
-
-http.createServer((req, res) => {
+require("http").createServer((req, res) => {
     res.write(t(process.uptime()))
     res.end()
 }).listen(3000)
