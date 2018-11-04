@@ -1,7 +1,8 @@
 let http = require("http")
 let child = require("child_process")
 
-child.exec(`now alias jibril --remove-old --token ${process.env.TOKEN}`)
+child.exec(`now alias rm jibril --token ${process.env.TOKEN}`)
+child.exec(`now alias set jibril --token ${process.env.TOKEN}`)
 child.exec(`now rm jibril --safe --yes --token ${process.env.TOKEN}`)
 http.createServer((req, res) => {
     res.write(t(process.uptime()))
