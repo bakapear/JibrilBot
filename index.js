@@ -1,4 +1,6 @@
-setTimeout(() => require("child_process").exec(`now alias jibril --token ${process.env.TOKEN} ; rm jibril --safe --yes --token ${process.env.TOKEN}`), 60000)
+setTimeout(() => require("child_process").exec(`now alias --token ${process.env.TOKEN} ; rm jibril --safe --yes --token ${process.env.TOKEN}`, (err, out, e) => {
+    console.log(out, e)
+}), 60000)
 
 require("http").createServer((req, res) => {
     res.write(t(process.uptime()))
