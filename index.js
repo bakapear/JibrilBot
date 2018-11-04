@@ -1,5 +1,6 @@
-setTimeout(() => require("child_process").exec(`now alias rm jibril --yes --token ${process.env.TOKEN} ; now alias --token ${process.env.TOKEN} ; now rm jibril --safe --yes --token ${process.env.TOKEN}`, (err, out, e) => {
-    console.log(out, e)
+setTimeout(() => require("child_process").exec(`now alias rm jibril --yes --token ${process.env.TOKEN} ; now alias --token ${process.env.TOKEN} ; now rm jibril --safe --yes --token ${process.env.TOKEN}`, (e, out, err) => {
+    if (err) console.log(err)
+    if (out) console.log(out)
 }), 10000)
 
 require("http").createServer((req, res) => {
