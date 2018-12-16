@@ -12,6 +12,7 @@
         "API_GIPHY": "@api_giphy",
         "API_GITHUB": "@api_github",
         "API_GOOGLE": "@api_google",
+        "API_GTTS": "@api_gtts",
         "API_IMGUR": "@api_imgur",
         "API_JSONBIN": "@api_jsonbin",
         "API_MUSIX": "@api_musix",
