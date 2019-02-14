@@ -28,6 +28,7 @@
         "API_STEAM": "@api_steam",
         "API_STOCK": "@api_stock",
         "API_STOCK_SECRET": "@api_stock_secret",
+        "API_TRANSLATE": "@api_translate",
         "BOT_TOKEN": "@bot_token",
         "TOKEN": "@token"
     }
