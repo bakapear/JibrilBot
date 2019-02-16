@@ -1,5 +1,6 @@
 {
     "name": "jibril",
+    "version": 1,
     "alias": [
         "jibril.now.sh"
     ],
