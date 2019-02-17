@@ -26,7 +26,6 @@
         "API_REPLIKA_TOKEN": "@api_replika_token",
         "API_REPLIKA_USER": "@api_replika_user",
         "API_SOUNDCLOUD": "@api_soundcloud",
-        "API_STEAM": "@api_steam",
         "API_STOCK": "@api_stock",
         "API_STOCK_SECRET": "@api_stock_secret",
         "API_TRANSLATE": "@api_translate",
