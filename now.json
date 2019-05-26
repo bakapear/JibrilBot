@@ -29,6 +29,7 @@
         "API_STOCK": "@api_stock",
         "API_STOCK_SECRET": "@api_stock_secret",
         "API_TRANSLATE": "@api_translate",
+        "API_GENIUS": "@api_genius",
         "BOT_TOKEN": "@bot_token",
         "TOKEN": "@token"
     }
