@@ -19,6 +19,7 @@
         "API_MUSIX": "@api_musix",
         "API_NEWS": "@api_news",
         "API_OSU": "@api_osu",
+        "API_OSU2": "@api_osu2",
         "API_REPLIKA_BOT": "@api_replika_bot",
         "API_REPLIKA_CHAT": "@api_replika_chat",
         "API_REPLIKA_DEVICE": "@api_replika_device",
