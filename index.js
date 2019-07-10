@@ -3,12 +3,19 @@ setTimeout(() => require('child_process').exec(`now alias rm jibril --yes --toke
   if (out) console.log(out)
 }), 10000)
 
-require('http').createServer((req, res) => {
-  res.write(t(process.uptime()))
-  res.end()
-}).listen(3000)
+let server = require('server')
+let { get, error } = server.router
+let { json, status } = server.reply
 
-module.exports = require('./lib/core')
+let getData = require('./lib/core')
+
+server({ public: 'views' }, [
+  get('/up', ctx => json(t(process.uptime()))),
+  get('/store', ctx => json(getData())),
+  get('/favicon.ico', ctx => status(200)),
+  get('/*', ctx => 'Why are you even here'),
+  error(ctx => console.error(ctx.error))
+])
 
 function t (s) {
   let d = Math.floor(s / (3600 * 24))
