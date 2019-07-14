@@ -5,7 +5,19 @@ let { json, status } = server.reply
 server({ public: 'views' }, [
   get('/up', ctx => json(t(process.uptime()))),
   get('/store', ctx => json({})),
-  get('/free', ctx => json(process)),
+  get('/free', ctx => {
+    let cache = []
+    let bark = JSON.stringify(process, function (key, value) {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.indexOf(value) !== -1) {
+          return
+        }
+        cache.push(value)
+      }
+      return value
+    })
+    json(JSON.parse(bark))
+  }),
   get('/favicon.ico', ctx => status(200)),
   get('/*', ctx => 'Why are you even here'),
   error(ctx => console.error(ctx.error))
