@@ -1,9 +1,8 @@
-let http = require('http')
 let server = require('server')
 let { get, error } = server.router
 let { json, status } = server.reply
 
-server({ port: process.env.PORT, public: 'views' }, [
+server({ public: 'views' }, [
   get('/up', ctx => json(t(process.uptime()))),
   get('/store', ctx => json({})),
   get('/favicon.ico', ctx => status(200)),
@@ -11,7 +10,12 @@ server({ port: process.env.PORT, public: 'views' }, [
   error(ctx => console.error(ctx.error))
 ])
 
-if (!process.env.DEBUG) setInterval(() => http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`, 280000))
+if (!process.env.DEBUG) {
+  setTimeout(() => require('child_process').exec(`now alias rm jibril --yes --token ${process.env.TOKEN} ; now alias --token ${process.env.TOKEN} ; now rm jibril --safe --yes --token ${process.env.TOKEN}`, (e, out, err) => {
+    if (err) console.log(err)
+    if (out) console.log(out)
+  }), 10000)
+}
 
 function t (s) {
   let d = Math.floor(s / (3600 * 24))
