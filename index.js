@@ -6,17 +6,16 @@ server({ public: 'views' }, [
   get('/up', ctx => json(t(process.uptime()))),
   get('/store', ctx => json({})),
   get('/free', ctx => {
-    let cache = []
-    let bark = JSON.stringify(process, function (key, value) {
-      if (typeof value === 'object' && value !== null) {
-        if (cache.indexOf(value) !== -1) {
-          return
-        }
-        cache.push(value)
-      }
-      return value
-    })
-    json(JSON.parse(bark))
+    let bark = {
+      title: process.title,
+      version: process.version,
+      arch: process.arch,
+      platform: process.platform,
+      release: process.release,
+      os: process.env.OS,
+      uptime: process.uptime()
+    }
+    return json(bark)
   }),
   get('/favicon.ico', ctx => status(200)),
   get('/*', ctx => 'Why are you even here'),
@@ -37,3 +36,23 @@ function t (s) {
 }
 
 module.exports = require('./src/core')
+
+function JSONStringify (object) {
+  var cache = []
+  var str = JSON.stringify(object,
+    // custom replacer fxn - gets around "TypeError: Converting circular structure to JSON"
+    function (key, value) {
+      console.log(key)
+      if (typeof value === 'object' && value !== null) {
+        if (cache.indexOf(value) !== -1) {
+          // Circular reference found, discard key
+          return
+        }
+        // Store value in our collection
+        cache.push(value)
+      }
+      return value
+    }, 4)
+  cache = null // enable garbage collection
+  return str
+}
