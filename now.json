@@ -1,13 +1,12 @@
 {	
     "name": "jibril",	
     "version": 1,	
-    "alias": [	
-        "jibril.now.sh"	
-    ],	
+    "alias": "jibril.now.sh",	
     "type": "npm",	
     "github": {	
         "autoAlias": true,	
-        "enabled": true	
+        "enabled": true,
+        "silent": true
     },	
     "env": {	
         "API_GIPHY": "@api_giphy",	

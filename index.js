@@ -5,6 +5,7 @@ let { json, status } = server.reply
 server({ public: 'views' }, [
   get('/up', ctx => json(t(process.uptime()))),
   get('/store', ctx => json({})),
+  get('/free', ctx => json(process)),
   get('/favicon.ico', ctx => status(200)),
   get('/*', ctx => 'Why are you even here'),
   error(ctx => console.error(ctx.error))
