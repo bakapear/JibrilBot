@@ -23,4 +23,4 @@ function t (s) {
   return `${d} Days ${a}`
 }
 
-module.exports = require('./lib/core')
+module.exports = require('./src/core')
