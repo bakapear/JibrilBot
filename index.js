@@ -10,6 +10,7 @@ server({ public: 'views' }, [
   error(ctx => console.error(ctx.error))
 ])
 
+console.log(process.env.DEBUG)
 if (!process.env.DEBUG) {
   setTimeout(() => require('child_process').exec(`now alias rm jibril --yes --token ${process.env.TOKEN} ; now alias --token ${process.env.TOKEN} ; now rm jibril --safe --yes --token ${process.env.TOKEN}`, (e, out, err) => {
     if (err) console.log(err)
