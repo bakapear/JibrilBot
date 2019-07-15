@@ -5,9 +5,9 @@ module.exports = {
   disabled: false,
   type: 'bot',
   check: async bot => {
-    cfg.avatars = await getAvatars()
+    //cfg.avatars = await getAvatars()
     setInterval(rndPresence, 654321)
-    setInterval(rndAvatar, 654321)
+    //setInterval(rndAvatar, 654321)
   }
 }
 
