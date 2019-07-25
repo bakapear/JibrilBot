@@ -82,7 +82,7 @@ module.exports = {
   disabled: false,
   type: 'msg',
   check: async msg => {
-    if (msg.content.startsWith(`<@!${bot.user.id}>`)) {
+    if (msg.content.startsWith(`<@${bot.user.id}>`) || msg.content.startsWith(`<@!${bot.user.id}>`)) {
       await talkToReplika(msg)
       return true
     }
