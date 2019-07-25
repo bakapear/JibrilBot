@@ -5,7 +5,12 @@ module.exports = {
   usage: '(something)',
   args: 0,
   command: async function (msg, cmd, args) {
-    let rnd = Math.floor(random(args.join(' ')) * 11)
+    let query = args.join(' ').toLowerCase()
+    if (query === 'jibril') {
+      msg.channel.send('o^o')
+      return
+    }
+    let rnd = Math.floor(random(query) * 11)
     let rate = `Rated **${rnd}/10**!`
     if (rnd === 10) rate += ' <3'
     msg.channel.send(rate)
