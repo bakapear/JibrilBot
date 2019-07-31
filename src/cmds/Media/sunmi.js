@@ -1,6 +1,7 @@
 /* global bot */
-let got = require('got')
-let cheerio = require('cheerio')
+let fs = require('fs')
+let path = require('path')
+let data = JSON.parse(fs.readFileSync(path.join(__dirname, '/../', '/../', 'data', 'store', 'sunmi.json'), { encoding: 'utf-8' }))
 
 module.exports = {
   name: ['sunmi'],
@@ -19,13 +20,19 @@ module.exports = {
         return
       }
     }
-    return
-    let data = await fetchSun()
+    let sun = await fetchRandomSun()
+    if (sun.type === 'image') {
+      msg.channel.send({ embed: {
+        title: sun.caption,
+        image: { url: sun.url }
+      } })
+    } else {
+      msg.channel.send(`${sun.caption || ''}\n${sun.url}`)
+    }
   }
 }
 
-async function fetchSun () {
-  let url = ''
-  let { body } = await got(url)
-  let $ = cheerio.load(body)
+async function fetchRandomSun () {
+  let rnd = Math.floor(Math.random() * data.length)
+  return data[rnd]
 }
