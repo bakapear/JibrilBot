@@ -13,7 +13,7 @@ module.exports = {
     let user = bot.users.find(x => x.id === '77111818492846080')
     if (user) {
       if (user.id === msg.author.id) {
-        msg.channel.send("O-oh I'm sorry but you aren't allowed to get sunmi sources. You weeb!")
+        msg.channel.send("O-oh I'm sorry but you aren't allowed to get sunmi sources. You weeb! >:c")
         return
       } else if (user.presence.status === 'online') {
         msg.channel.send(`Oh noe! ${user.username} is online! You can't use the command right now!`)
