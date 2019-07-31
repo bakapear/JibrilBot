@@ -1,5 +1,5 @@
 // for beel :3
-let { cfg } = global
+/* global cfg */
 let got = require('got')
 
 module.exports = {

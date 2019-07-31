@@ -1,4 +1,4 @@
-let { bot, voice } = global
+/* global bot, voice */
 
 module.exports = {
   name: ['soundchan', 'sndchan'],

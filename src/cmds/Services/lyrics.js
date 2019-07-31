@@ -1,4 +1,4 @@
-let { cfg } = global
+/* global cfg */
 let got = require('got')
 let cheerio = require('cheerio')
 let apiGenius = process.env.API_GENIUS

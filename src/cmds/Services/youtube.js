@@ -1,4 +1,4 @@
-let { cfg } = global
+/* global cfg */
 let got = require('got')
 let apiGoogle = process.env.API_GOOGLE
 

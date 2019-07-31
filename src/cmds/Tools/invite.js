@@ -1,4 +1,4 @@
-let { bot } = global
+/* global bot */
 
 module.exports = {
   name: ['invite', 'inv'],

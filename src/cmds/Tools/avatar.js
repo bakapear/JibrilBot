@@ -1,4 +1,4 @@
-let { bot, cfg } = global
+/* global bot, cfg */
 
 module.exports = {
   name: ['avatar', 'avt'],

@@ -1,4 +1,4 @@
-let { cfg } = global
+/* global cfg */
 let got = require('got')
 let apiStock = process.env.API_STOCK
 let apiStockSecret = process.env.API_STOCK_SECRET

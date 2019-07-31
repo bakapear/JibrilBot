@@ -1,4 +1,4 @@
-let { cfg } = global
+/* global cfg */
 
 module.exports = {
   name: ['prefixes'],
