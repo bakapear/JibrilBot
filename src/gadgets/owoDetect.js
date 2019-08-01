@@ -1,5 +1,5 @@
 let uwus = [
-  'Hold your horses there pal, did %PLAYER% just heckin\' %TYPE%\'d?!',
+  'Hold your horses there pal, did %PLAYER% just heckin\' %TYPE%?!',
   'Oi mate, I saw %PLAYER% %TYPE%ing there! What a wanker.',
   'Bro, did %PLAYER% just %TYPE%?',
   'Okay %PLAYER%, what\'s up with those %TYPE%\'s?',
