@@ -30,6 +30,7 @@
         "API_TRANSLATE": "@api_translate",	
         "API_GENIUS": "@api_genius",	
         "API_SAUCE": "@api_sauce",	
+        "API_WEATHER": "@api_weather",
         "BOT_TOKEN": "@bot_token",	
         "TOKEN": "@token"	
     }	
