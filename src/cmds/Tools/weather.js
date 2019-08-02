@@ -13,7 +13,6 @@ module.exports = {
     if (!body) msg.channel.send('Nothing found!')
     else if (body.message) msg.channel.send(body.message)
     else {
-      console.log(body)
       let temp = x => (x - 273.15).toFixed(2)
       if (body.weather.length > 4) body.weather.length = 3
       let desc = `**Weather**: ${body.weather.map(x => x.main).join(' \\> ')}\n`
