@@ -8,44 +8,57 @@ module.exports = {
   usage: '<url>',
   args: 1,
   command: async function (msg, cmd, args) {
-    let dl = await getDownloadLink(cmd.substr(2), args[0])
-    if (!dl.success) {
-      msg.channel.send('Something went wrong!')
-      return
-    }
-    msg.channel.send({
-      embed: {
-        title: decodeURIComponent(dl.download.substr(dl.download.lastIndexOf('/') + 1)),
-        description: 'Size: ' + dl.size_gb + 'GB',
-        url: dl.download,
-        thumbnail: {
-          url: 'https://img.youtube.com/vi/' + getVideoId(args[0]) + '/0.jpg'
+    let body = await getVideo(args.join(' '), cmd)
+    if (!body) return msg.channel.send('Invalid URL!')
+    msg.channel.send({ embed: {
+      title: 'Download ' + cmd.replace('yt', '').toUpperCase(),
+      url: body.url,
+      description: body.title,
+      thumbnail: { url: body.img }
+    } })
+  }
+}
+
+async function getVideo (query, type) {
+  try {
+    let info = await getInfo(query)
+    if (!info) return { error: 'Invalid URL!' }
+    let url = 'https://ddownr.com/download.php'
+    let { body } = await got(url, {
+      query: {
+        url: query,
+        'format-option': type === 'ytmp4' ? 6 : 1,
+        playlist: 1,
+        playliststart: 1,
+        playlistend: 25,
+        index: 1,
+        rkey: null,
+        subtitles: 0,
+        naming: 1,
+        email: null,
+        server_eu: 1,
+        server_us: 1
+      },
+      json: true
+    })
+    let res = body
+    if (res.success) {
+      let { body } = await got(res.progress_url, { json: true })
+      if (body.download_url) {
+        return {
+          title: info.title,
+          img: info.image,
+          url: body.download_url
         }
       }
-    })
-  }
+    }
+  } catch (e) { return null }
 }
 
-async function getDownloadLink (type, link) {
-  let opt = type === 'mp4' ? 5 : 1
+async function getInfo (query) {
   try {
-    let url = `https://dl2.ddownr.com/download/apiv2?url=${encodeURIComponent(link)}&format-option=${opt}&randy=${generateId(10)}&playlist=1&playliststart=1&playlistend=25&index=2&LB=https://www2.ddownr.com&rkey=&naming=1&email=`
-    let body = (await got(url, { json: true })).body
-    return body
-  } catch (e) {
-    return { success: false }
-  }
-}
-
-function generateId (len) {
-  return crypto.randomBytes(256).toString('hex').substr(0, len)
-}
-
-function getVideoId (url) {
-  if (url.indexOf('youtu.be') >= 0) {
-    return url.substr(url.lastIndexOf('/') + 1)
-  }
-  url = url.substr(url.indexOf('v=') + 2)
-  url = url.substring(0, url.indexOf('&'))
-  return url
+    let url = 'https://ddownr.com/api/info/index.php'
+    let { body } = await got(url, { query: { url: query }, json: true })
+    return body.title === query ? null : body
+  } catch (e) { return null }
 }
