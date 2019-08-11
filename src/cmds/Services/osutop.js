@@ -15,7 +15,7 @@ module.exports = {
     }
     let players = []
     for (let i = 0; i < top.length; i++) {
-      players.push(`${top[i].rank} - :flag_${top[i].flag.toLowerCase()}: [${top[i].name}](${top[i].url}) [${top[i].info}]`)
+      players.push(`${top[i].rank} - :flag_${top[i].flag.toLowerCase()}: [${top[i].name.replace(/[*_~]/g, '\\$&')}](${top[i].url}) [${top[i].info}]`)
     }
     msg.channel.send({
       embed: {
@@ -29,42 +29,42 @@ module.exports = {
 
 async function getTop (type, limit) {
   try {
-    let url = 'https://osu.ppy.sh/rankings/osu/performance'
     if (!type) type = 'performance'
+    let url = 'https://osu.ppy.sh/rankings/osu/performance'
     type = type.toLowerCase()
     if (type === 'season') url = 'https://osu.ppy.sh/rankings/osu/charts'
-    if (type === 'score') url = 'https://osu.ppy.sh/rankings/osu/score'
-    if (type === 'country') url = 'https://osu.ppy.sh/rankings/osu/country'
+    else if (type === 'score') url = 'https://osu.ppy.sh/rankings/osu/score'
+    else if (type === 'country') url = 'https://osu.ppy.sh/rankings/osu/country'
+    else type = 'performance'
     let body = (await got(url)).body
     let $ = cheerio.load(body)
     let ranks = $('.ranking-page-table__row')
     let top = []
     for (let i = 0; i < ranks.length; i++) {
       let col = $(ranks[i]).find('td')
-      let data = { type: type, rank: col[0].children[0].data.trim() }
+      let data = {
+        type: type,
+        rank: col[0].children[0].data.trim(),
+        flag: $(col[1]).find('.flag-country')[0].attribs.style.match(/flags\/(.*?).png/)[1]
+      }
       if (type === 'performance') {
-        data.url = col[1].children[1].children[3].attribs.href
-        data.name = col[1].children[1].children[3].children[1].children[0].data.trim()
+        data.url = $(col[1]).find('.ranking-page-table__user-link-text')[0].attribs.href
+        data.name = $(col[1]).find('.ranking-page-table__user-link-text').text().trim()
         data.info = col[4].children[0].data.trim()
       }
       if (type === 'season' || type === 'score') {
-        data.url = col[1].children[1].children[3].attribs.href
-        data.name = col[1].children[1].children[3].children[1].children[0].data.trim()
+        data.url = $(col[1]).find('.ranking-page-table__user-link-text')[0].attribs.href
+        data.name = $(col[1]).find('.ranking-page-table__user-link-text').text().trim()
         data.info = col[5].children[1].attribs.title
       }
       if (type === 'country') {
-        data.url = col[1].children[1].attribs.href
-        data.name = col[1].children[1].children[3].children[0].data.trim()
+        data.url = $(col[1]).find('.ranking-page-table__country-link')[0].attribs.href
+        data.name = $(col[1]).find('.ranking-page-table__country-link-text').text().trim()
         data.info = col[6].children[1].attribs.title
-      }
-      if (col[1].children[1].children[1].children[1]) {
-        data.flag = col[1].children[1].children[1].children[1].attribs.style.match(/flags\/(.*?).png/)[1]
-      } else {
-        data.flag = col[1].children[1].children[1].attribs.style.match(/flags\/(.*?).png/)[1]
       }
       top.push(data)
     }
     if (top.length > limit) top.length = limit
     return top
-  } catch (e) { if (e) return null }
+  } catch (e) { if (e) console.log(e); return null }
 }
