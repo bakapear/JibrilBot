@@ -4,9 +4,9 @@ let isFunction = (fn) => fn && {}.toString.call(fn) === '[object Function]'
 
 module.exports = {
   name: ['fun', 'ifunny'],
-  desc: 'Displays a random ifunny picture.',
+  desc: 'Displays a random featured ifunny meme.',
   permission: '',
-  usage: '',
+  usage: '(limit)',
   args: 0,
   command: async function (msg, cmd, args) {
     let num = args[0] || 20
