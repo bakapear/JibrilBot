@@ -19,14 +19,14 @@ module.exports = {
 async function shortenURL (link) {
   try {
     let url = 'https://api.long.af/create'
-    let body = (await got.post(url, {
+    let { body } = await got.post(url, {
       body: {
         url: link,
-        expires: null,
+        expires: 'never',
         type: null
       },
       json: true
-    })).body
+    })
     return body
   } catch (e) { if (e) return null }
 }
