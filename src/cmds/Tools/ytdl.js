@@ -22,7 +22,7 @@ module.exports = {
     for (let key in body) {
       let txt = ''
       for (let i = 0; i < body[key].length; i++) {
-        txt += `[${body[key][i].ext}](${urls[i]})\n`
+        txt += `[${body[key][i].ext}](${urls[i].url})\n`
       }
       fields.push({
         name: key,
