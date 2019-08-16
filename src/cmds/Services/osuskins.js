@@ -49,7 +49,7 @@ async function searchSkins (query) {
       html = (await got(url)).body
     }
     let $ = cheerio.load(html)
-    let cards = $('.col-xs-12.col-sm-6.col-md-6.col-lg-4')
+    let cards = $('.col-xs-12.col-sm-6.col-md-6')
     let pack = []
     for (let i = 0; i < cards.length; i++) {
       let card = $(cards[i])
@@ -59,6 +59,7 @@ async function searchSkins (query) {
         img: 'http://skins.osuck.net' + card.find('.item.active img')[0].attribs.src
       })
     }
+    console.log(pack)
     return pack
   } catch (e) { if (e) return null }
 }
