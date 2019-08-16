@@ -59,7 +59,6 @@ async function searchSkins (query) {
         img: 'http://skins.osuck.net' + card.find('.item.active img')[0].attribs.src
       })
     }
-    console.log(pack)
     return pack
   } catch (e) { if (e) return null }
 }
