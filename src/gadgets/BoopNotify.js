@@ -1,4 +1,5 @@
 let fetchAnimeUser = require('../cmds/Hooks/aniboop.js').fetch
+let bin = require('jsonbin.org')('token ' + process.env.API_JSONBIN)
 
 async function boopChat (msg) {
   if (msg.embeds[0]) {
