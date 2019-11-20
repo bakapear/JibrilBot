@@ -10,7 +10,7 @@ module.exports = {
   command: async function (msg, cmd, args) {
     let query = args.join(' ')
     let servants = await getServants(['1-100', '101-200', '201-300'])
-    let id = servants.findIndex(x => x.name.toLowerCase().indexOf(query) >= 0)
+    let id = servants.findIndex(x => x.name.toLowerCase().indexOf(query.toLowerCase()) >= 0)
     if (!query) id = Math.floor(Math.random() * servants.length)
     if (id === -1) return msg.channel.send(`Servant '${query}' not found!`)
     let servant = servants[id]
