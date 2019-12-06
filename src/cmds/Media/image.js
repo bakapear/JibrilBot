@@ -20,12 +20,11 @@ module.exports = {
 }
 
 async function collectImages (query) {
-  let url = 'http://images.google.com/search?tbm=isch&safe=off&q=' + encodeURIComponent(query)
-  let body = (await got(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
-    }
-  })).body
+  query = encodeURIComponent(query)
+  let url = `https://www.google.com/search?q=${query}&source=lnms&tbm=isch&sa=X&hl=en&safe=off`
+  let { body } = await got(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0' }
+  })
   let $ = cheerio.load(body)
   let meta = $('.rg_meta')
   let result = []
@@ -45,5 +44,27 @@ async function collectImages (query) {
     }
     result.push(item)
   }
-  return result
+  if (!result.length) {
+    let start = body.indexOf('function(){return [', body.indexOf("key: 'ds:2'")) + 18
+    let end = body.indexOf('}});</script>', start) - 1
+    let json = JSON.parse(body.substring(start, end))[31][0][12][2]
+    for (let i = 0; i < json.length; i++) {
+      let data = json[i][1]
+      if (!data) continue
+      let item = {
+        original: {
+          url: data[3][0],
+          width: data[3][2],
+          height: data[3][1]
+        },
+        thumbnail: {
+          url: data[2][0],
+          width: data[2][2],
+          height: data[2][1]
+        }
+      }
+      result.push(item)
+    }
+  }
+  return result.filter(x => x.original.url.indexOf('fbsbx.com/') < 0)
 }
