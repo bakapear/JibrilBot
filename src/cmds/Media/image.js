@@ -47,7 +47,10 @@ async function collectImages (query) {
   if (!result.length) {
     let start = body.indexOf('function(){return [', body.indexOf("key: 'ds:2'")) + 18
     let end = body.indexOf('}});</script>', start) - 1
-    let json = JSON.parse(body.substring(start, end))[31][0][12][2]
+    let json = null
+    try {
+      json = JSON.parse(body.substring(start, end))[31][0][12][2]
+    } catch (e) { return [] }
     for (let i = 0; i < json.length; i++) {
       let data = json[i][1]
       if (!data) continue
