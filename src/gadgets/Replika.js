@@ -75,7 +75,7 @@ async function talkToReplika (msg) {
         }
       })
     }
-  } catch (e) { if (e) return null }
+  } catch (e) { if (e) console.error(e) }
 }
 
 module.exports = {
