@@ -17,7 +17,7 @@ async function talkToReplika (msg) {
   try {
     let text = msg.content.split(' ').slice(1).join(' ')
     if (text) {
-      let ws = new WebSocket('wss://my.replika.ai:8050/v15')
+      let ws = new WebSocket('wss://my.replika.ai:8050/v16')
       let body = {
         event_name: 'message',
         payload: {
