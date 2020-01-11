@@ -31,6 +31,7 @@
         "API_GENIUS": "@api_genius",	
         "API_SAUCE": "@api_sauce",	
         "API_WEATHER": "@api_weather",
+        "API_DUNGEON": "@api_dungeon",
         "BOT_TOKEN": "@bot_token",	
         "TOKEN": "@token"	
     }	
