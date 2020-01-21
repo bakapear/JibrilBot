@@ -62,6 +62,24 @@ module.exports = {
           }
           break
         }
+        case 'rename': {
+          let store = await bin.get(path + args[0])
+          if (store === null) {
+            msg.channel.send(`The folder \`${args[0]}\` doesn't exist!`)
+          } else if (args[2]) {
+            let other = await bin.get(path + args[2])
+            if (other === null) {
+              await bin.delete(path + args[0])
+              await bin.post(path + args[2], store)
+              msg.channel.send(`Renamed folder \`${args[0]}\` to \`${args[2]}\``)
+            } else {
+              msg.channel.send(`The folder \`${args[2]}\` is already taken by you!`)
+            }
+          } else {
+            msg.channel.send('Please provide a new name for the folder!')
+          }
+          break
+        }
         case 'add': {
           let store = await bin.get(path + args[0])
           if (store === null) {
