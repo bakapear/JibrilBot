@@ -7,8 +7,16 @@ module.exports = {
   usage: '<math stuff>',
   args: 1,
   command: async function (msg, cmd, args) {
-    let url = `http://api.mathjs.org/v4/?expr=${encodeURIComponent(msg.content.slice(cmd.length + 1).trim())}`
-    let body = (await got(url, { json: true })).body
+    let body = await doMath(args.join(' '))
     msg.channel.send(body)
   }
+}
+
+async function doMath (expression) {
+  let url = 'http://api.mathjs.org/v4/'
+  let body = await got(url, {
+    query: { expr: expression },
+    json: true
+  }).catch(e => e.response)
+  return body.body
 }
