@@ -34,7 +34,7 @@ module.exports = {
 
 async function searchSkins (query) {
   try {
-    let url = 'http://skins.osuck.net/'
+    let url = 'https://skins.osuck.net/'
     let html = null
     if (query) {
       html = (await got.post(url, {
@@ -56,7 +56,7 @@ async function searchSkins (query) {
       pack.push({
         name: card.find('.panel-title.txt-dark a')[0].children[0].data,
         url: card.find('.panel-title.txt-dark a')[0].attribs.href,
-        img: 'http://skins.osuck.net' + card.find('.item.active img')[0].attribs.src
+        img: 'https://skins.osuck.net' + card.find('img')[0].attribs.src
       })
     }
     return pack
