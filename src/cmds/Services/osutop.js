@@ -66,5 +66,5 @@ async function getTop (type, limit) {
     }
     if (top.length > limit) top.length = limit
     return top
-  } catch (e) { if (e) console.log(e); return null }
+  } catch (e) { if (e) return null }
 }

@@ -1,90 +1,52 @@
 let got = require('got')
-let fs = require('fs')
-let apiOsu2 = process.env.API_OSU2
 
 module.exports = {
-  name: ['osba', 'osb', 'osubeatmap', 'osub', 'osumap'],
-  desc: 'Search for an osu! beatmap',
+  name: ['osb', 'osba', 'osubeatmap'],
+  desc: 'Search for an osu! beatmap. (osba for unranked aswell)',
   permission: '',
   usage: '(query)',
   args: 0,
   command: async function (msg, cmd, args) {
-    let query = args.join(' ')
-    if (query.startsWith('https://osu.ppy.sh/beatmapsets/')) query = query.substr(31)
-    let maps = await getBeatmaps(query, cmd !== 'osba')
-    if (!maps.length) {
-      msg.channel.send('Nothing found!')
-      return
-    }
-    let songs = []
-    let len = maps.length > 8 ? 8 : maps.length
-    if (!query || isNaN(query)) {
-      for (let i = 0; i < len; i++) {
-        let title = maps[i].artist + ' - ' + maps[i].title
-        if (title.length > 50) title = title.substr(0, 47) + '...'
-
-        let diffs = []
-        for (let j = 0; j < maps[i].beatmaps.length; j++) {
-          diffs.push(maps[i].beatmaps[j].difficulty_rating.toFixed(2))
-        }
-        diffs = diffs.sort((a, b) => a - b)
-        let time = formatTime(maps[i].beatmaps[0].total_length * 1000)
-        songs.push(`${i + 1}. [${title}](https://osu.ppy.sh/beatmapsets/${maps[i].id}) [[DL]](https://osu.ppy.sh/beatmapsets/${maps[i].id}/download)\n\`[ ${diffs.join(' | ')} ]\`\n\`BPM: ${maps[i].bpm} Length: ${time} Mapper: ${maps[i].creator}\``)
+    let beatmaps = await getBeatmaps(args.join(' '), cmd === 'osba')
+    if (!beatmaps || !beatmaps.length) return msg.channel.send('Nothing found!')
+    let desc = formatMessage(beatmaps)
+    msg.channel.send({
+      embed: {
+        color: 15033501,
+        title: 'osu! beatmaps' + (args.length ? ` (${args.join(' ')})` : ''),
+        description: desc.join('\n')
       }
-      msg.channel.send({
-        embed: {
-          color: 15033501,
-          title: 'osu! beatmaps',
-          description: songs.join('\n')
-        }
-      })
-    } else {
-      let map = maps[0]
-      let title = map.artist + ' - ' + map.title
-      let time = formatTime(map.beatmaps[0].total_length * 1000)
-      let diffs = []
-      for (let i = 0; i < map.beatmaps.length; i++) {
-        let diff = map.beatmaps[i]
-        diffs.push(`[${diff.version}](https://osu.ppy.sh/beatmapsets/${diff.beatmapset_id}#osu/${diff.id}) - ☆${diff.difficulty_rating.toFixed(2)} \`ar${diff.ar.toFixed(1)}|od${diff.accuracy.toFixed(1)}|cs${diff.cs.toFixed(1)}|hp${diff.drain.toFixed(1)}\` [${formatTime(diff.hit_length * 1000)}]`)
-      }
-      msg.channel.send({
-        embed: {
-          color: 15033501,
-          title: title,
-          url: `https://osu.ppy.sh/beatmapsets/${map.id}`,
-          description: `**BPM** ${map.bpm} **Length** ${time} **Plays** ${map.play_count} **Favs** ${map.favourite_count}\n\n${diffs.join('\n')}`,
-          thumbnail: {
-            url: map.covers['list@2x']
-          },
-          footer: {
-            icon_url: 'https://a.ppy.sh/' + map.user_id,
-            text: map.creator
-          },
-          timestamp: map.ranked_date
-        }
-      })
-      let stream = got.stream('https:' + map.preview_url).pipe(fs.createWriteStream('tmp/preview.mp3'))
-      stream.on('finish', () => msg.channel.send({ files: ['tmp/preview.mp3'] }))
-    }
+    })
   }
 }
 
-async function getBeatmaps (query, ranked) {
-  try {
-    let url = 'https://osu.ppy.sh/beatmapsets/search'
-    let body = (await got(url, {
-      query: {
-        q: query,
-        m: 0,
-        s: ranked ? undefined : 7
-      },
-      headers: {
-        cookie: 'osu_session=' + apiOsu2
-      },
-      json: true
-    })).body
-    return body.beatmapsets
-  } catch (e) { if (e) return null }
+async function getBeatmaps (query, all) {
+  let url = 'https://bloodcat.com/osu/'
+  let { body } = await got(url, {
+    query: {
+      mod: 'json',
+      s: all ? '' : 1,
+      m: 0,
+      q: query
+    },
+    json: true
+  })
+  return body
+}
+
+function formatMessage (beatmaps) {
+  let msg = []
+  let len = beatmaps.length > 8 ? 8 : beatmaps.length
+  for (let i = 0; i < len; i++) {
+    let set = beatmaps[i]
+    let diffs = set.beatmaps.map(x => Number(x.star).toFixed(2)).sort()
+    diffs = (diffs.length > 8) ? `[${diffs[0]} | (${diffs.length - 2} inbetween) | ${diffs[diffs.length - 1]}]` : `[ ${diffs.join(' | ')} ]`
+    let last = set.beatmaps[set.beatmaps.length - 1]
+    let title = `${set.title} - ${set.artist}`
+    if (title.length > 50) title = title.substr(0, 47) + '...'
+    msg.push(`${i + 1}. [${title}](https://osu.ppy.sh/beatmapsets/${set.id}) [[DL]](https://osu.ppy.sh/beatmapsets/${set.id}/download)\n\`${diffs}\nBPM: ${parseInt(last.bpm)} Length: ${formatTime(parseInt(last.length * 1000))} Mapper: ${set.creator}\``)
+  }
+  return msg
 }
 
 function formatTime (ms) {
