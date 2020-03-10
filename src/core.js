@@ -60,6 +60,7 @@ process.on('SIGINT', () => {
   bot.destroy()
   process.exit()
 })
+
 bot.on('error', err => console.error('Bot error:', err))
 process.on('uncaughtException', err => console.error('Uncaught Exception:', err))
 process.on('unhandledRejection', err => console.error('Unhandled Rejection:', err))
