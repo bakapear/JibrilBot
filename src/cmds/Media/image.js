@@ -10,11 +10,8 @@ module.exports = {
   args: 1,
   command: async function (msg, cmd, args) {
     let images = await collectImages(args.join(' '))
+    if (!images || !images.length) return msg.channel.send('Nothing found!')
     let mod = msg.content.startsWith(cfg.prefix.random) ? Math.floor(Math.random() * images.length) : 0
-    if (!images || !images.length || !images[mod]) {
-      msg.channel.send('Nothing found!')
-      return
-    }
     msg.channel.send({ embed: { image: { url: images[mod].original.url } } })
   }
 }
@@ -45,7 +42,7 @@ async function collectImages (query) {
     result.push(item)
   }
   if (!result.length) {
-    let start = body.indexOf('function(){return [', body.indexOf("key: 'ds:2'")) + 18
+    let start = body.indexOf('function(){return [', body.indexOf("key: 'ds:1'")) + 18
     let end = body.indexOf('}});</script>', start) - 1
     let json = null
     try {
