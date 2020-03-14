@@ -39,7 +39,7 @@ global.getPlayer = (msg, checkOnly) => {
 
 bot.on('ready', async () => {
   console.info(`Your personal servant ${bot.user.tag} is waiting for orders!`)
-  bot.user.setPresence({ game: { name: 'pear', type: 2 } })
+  bot.user.setPresence({ game: { name: 'someone else', type: 2 } })
   await GadgetManager.pass('bot', bot)
 })
 
