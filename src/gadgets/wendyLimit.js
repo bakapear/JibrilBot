@@ -10,7 +10,7 @@ module.exports = {
   type: 'msg',
   check: async msg => {
     if (startsWithPrefix(msg.content) &&
-    msg.content.toLowerCase().indexOf('wendy') &&
+    msg.content.toLowerCase().indexOf('wendy') >= 0 &&
     msg.author.id === '284425943034888204') {
       if (uses <= 0) {
         msg.reply('You are out of wendy uses!')
