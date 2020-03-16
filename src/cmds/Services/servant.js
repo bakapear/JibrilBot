@@ -15,14 +15,21 @@ module.exports = {
     if (id === -1) return msg.channel.send(`Servant '${query}' not found!`)
     let servant = servants[id]
     let info = await getServantInfo(servant)
+    let gender = ['♂', '♀', '?']
     msg.channel.send({
       embed: {
-        title: `${servant.name} (${servant.stars})`,
+        author: {
+          name: `${servant.name} (${servant.stars}) ${gender[info.gender]}`,
+          url: servant.url,
+          icon_url: info.icon
+        },
         color: 15324002,
-        url: servant.url,
-        description: info.desc.join('\n'),
+        description: info.desc.join(' '),
         thumbnail: {
           url: info.img
+        },
+        image: {
+          url: info.deck
         }
       }
     })
@@ -54,10 +61,21 @@ async function getServantInfo (servant) {
   let { body } = await got(servant.url)
   let $ = cheerio.load(body)
   let img = $('#pi-tab-0 > figure > a > img')[0].attribs.src
+  let icon = $('.ServantInfoClass > a > img')[0].attribs['data-src']
+  let deck = $('.closetable th > img')[0].attribs['data-src']
   let desc = $('.ServantInfoStatsWrapper > table:nth-child(1) > tbody').text().split('\n').filter(x => x !== '')
-  desc = desc.map(x => {
+  let gender = ['Male', 'Female', 'Unknown']
+  if (!desc[1].startsWith('AKA')) desc.splice(1, 0, null)
+  desc = desc.map((x, i, a) => {
+    if (i === 18) gender = gender.indexOf(a[i].split(':')[1].trim())
+    if ([2, 6, 7, 10, 11, 18].includes(i) || a[i] === null) return i === 7 ? '\n' : null
     let parts = x.replace(/<img.*?>/, '').split(': ').map(x => x.trim())
-    return `**${parts[0]}**: ${parts[1]}`
-  })
-  return { desc: desc, img: img }
+    let res = `**${parts[0].replace('Voice Actor', 'Voice').replace('Illustrator', 'Art')}**: ${parts[1]}`
+    if (i === 3) res += `${desc[10].replace('Attribute', '**Attribute**')}`
+    if (i === 4) res += ` (${a[6].split(':')[1].trim()})`
+    if (i === 5) res += ` (${a[7].split(':')[1].trim()})`
+    if ([0, 1, 2, 3, 9, 13, 15].includes(i)) res += '\n'
+    return res
+  }).filter(x => x !== null)
+  return { desc, img, icon, deck, gender }
 }
