@@ -12,8 +12,7 @@ module.exports = {
     let txt = msg.content.toLowerCase()
     if (startsWithPrefix(txt) &&
     (txt.indexOf('wendy') >= 0 ||
-    txt.indexOf('seungwan') >= 0 ||
-    txt.indexOf('seung wan') >= 0 ||
+    txt.indexOf('seung') >= 0 ||
     txt.indexOf('손승완') >= 0) &&
     msg.author.id === '284425943034888204') {
       if (uses <= 0) {
