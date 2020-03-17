@@ -9,8 +9,11 @@ module.exports = {
   disabled: false,
   type: 'msg',
   check: async msg => {
-    if (startsWithPrefix(msg.content) &&
-    msg.content.toLowerCase().indexOf('wendy') >= 0 &&
+    let txt = msg.content.toLowerCase()
+    if (startsWithPrefix(txt) &&
+    (txt.indexOf('wendy') >= 0 ||
+    txt.indexOf('seungwan') >= 0 ||
+    txt.indexOf('seung wan') >= 0) &&
     msg.author.id === '284425943034888204') {
       if (uses <= 0) {
         msg.reply('You are out of wendy uses!')
