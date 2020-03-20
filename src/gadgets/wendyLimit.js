@@ -1,8 +1,8 @@
 /* global cfg */
 
-let uses = 10
+let uses = 1000
 setInterval(() => {
-  if (uses < 10) uses++
+  if (uses < 1000) uses++
 }, 3600000)
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
         msg.reply('You are out of wendy uses!')
         return true
       }
-      msg.reply(`Uses left: ${--uses}/10`)
+      msg.reply(`Uses left: ${--uses}/1000`)
     }
     return false
   }
